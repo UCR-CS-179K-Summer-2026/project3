@@ -52,11 +52,11 @@ Query: FIND {employees, 0, name}
 Result: Laura
 
 
-FILTER {regex}
-FILTER {key, regex}
-FILTER {{key, subkey, sub-subkey, etc}, regex}
-FILTER {key (number), lower-bound, upper-bound}
-FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
+FILTER {regex} \n
+FILTER {key, regex} \n
+FILTER {{key, subkey, sub-subkey, etc}, regex} \n
+FILTER {key (number), lower-bound, upper-bound} \n
+FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound} \n
 
 EX) 
 Query: FILTER {employees, name, "^L"}
