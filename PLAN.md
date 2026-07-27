@@ -49,7 +49,7 @@ FIND {"key", "subkey", "sub-subkey"}
 
 EX) 
 Query: FIND {"employees", "0", "name"}
-Result: "Laura"
+Result: key exists
 
 
 FILTER {"regex"}
@@ -65,21 +65,18 @@ Result: "Laura"
 Query: FILTER {"employees", "salary", "80000,100000"}
 Result: ["Laura", "James"]
 
-DISPLAY {key}
-DISPLAY {key, subkey, sub-subkey, etc}
-
-DISPLAYTYPE {key}
-DISPLAYTYPE {key, subkey, sub-subkey, etc}
+DISPLAY {"key"}
+DISPLAY {"key", "subkey", "sub-subkey", ...}
 
 EX)
-Query: DISPLAY {a} 
-Result: All data under key ‘a’ EXCLUDING data in subkeys of a. Subkeys will be marked, for subkey b, {subkey b}
+Query {"employees", "0", "name"}
+result: "Laura"
 
-ALLOF {key}
-ALLOF {key, subkey, sub-subkey, etc}
+ALLOF {"key"}
+ALLOF {"key", "subkey", "sub-subkey", ...}
 
 EX)
-Query: ALLOF {employees, name}
+Query: ALLOF {"employees", "name"}
 Result: [ "Laura", "Moustafa", "James" ]
 ```
 
