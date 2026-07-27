@@ -22,8 +22,7 @@ Learn more about JSON format, JSON parsing and optimization techniques.
 ### Sprint 1:
 Basic structure and parsing. 
 
-Examples: removing duplicate entries.
-
+Examples: Preventing duplicate keys
 
 ### Sprint 2:
 Complex structure (arrays, etc) and querying.
