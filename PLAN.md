@@ -17,6 +17,8 @@ Rust
 ## What do you hope to accomplish in the remaining 2 hours?
 Learn more about JSON format, JSON parsing and optimization techniques. 
 
+## Queries
+FIND, FILTER, ALLOF
 
 ## 4-Sprint Plan:
 ### Sprint 1:
