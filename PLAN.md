@@ -34,7 +34,7 @@ Examples: Finding all data corresponding to a specific key
 ### Sprint 3:
 Error handling
 
-Examples: Invalid data
+Examples: Invalid data, empty keys, etc
 
 
 ### Sprint 4:
