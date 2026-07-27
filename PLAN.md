@@ -18,10 +18,38 @@ Rust
 Learn more about JSON format, JSON parsing and optimization techniques. 
 
 ## Queries
+
+JSON example
+{
+  "employees": [
+    {
+      "name": "Laura",
+      "department": "Product",
+      "salary": 90000
+    },
+    {
+      "name": "Moustafa",
+      "department": "IT Support",
+      "salary": 90000
+    },
+    {
+      "name": "James",
+      "department": "Engineering",
+      "salary": 90000
+    }
+  ]
+}
+
+
 FIND, FILTER, DISPLAY, ALLOF
 
-FIND {key}
+FIND {key} 
 FIND {key, subkey, sub-subkey, etc}
+
+EX) 
+Query: FIND {employees, 0, name}
+Result: Laura
+
 
 FILTER {regex}
 FILTER {key, regex}
@@ -29,11 +57,30 @@ FILTER {{key, subkey, sub-subkey, etc}, regex}
 FILTER {key (number), lower-bound, upper-bound}
 FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
 
+EX) 
+Query: FILTER {employees, name, "^L"}
+Result: employees with names starting with L
+
+Query: FILTER {{a, b, c, d}, 0, 10}
+Result: All numbers in subkey d between 0 and 10 inclusive.
+
 DISPLAY {key}
+DISPLAY {key, subkey, sub-subkey, etc}
 
 DISPLAYTYPE {key}
+DISPLAYTYPE {key, subkey, sub-subkey, etc}
+
+EX)
+Query: DISPLAY {a} 
+Result: All data under key ‘a’ EXCLUDING data in subkeys of a. Subkeys will be marked, for subkey b, {subkey b}
 
 ALLOF {key}
+ALLOF {key, subkey, sub-subkey, etc}
+
+EX)
+Query: ALLOF {employees, name}
+Result: [ "Laura", "Moustafa", "James" ]
+
 
 ## 4-Sprint Plan:
 ### Sprint 1:
