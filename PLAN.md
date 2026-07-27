@@ -47,9 +47,11 @@ FIND, FILTER, DISPLAY, ALLOF
 FIND {"key"} 
 FIND {"key", "subkey", "sub-subkey"}
 
+returns boolean indicating if key exists or not
+
 EX) 
 Query: FIND {"employees", "0", "name"}
-Result: key exists
+Result: true
 
 
 FILTER {"regex"}
@@ -58,10 +60,9 @@ FILTER {{key, subkey, sub-subkey, etc}, regex}
 FILTER {key (number), lower-bound, upper-bound}
 FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
 
-EX) 
-Query: FILTER {"employees", "name", "^L"}
-Result: "Laura"
+returns the values that match the keys and filters
 
+EX) 
 Query: FILTER {"employees", "salary", "80000,100000"}
 Result: ["Laura", "James"]
 
