@@ -18,7 +18,21 @@ Rust
 Learn more about JSON format, JSON parsing and optimization techniques. 
 
 ## Queries
-FIND, FILTER, ALLOF
+FIND, FILTER, DISPLAY, ALLOF
+
+FIND {key}
+FIND {key, subkey, sub-subkey, etc}
+
+FILTER {regex}
+FILTER {key, regex}
+FILTER {key, subkey, regex}
+
+DISPLAY {key}
+
+DISPLAYTYPE {key}
+
+ALLOF {key}
+
 
 ## 4-Sprint Plan:
 ### Sprint 1:
