@@ -25,14 +25,13 @@ FIND {key, subkey, sub-subkey, etc}
 
 FILTER {regex}
 FILTER {key, regex}
-FILTER {key, subkey, regex}
+FILTER {{key, subkey, sub-subkey, etc}, regex}
 
 DISPLAY {key}
 
 DISPLAYTYPE {key}
 
 ALLOF {key}
-
 
 ## 4-Sprint Plan:
 ### Sprint 1:
