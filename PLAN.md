@@ -31,7 +31,7 @@ JSON example
     {
       "name": "Moustafa",
       "department": "IT Support",
-      "salary": 90000
+      "salary": 120000
     },
     {
       "name": "James",
@@ -44,26 +44,26 @@ JSON example
 ```text
 FIND, FILTER, DISPLAY, ALLOF
 
-FIND {key} 
-FIND {key, subkey, sub-subkey, etc}
+FIND {"key"} 
+FIND {"key", "subkey", "sub-subkey"}
 
 EX) 
-Query: FIND {employees, 0, name}
-Result: Laura
+Query: FIND {"employees", "0", "name"}
+Result: "Laura"
 
 
-FILTER {regex}
-FILTER {key, regex}
+FILTER {"regex"}
+FILTER {"key", "regex"}
 FILTER {{key, subkey, sub-subkey, etc}, regex}
 FILTER {key (number), lower-bound, upper-bound}
 FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
 
 EX) 
-Query: FILTER {employees, name, "^L"}
-Result: employees with names starting with L
+Query: FILTER {"employees", "name", "^L"}
+Result: "Laura"
 
-Query: FILTER {{a, b, c, d}, 0, 10}
-Result: All numbers in subkey d between 0 and 10 inclusive.
+Query: FILTER {"employees", "salary", "80000,100000"}
+Result: ["Laura", "James"]
 
 DISPLAY {key}
 DISPLAY {key, subkey, sub-subkey, etc}
