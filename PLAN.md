@@ -20,9 +20,10 @@ Learn more about JSON format, JSON parsing and optimization techniques.
 ## Queries
 
 JSON example
+```json 
 {
   "employees": [
-    {
+   {
       "name": "Laura",
       "department": "Product",
       "salary": 90000
@@ -39,7 +40,7 @@ JSON example
     }
   ]
 }
-
+```
 
 FIND, FILTER, DISPLAY, ALLOF
 
