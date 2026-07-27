@@ -20,15 +20,21 @@ Learn more about JSON format, JSON parsing and optimization techniques.
 
 ## 4-Sprint Plan:
 ### Sprint 1:
-Basic structure and parsing. Examples include: removing duplicate entries.
+Basic structure and parsing. 
+
+Examples: removing duplicate entries.
 
 
 ### Sprint 2:
 Complex structure (arrays, etc) and querying.
 
+Examples: Finding all data corresponding to a specific key
+
 
 ### Sprint 3:
 Error handling
+
+Examples: Invalid data
 
 
 ### Sprint 4:
