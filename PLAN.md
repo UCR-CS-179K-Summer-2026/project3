@@ -15,12 +15,12 @@ Rust
 
 
 ## What do you hope to accomplish in the remaining 2 hours?
-Learn more about JSON format, JSON parsing and optimization techniques
+Learn more about JSON format, JSON parsing and optimization techniques. 
 
 
 ## 4-Sprint Plan:
 ### Sprint 1:
-Basic structure and parsing.
+Basic structure and parsing. Examples include: removing duplicate entries.
 
 
 ### Sprint 2:
