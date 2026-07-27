@@ -41,7 +41,7 @@ JSON example
   ]
 }
 ```
-
+```text
 FIND, FILTER, DISPLAY, ALLOF
 
 FIND {key} 
@@ -52,11 +52,11 @@ Query: FIND {employees, 0, name}
 Result: Laura
 
 
-FILTER {regex} \n
-FILTER {key, regex} \n
-FILTER {{key, subkey, sub-subkey, etc}, regex} \n
-FILTER {key (number), lower-bound, upper-bound} \n
-FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound} \n
+FILTER {regex}
+FILTER {key, regex}
+FILTER {{key, subkey, sub-subkey, etc}, regex}
+FILTER {key (number), lower-bound, upper-bound}
+FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
 
 EX) 
 Query: FILTER {employees, name, "^L"}
@@ -81,7 +81,7 @@ ALLOF {key, subkey, sub-subkey, etc}
 EX)
 Query: ALLOF {employees, name}
 Result: [ "Laura", "Moustafa", "James" ]
-
+```
 
 ## 4-Sprint Plan:
 ### Sprint 1:
