@@ -65,6 +65,7 @@ Result: "Laura"
 Query: FILTER {"employees", "salary", "80000,100000"}
 Result: ["Laura", "James"]
 
+
 DISPLAY {"key"}
 DISPLAY {"key", "subkey", "sub-subkey", ...}
 
