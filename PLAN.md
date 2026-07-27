@@ -26,6 +26,8 @@ FIND {key, subkey, sub-subkey, etc}
 FILTER {regex}
 FILTER {key, regex}
 FILTER {{key, subkey, sub-subkey, etc}, regex}
+FILTER {key (number), lower-bound, upper-bound}
+FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
 
 DISPLAY {key}
 
