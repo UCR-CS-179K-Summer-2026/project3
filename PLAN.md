@@ -1,10 +1,10 @@
 ## 4-Sprint Plan:
 
-### Sprint 1 Plan:
+## Sprint 1 Plan:
 
 Goal: Set up the project, document the main features, define the query format, and prepare the C++ environment.
 
-## Laura — Documentation
+### Laura — Documentation
 
 ### Tasks
 - Update `README.md`
@@ -26,7 +26,7 @@ Goal: Set up the project, document the main features, define the query format, a
 
 ---
 
-## James — GitHub Pages and Project Setup
+### James — GitHub Pages and Project Setup
 
 ### Tasks
 - Set up the C++ project
@@ -43,7 +43,7 @@ Goal: Set up the project, document the main features, define the query format, a
 
 ---
 
-## Moustafa — Query Design and Testing
+### Moustafa — Query Design and Testing
 
 ### Tasks
 - Define the syntax for:
@@ -62,7 +62,7 @@ Goal: Set up the project, document the main features, define the query format, a
 - Test cases
 - Expected results
 
-## Sprint 1 Done When
+### Sprint 1 Done When
 
 - `README.md` is complete
 - `PLAN.md` is complete
@@ -71,13 +71,13 @@ Goal: Set up the project, document the main features, define the query format, a
 - Query syntax is defined
 - Basic tests are created
 
-### Sprint 2:
+## Sprint 2:
 Complex structure (arrays, etc) and querying.
 
 Examples: Finding all data corresponding to a specific key
 
 
-### Sprint 3:
+## Sprint 3:
 Error handling
 
 Examples: Invalid data, empty keys, etc
