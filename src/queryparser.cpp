@@ -34,6 +34,7 @@ namespace queryparser {
                         return;
                     }
 
+                    append += c;
                     break;
                 default:
                     append += c;
