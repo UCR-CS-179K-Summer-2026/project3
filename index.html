@@ -1,11 +1,180 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hello, world!</title>
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
-  </body>
-</html>
+# JSON Analytics Engine - System Design
+
+## System Architecture
+
+```text
+JSON File ---> JSON Parser
+                  |
+                  v
+Query ---> Query Parser ---> Query Engine ---> Result
+````
+
+### Main Modules
+
+**JSON Parser**
+
+* Reads JSON/JSONL files
+* Parses objects, arrays, strings, numbers, booleans, and null
+* Handles nested JSON
+
+Current files:
+
+```text
+src/jsonparser.h
+src/jsonparser.cpp
+```
+
+Current interface:
+
+```cpp
+int test(std::ifstream& json);
+```
+
+**Query Parser**
+
+* Reads the user query
+* Separates query commands and arguments
+* Handles nested `{}` structures
+
+Current files:
+
+```text
+src/queryparser.h
+src/queryparser.cpp
+```
+
+Current interfaces:
+
+```cpp
+void parsequery(std::string& query);
+void displaylastparsedquery();
+```
+
+**Main Program**
+
+* Reads the JSON filename
+* Opens the file
+* Connects the parser modules
+
+Current file:
+
+```text
+src/main.cpp
+```
+
+---
+
+## Query Syntax
+
+Supported operations:
+
+```text
+FIND
+FILTER
+DISPLAY
+ALLOF
+```
+
+Keys must use double quotes.
+
+Array indexes do not use quotes.
+
+### FIND
+
+Checks if a path exists.
+
+```text
+FIND {"employees", 0, "name"}
+Result: true
+```
+
+### DISPLAY
+
+Returns the value at a path.
+
+```text
+DISPLAY {"employees", 0, "name"}
+Result: "Laura"
+```
+
+### ALLOF
+
+Returns all values for a field in an array.
+
+```text
+ALLOF {"employees", "name"}
+Result: ["Laura", "Moustafa", "James"]
+```
+
+### FILTER
+
+Regex example:
+
+```text
+FILTER {{"employees", "name"}, "^L"}
+Result: ["Laura"]
+```
+
+Numeric range example:
+
+```text
+FILTER {{"employees", "salary"}, 80000, 100000}
+```
+
+The range is inclusive.
+
+---
+
+## Algorithms
+
+### Query Parsing
+
+The parser reads the query character by character and tracks `{}` so nested query sections are handled correctly.
+
+### Path Traversal
+
+Example:
+
+```text
+DISPLAY {"employees", 0, "name"}
+```
+
+Traversal:
+
+```text
+root -> employees -> index 0 -> name
+```
+
+### Filtering
+
+1. Find the requested array.
+2. Check each item.
+3. Apply the regex or numeric range.
+4. Return matching results.
+
+---
+
+## Planned Optimizations
+
+* Buffered file reading
+* Streaming JSONL
+* Early termination
+* Query preprocessing
+* Reduced data copying
+* Caching
+* Indexing
+
+---
+
+## Edge Cases
+
+The engine should handle:
+
+* Missing keys
+* Invalid array indexes
+* Empty arrays
+* Null values
+* Keys with spaces
+* Keys with commas
+* Invalid regex
+* Invalid query syntax
