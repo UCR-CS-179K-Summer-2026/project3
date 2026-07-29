@@ -1,7 +1,7 @@
 #ifndef QUERY_READER_H
 #define QUERY_READER_H
 
-namespace query_reader {
+namespace queryparser {
     
 }
 
