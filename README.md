@@ -1,4 +1,4 @@
-# Group 3, JSON Engine
+# Group 3, JSON Analytics Engine
 
 Laura Canon, Moustafa Soliman, James Mace
 
