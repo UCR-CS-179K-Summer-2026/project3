@@ -1,180 +1,207 @@
-# JSON Analytics Engine - System Design
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Analytics Engine - System Design</title>
+</head>
 
-## System Architecture
+<body>
 
-```text
+  <h1>JSON Analytics Engine - System Design</h1>
+
+  <h2>System Architecture</h2>
+
+  <pre>
 JSON File ---> JSON Parser
                   |
                   v
 Query ---> Query Parser ---> Query Engine ---> Result
-````
+  </pre>
 
-### Main Modules
+  <h3>Main Modules</h3>
 
-**JSON Parser**
+  <h4>JSON Parser</h4>
 
-* Reads JSON/JSONL files
-* Parses objects, arrays, strings, numbers, booleans, and null
-* Handles nested JSON
+  <ul>
+    <li>Reads JSON/JSONL files</li>
+    <li>Parses objects, arrays, strings, numbers, booleans, and null</li>
+    <li>Handles nested JSON</li>
+  </ul>
 
-Current files:
+  <p>Current files:</p>
 
-```text
+  <pre>
 src/jsonparser.h
 src/jsonparser.cpp
-```
+  </pre>
 
-Current interface:
+  <p>Current interface:</p>
 
-```cpp
+  <pre>
 int test(std::ifstream& json);
-```
+  </pre>
 
-**Query Parser**
+  <h4>Query Parser</h4>
 
-* Reads the user query
-* Separates query commands and arguments
-* Handles nested `{}` structures
+  <ul>
+    <li>Reads the user query</li>
+    <li>Separates query commands and arguments</li>
+    <li>Handles nested {} structures</li>
+  </ul>
 
-Current files:
+  <p>Current files:</p>
 
-```text
+  <pre>
 src/queryparser.h
 src/queryparser.cpp
-```
+  </pre>
 
-Current interfaces:
+  <p>Current interfaces:</p>
 
-```cpp
+  <pre>
 void parsequery(std::string& query);
 void displaylastparsedquery();
-```
+  </pre>
 
-**Main Program**
+  <h4>Main Program</h4>
 
-* Reads the JSON filename
-* Opens the file
-* Connects the parser modules
+  <ul>
+    <li>Reads the JSON filename</li>
+    <li>Opens the file</li>
+    <li>Connects the parser modules</li>
+  </ul>
 
-Current file:
+  <p>Current file:</p>
 
-```text
+  <pre>
 src/main.cpp
-```
+  </pre>
 
----
+  <hr>
 
-## Query Syntax
+  <h2>Query Syntax</h2>
 
-Supported operations:
+  <p>Supported operations:</p>
 
-```text
+  <pre>
 FIND
 FILTER
 DISPLAY
 ALLOF
-```
+  </pre>
 
-Keys must use double quotes.
+  <p>Keys must use double quotes.</p>
+  <p>Array indexes do not use quotes.</p>
 
-Array indexes do not use quotes.
+  <h3>FIND</h3>
 
-### FIND
+  <p>Checks if a path exists.</p>
 
-Checks if a path exists.
-
-```text
+  <pre>
 FIND {"employees", 0, "name"}
 Result: true
-```
+  </pre>
 
-### DISPLAY
+  <h3>DISPLAY</h3>
 
-Returns the value at a path.
+  <p>Returns the value at a path.</p>
 
-```text
+  <pre>
 DISPLAY {"employees", 0, "name"}
 Result: "Laura"
-```
+  </pre>
 
-### ALLOF
+  <h3>ALLOF</h3>
 
-Returns all values for a field in an array.
+  <p>Returns all values for a field in an array.</p>
 
-```text
+  <pre>
 ALLOF {"employees", "name"}
 Result: ["Laura", "Moustafa", "James"]
-```
+  </pre>
 
-### FILTER
+  <h3>FILTER</h3>
 
-Regex example:
+  <p>Regex example:</p>
 
-```text
+  <pre>
 FILTER {{"employees", "name"}, "^L"}
 Result: ["Laura"]
-```
+  </pre>
 
-Numeric range example:
+  <p>Numeric range example:</p>
 
-```text
+  <pre>
 FILTER {{"employees", "salary"}, 80000, 100000}
-```
+  </pre>
 
-The range is inclusive.
+  <p>The range is inclusive.</p>
 
----
+  <hr>
 
-## Algorithms
+  <h2>Algorithms</h2>
 
-### Query Parsing
+  <h3>Query Parsing</h3>
 
-The parser reads the query character by character and tracks `{}` so nested query sections are handled correctly.
+  <p>
+    The parser reads the query character by character and tracks
+    curly braces so nested query sections are handled correctly.
+  </p>
 
-### Path Traversal
+  <h3>Path Traversal</h3>
 
-Example:
+  <p>Example:</p>
 
-```text
+  <pre>
 DISPLAY {"employees", 0, "name"}
-```
+  </pre>
 
-Traversal:
+  <p>Traversal:</p>
 
-```text
+  <pre>
 root -> employees -> index 0 -> name
-```
+  </pre>
 
-### Filtering
+  <h3>Filtering</h3>
 
-1. Find the requested array.
-2. Check each item.
-3. Apply the regex or numeric range.
-4. Return matching results.
+  <ol>
+    <li>Find the requested array.</li>
+    <li>Check each item.</li>
+    <li>Apply the regex or numeric range.</li>
+    <li>Return matching results.</li>
+  </ol>
 
----
+  <hr>
 
-## Planned Optimizations
+  <h2>Planned Optimizations</h2>
 
-* Buffered file reading
-* Streaming JSONL
-* Early termination
-* Query preprocessing
-* Reduced data copying
-* Caching
-* Indexing
+  <ul>
+    <li>Buffered file reading</li>
+    <li>Streaming JSONL</li>
+    <li>Early termination</li>
+    <li>Query preprocessing</li>
+    <li>Reduced data copying</li>
+    <li>Caching</li>
+    <li>Indexing</li>
+  </ul>
 
----
+  <hr>
 
-## Edge Cases
+  <h2>Edge Cases</h2>
 
-The engine should handle:
+  <p>The engine should handle:</p>
 
-* Missing keys
-* Invalid array indexes
-* Empty arrays
-* Null values
-* Keys with spaces
-* Keys with commas
-* Invalid regex
-* Invalid query syntax
+  <ul>
+    <li>Missing keys</li>
+    <li>Invalid array indexes</li>
+    <li>Empty arrays</li>
+    <li>Null values</li>
+    <li>Keys with spaces</li>
+    <li>Keys with commas</li>
+    <li>Invalid regex</li>
+    <li>Invalid query syntax</li>
+  </ul>
+
+</body>
+</html>
