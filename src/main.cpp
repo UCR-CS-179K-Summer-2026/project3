@@ -18,14 +18,18 @@ int main() {
     fileName = "src/jsonFiles/" + fileName;
     std::ifstream json(fileName);
 
+    // verify file opened correctly
     if (!json.is_open()) {
         std::cerr << "Error: Could not open the file " << fileName << std::endl;
         return 1;
     }
 
-    int x = json_parser::test(json);
+    int x = json_parser::isFileOpen(json);
     std::cout << x << std::endl;
-    //JSON parse
+
+    std::string json_string = json_parser::jsonToString(json);
+
+    std::cout << json_string << std::endl;
 
 
     json.close();
