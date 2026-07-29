@@ -1,8 +1,5 @@
-#ifndef QUERY_READER_H
-#define QUERY_READER_H
+#pragma once
 
 namespace query_reader {
     
 }
-
-#endif

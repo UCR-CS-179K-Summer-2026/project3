@@ -1,5 +1,4 @@
-#ifndef JSON_PARSER_H
-#define JSON_PARSER_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -10,5 +9,3 @@ namespace json_parser {
     int test(std::ifstream& json);
 
 }
-
-#endif
