@@ -1,4 +1,4 @@
-## 4-Sprint Plan:
+# 4-Sprint Plan:
 
 ## Sprint 1 Plan:
 
