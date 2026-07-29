@@ -4,29 +4,26 @@
 
 Goal: Set up the project, document the main features, define the query format, and prepare the C++ environment.
 
-### Laura — Documentation
+### Laura — Documentation and Github Pages
 
 ### Tasks
 - Update `README.md`
-- Add project summary and team members
-- Add the main features:
-  - FIND
-  - FILTER
-  - DISPLAY
-  - DISPLAYTYPE
-  - ALLOF
-- Add simple examples for each feature
-- Add query formatting rules
-- Add a few edge cases
 - Update `PLAN.md`
+- Add project summary and team member list
+- Add major features and examples
+- Add query formatting rules
+- Add edge cases
+- Set up and update GitHub Pages
+- Add basic system design documentation
 
 ### Deliverables
 - `README.md`
 - `PLAN.md`
+- GitHub Pages site
 
 ---
 
-### James — GitHub Pages and Project Setup
+### James — Project Setup and JSON Parser -- TBD
 
 ### Tasks
 - Set up the C++ project
@@ -43,7 +40,7 @@ Goal: Set up the project, document the main features, define the query format, a
 
 ---
 
-### Moustafa — Query Design and Testing
+### Moustafa — Query Design and Testing -- TBD
 
 ### Tasks
 - Define the syntax for:
