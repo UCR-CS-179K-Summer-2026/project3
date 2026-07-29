@@ -1,8 +1,8 @@
-# Group 3, JSON Engine
+## Group 3, JSON Engine
 
 Laura Canon, Moustafa Soliman, James Mace
 
-## Project Summary
+### Project Summary
 
 Our software will take in a JSON or JSONL file and a query as input, then return data that matches the query.
 
@@ -10,11 +10,11 @@ The system will support different query operations such as finding paths, filter
 
 We also plan to use optimization techniques to improve performance when working with large files or complex queries.
 
-## Language
+### Language
 
 C++
 
-## Example JSON
+### Example JSON
 
 ```json
 {
@@ -38,7 +38,7 @@ C++
 }
 ```
 
-## Query Formatting Rules
+### Query Formatting Rules
 
 * All JSON keys must be enclosed in double quotes.
 * Array indexes are numbers and do not require quotes.
@@ -47,9 +47,9 @@ C++
 * Spaces after commas are optional.
 * Spaces and commas inside quoted strings are preserved.
 
-## Query Features
+### Query Features
 
-### FIND
+#### FIND
 
 Checks whether a specified path exists.
 
@@ -80,7 +80,7 @@ Result:
 false
 ```
 
-### FILTER
+#### FILTER
 
 Returns values or records that satisfy a filter.
 
@@ -118,7 +118,7 @@ Result:
 
 The numeric range is inclusive.
 
-### DISPLAY
+#### DISPLAY
 
 Returns the value stored at a specific path.
 
@@ -149,7 +149,7 @@ Result:
 "IT Support"
 ```
 
-### ALLOF
+#### ALLOF
 
 Returns all values for a specified key within an array.
 
@@ -179,7 +179,7 @@ Result:
 [90000, 120000, 90000]
 ```
 
-## Edge Cases
+### Edge Cases
 
 The query system should handle cases such as:
 
