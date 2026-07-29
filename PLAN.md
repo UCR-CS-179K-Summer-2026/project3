@@ -62,6 +62,8 @@ Goal: Set up the project, document the main features, define the query format, a
 - Test cases
 - Expected results
 
+---
+
 ### Sprint 1 Done When
 
 - `README.md` is complete
