@@ -56,15 +56,15 @@ Checks whether a specified path exists.
 Syntax:
 
 ```text
-FIND {"key"}
-FIND {"key", "subkey", "sub-subkey"}
+FIND "key"
+FIND "key" "subkey" "sub-subkey"
 ```
 
 Example:
 
 ```text
 Query:
-FIND {"employees", 0, "name"}
+FIND "employees" 0 "name"
 
 Result:
 true
@@ -74,7 +74,7 @@ If the path does not exist:
 
 ```text
 Query:
-FIND {"employees", 0, "age"}
+FIND "employees", 0, "age"
 
 Result:
 false
@@ -87,14 +87,14 @@ Returns values or records that satisfy a filter.
 Regex syntax:
 
 ```text
-FILTER {{"key", "subkey"}, "regex"}
+FILTER {"key" "subkey"} "regex"
 ```
 
 Example:
 
 ```text
 Query:
-FILTER {{"employees", "name"}, "^L"}
+FILTER {"employees" "name"} "^L"
 
 Result:
 ["Laura"]
@@ -103,14 +103,14 @@ Result:
 Numeric range syntax:
 
 ```text
-FILTER {{"key", "subkey"}, lower-bound, upper-bound}
+FILTER {"key" "subkey"} lower-bound upper-bound
 ```
 
 Example:
 
 ```text
 Query:
-FILTER {{"employees", "salary"}, 80000, 100000}
+FILTER {"employees" "salary"} 80000 100000
 
 Result:
 ["Laura", "James"]
@@ -125,15 +125,15 @@ Returns the value stored at a specific path.
 Syntax:
 
 ```text
-DISPLAY {"key"}
-DISPLAY {"key", "subkey", "sub-subkey"}
+DISPLAY "key"
+DISPLAY "key" "subkey" "sub-subkey"
 ```
 
 Example:
 
 ```text
 Query:
-DISPLAY {"employees", 0, "name"}
+DISPLAY "employees" 0 "name"
 
 Result:
 "Laura"
@@ -143,7 +143,7 @@ Another example:
 
 ```text
 Query:
-DISPLAY {"employees", 1, "department"}
+DISPLAY "employees" 1 "department"
 
 Result:
 "IT Support"
@@ -156,14 +156,14 @@ Returns all values for a specified key within an array.
 Syntax:
 
 ```text
-ALLOF {"key", "subkey"}
+ALLOF "key" "subkey"
 ```
 
 Example:
 
 ```text
 Query:
-ALLOF {"employees", "name"}
+ALLOF "employees" "name"
 
 Result:
 ["Laura", "Moustafa", "James"]
@@ -173,7 +173,7 @@ Another example:
 
 ```text
 Query:
-ALLOF {"employees", "salary"}
+ALLOF "employees" "salary"
 
 Result:
 [90000, 120000, 90000]
@@ -196,7 +196,7 @@ Example:
 
 ```text
 Query:
-FIND {"employees", 10, "name"}
+FIND "employees" 10 "name"
 
 Result:
 false
