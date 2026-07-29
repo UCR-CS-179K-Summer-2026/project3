@@ -16,59 +16,40 @@ Goal: Set up the project, document the main features, define the query format, a
 - Set up and update GitHub Pages
 - Add basic system design documentation
 
-### Deliverables
-- `README.md`
-- `PLAN.md`
-- GitHub Pages site
-
 ---
 
 ### James — Project Setup and JSON Parser -- TBD
 
 ### Tasks
-- Set up the C++ project
-- Create `CMakeLists.txt`
-- Make sure the project compiles
-- Set up GitHub Pages
-- Add basic system architecture
-- Add basic module and function descriptions
-
-### Deliverables
-- Working C++ project
-- GitHub Pages site
-- Initial design documentation
+- Set up JSON file input
+- Create the JSON parser
+- Parse basic JSON structures
+- Handle objects and arrays
+- Handle nested JSON
+- Create sample JSON test data
+- Connect JSON input with `main.cpp`
 
 ---
 
 ### Moustafa — Query Design and Testing -- TBD
 
 ### Tasks
-- Define the syntax for:
-  - FIND
-  - FILTER
-  - DISPLAY
-  - DISPLAYTYPE
-  - ALLOF
-- Create example queries
-- Create basic test cases
-- Test keys with spaces and commas
-- Test invalid queries and indexes
-
-### Deliverables
-- Query format
-- Test cases
-- Expected results
+- Create the query parser
+- Parse query commands and arguments
+- Handle nested `{}` structures
+- Handle quoted keys
+- Handle spaces and commas
+- Create basic query tests
 
 ---
 
 ### Sprint 1 Done When
-
-- `README.md` is complete
-- `PLAN.md` is complete
-- GitHub Pages is working
-- C++ project compiles
-- Query syntax is defined
-- Basic tests are created
+- The C++ project should build successfully
+- JSON files should be readable
+- Basic queries should be parsed
+- Basic JSON parsing should work
+- `README.md` and `PLAN.md` should be complete
+- GitHub Pages should contain the initial system design
 
 ## Sprint 2:
 Complex structure (arrays, etc) and querying.
