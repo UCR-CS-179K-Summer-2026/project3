@@ -1,8 +1,10 @@
-#ifndef QUERY_READER_H
-#define QUERY_READER_H
+#pragma once
+
+#include <iostream>
 
 namespace queryparser {
-    
-}
+    void parsequery(std::string& query);
 
-#endif
+    // For debugging purposes
+    void displaylastparsedquery();
+}
