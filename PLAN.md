@@ -1,104 +1,86 @@
-# Group 3, Project 3 Plan.
-Laura, Moustafa, James
+# 4-Sprint Plan:
 
+## Sprint 1 Plan:
 
-## What option did you choose?
-We chose option 2, the high-performance JSON analytics engine.
+Goal: Set up the project, document the main features, define the query format, and prepare the C++ environment.
 
+### Laura — Documentation and Github Pages
 
-## What exactly will your software do?
-Our software will take in a JSON file and query path as input, and then return the data that path finds as output. It will utilize different optimization techniques to ensure that it is fast even if the data input is large or query is complex.
+### Tasks
+- Update `README.md`
+- Update `PLAN.md`
+- Add project summary and team member list
+- Add major features and examples
+- Add query formatting rules
+- Add edge cases
+- Set up and update GitHub Pages
+- Add basic system design documentation
 
+### Deliverables
+- `README.md`
+- `PLAN.md`
+- GitHub Pages site
 
-## What language(s) will you use?
-Rust
+---
 
+### James — Project Setup and JSON Parser -- TBD
 
-## What do you hope to accomplish in the remaining 2 hours?
-Learn more about JSON format, JSON parsing and optimization techniques. 
+### Tasks
+- Set up the C++ project
+- Create `CMakeLists.txt`
+- Make sure the project compiles
+- Set up GitHub Pages
+- Add basic system architecture
+- Add basic module and function descriptions
 
-## Queries
+### Deliverables
+- Working C++ project
+- GitHub Pages site
+- Initial design documentation
 
-JSON example
-```json 
-{
-  "employees": [
-   {
-      "name": "Laura",
-      "department": "Product",
-      "salary": 90000
-    },
-    {
-      "name": "Moustafa",
-      "department": "IT Support",
-      "salary": 120000
-    },
-    {
-      "name": "James",
-      "department": "Engineering",
-      "salary": 90000
-    }
-  ]
-}
-```
-```text
-FIND, FILTER, DISPLAY, ALLOF
+---
 
-FIND {"key"} 
-FIND {"key", "subkey", "sub-subkey"}
+### Moustafa — Query Design and Testing -- TBD
 
-returns boolean indicating if key exists or not
+### Tasks
+- Define the syntax for:
+  - FIND
+  - FILTER
+  - DISPLAY
+  - DISPLAYTYPE
+  - ALLOF
+- Create example queries
+- Create basic test cases
+- Test keys with spaces and commas
+- Test invalid queries and indexes
 
-EX) 
-Query: FIND {"employees", "0", "name"}
-Result: true
+### Deliverables
+- Query format
+- Test cases
+- Expected results
 
+---
 
-FILTER {"regex"}
-FILTER {"key", "regex"}
-FILTER {{key, subkey, sub-subkey, etc}, regex}
-FILTER {key (number), lower-bound, upper-bound}
-FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
+### Sprint 1 Done When
 
-returns the values that match the keys and filters
+- `README.md` is complete
+- `PLAN.md` is complete
+- GitHub Pages is working
+- C++ project compiles
+- Query syntax is defined
+- Basic tests are created
 
-EX) 
-Query: FILTER {"employees", "salary", "80000,100000"}
-Result: ["Laura", "James"]
-
-
-DISPLAY {"key"}
-DISPLAY {"key", "subkey", "sub-subkey", ...}
-
-EX)
-Query {"employees", "0", "name"}
-result: "Laura"
-
-ALLOF {"key"}
-ALLOF {"key", "subkey", "sub-subkey", ...}
-
-EX)
-Query: ALLOF {"employees", "name"}
-Result: [ "Laura", "Moustafa", "James" ]
-```
-
-## 4-Sprint Plan:
-### Sprint 1:
-Basic structure and parsing. 
-
-Examples: Preventing duplicate keys
-
-### Sprint 2:
+## Sprint 2:
 Complex structure (arrays, etc) and querying.
 
 Examples: Finding all data corresponding to a specific key
 
 
-### Sprint 3:
+## Sprint 3:
 Error handling
 
 Examples: Invalid data, empty keys, etc
 
 
-### Sprint 4:
+## Sprint 4:
 Optimization.

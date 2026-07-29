@@ -28,7 +28,7 @@ namespace queryparser {
                     break;
                 case '}':
                     if(!curlybraces.empty()){
-                        curleybraces.pop();
+                        curlybraces.pop();
                     }else{
                         std::cerr << "Error Parsing: Invalid use of brackets." << std::endl;
                         return;
