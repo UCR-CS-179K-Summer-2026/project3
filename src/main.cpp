@@ -4,8 +4,8 @@
 #include<string>
 
 // Header Files
-#include "jsonparser.h";
-#include "queryreader.h";
+#include "jsonparser.h"
+#include "queryreader.h"
 
 int main() {
 
@@ -23,6 +23,8 @@ int main() {
         return 1;
     }
 
+    int x = json_parser::test(json);
+    std::cout << x << std::endl;
     //JSON parse
 
 
