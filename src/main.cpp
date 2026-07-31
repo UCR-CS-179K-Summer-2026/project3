@@ -28,8 +28,10 @@ int main() {
     std::cout << x << std::endl;
 
     std::string json_string = json_parser::jsonToString(json);
-
     std::cout << json_string << std::endl;
+    std::cout << "----------------------------------" << std::endl;
+
+    json_parser::parsejson(json_string);
 
 
     json.close();

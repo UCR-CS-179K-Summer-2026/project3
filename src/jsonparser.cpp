@@ -11,7 +11,30 @@ namespace json_parser {
         return json_string;
     }
     
-    void parsejson(std::string& json) {
+    void parsejson(std::string& json, something query) { // TODO
+        
+        for(char c : json) {
+            switch(c) {
+                case '{':
+                    std::cout << "Read '{' ";
+                    break;
+                case '}':
+                    std::cout << "Read '}' ";
+                    break;
+                case '[':
+                    std::cout << "Read '[' ";
+                    break;
+                case ']':
+                    std::cout << "Read ']' ";
+                    break;
+                case ',':
+                    std::cout << "Read ',' ";
+                    break;
+                default:
+                    std::cout << "Unknown character: " << c << std::endl;
+            }
+        }
+
         return;
     }
 
