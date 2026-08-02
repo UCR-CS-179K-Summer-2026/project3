@@ -1,4 +1,3 @@
-#include <iostream>
 #include "queryparser.h"
 
 std::vector<std::string> parsedquery;
@@ -12,6 +11,7 @@ namespace queryparser {
 
         std::vector<std::string> querylayout;
         std::string append = "";
+        
 
         for(char c : query) {
             switch(c){
