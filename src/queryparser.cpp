@@ -37,16 +37,22 @@ namespace{
 
             switch(c){
                 case ' ':
-                    substructure.push_back(append);
-                    append = "";
+                    if(!append.empty()){
+                        substructure.push_back(append);
+                        append.clear();
+                    }
+
                     break;
                 case '{':
                     parsenested(start, query, substructure);
                     break;
                 case '}':
-                    substructure.push_back(append);
+                    if(!append.empty()){
+                        substructure.push_back(append);
+                        append.clear();
+                    }
+
                     parsed.push_back(substructure);
-                    append = "";
                     substructure.clear();
                     return;
                 default:
@@ -54,8 +60,6 @@ namespace{
                     break;
             }
         }
-
-        substructure.clear();
     }
 }
 
@@ -70,12 +74,14 @@ namespace queryparser {
 
             switch(c){
                 case ' ':
-                    parsedquery.push_back(append);
-                    append = "";
+                    if(!append.empty()){
+                        parsedquery.push_back(append);
+                        append.clear();
+                    }
+
                     break;
                 case '{':
                     parsenested(i, query, parsedquery);
-                    i++;
                     break;
                 case '}':
                     break; // Skip, we already know its valid.
@@ -87,7 +93,7 @@ namespace queryparser {
 
         if(append != ""){
             parsedquery.push_back(append);
-            append = "";
+            append.clear();
         }
     }
 
