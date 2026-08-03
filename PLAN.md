@@ -4,52 +4,41 @@
 
 Goal: Set up the project, document the main features, define the query format, and prepare the C++ environment.
 
-### Laura — Documentation and Github Pages
+### Laura — Documentation, JSON Files, and Testing
 
-### Tasks
-- Update `README.md`
-- Update `PLAN.md`
-- Add project summary and team member list
-- Add major features and examples
-- Add query formatting rules
-- Add edge cases
-- Set up and update GitHub Pages
-- Add basic system design documentation
+- Updated `README.md`, `PLAN.md`, and GitHub Pages.
+- Documented the project overview, query format, examples, and edge cases.
+- Created `employee.json`, `product.json`, and `university.json`.
+- Added new query-parser edge-case tests.
+- Added tests for valid, missing, and empty JSON file paths.
+- Verified that the project builds and all Sprint 1 tests pass.
 
----
+### James — JSON Parser
 
-### James — Project Setup and JSON Parser -- TBD
+- Implemented the initial JSON parser.
+- Added support for receiving JSON data and a query path.
+- Traversed JSON data using keys and array indices.
+- Added support for nested objects and arrays.
+- Returned the value located at the requested path.
+- Connected the parser components to the project build.
 
-### Tasks
-- Set up JSON file input
-- Create the JSON parser
-- Parse basic JSON structures
-- Handle objects and arrays
-- Handle nested JSON
-- Create sample JSON test data
-- Connect JSON input with `main.cpp`
+### Moustafa — Query Parser
 
----
+- Implemented the initial query parser.
+- Converted query strings into `std::vector<JSONTypes>` structures.
+- Added support for commands, arguments, and nested `{}` groups.
+- Used recursive structures to represent nested queries.
+- Added tests for simple, nested, and deeply nested queries.
+- Prepared the parsed query format for later JSON lookup.
 
-### Moustafa — Query Design and Testing -- TBD
+### Sprint 1 Results
 
-### Tasks
-- Create the query parser
-- Parse query commands and arguments
-- Handle nested `{}` structures
-- Handle quoted keys
-- Handle spaces and commas
-- Create basic query tests
-
----
-
-### Sprint 1 Done When
-- The C++ project should build successfully
-- JSON files should be readable
-- Basic queries should be parsed
-- Basic JSON parsing should work
-- `README.md` and `PLAN.md` should be complete
-- GitHub Pages should contain the initial system design
+- The C++ project builds successfully.
+- The query parser handles simple and nested queries.
+- The JSON parser can navigate JSON data using keys and indices.
+- Sample JSON files are available for testing and demonstrations.
+- Sprint 1 tests pass.
+- Project documentation and GitHub Pages are updated.
 
 ## Sprint 2:
 Complex structure (arrays, etc) and querying.

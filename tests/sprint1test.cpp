@@ -7,7 +7,7 @@
 #include "../src/jsonparser.h"
 #include "../src/queryparser.h"
 
-// This test gives the parser a basic FIND query with one field name. -- James Test ParseSimpleFindQuery1
+// This test gives the parser a basic FIND query with one field name. -- Moustafa Test ParseSimpleFindQuery1
 // It checks that parsequery() separates the command and field into two tokens.
 TEST(QueryParser, ParsesSimpleFindQuery) {
     const std::string query = "FIND employees";
@@ -22,7 +22,7 @@ TEST(QueryParser, ParsesSimpleFindQuery) {
     EXPECT_EQ(queryparser::getparsedquery(), expected);
 }
 
-// This test gives the parser a query with two field names after FIND. -- James Test ParseSimpleFindQuery2
+// This test gives the parser a query with two field names after FIND. -- Moustafa Test ParseSimpleFindQuery2
 // It checks that the tokens remain in the same order as the original query.
 TEST(QueryParser, ParsesMultiFieldQuery) {
     const std::string query = "FIND employees name";
@@ -55,7 +55,7 @@ TEST(QueryParser, ParsesArrayIndexToken) {
     EXPECT_EQ(queryparser::getparsedquery(), expected);
 }
 
-// This test uses braces around part of the query.  -- James Test ParseNestedFindQuery1
+// This test uses braces around part of the query.  -- Moustafa Test ParseNestedFindQuery1
 // It checks that the values inside the braces are stored in a nested JSONTypes vector.
 TEST(QueryParser, ParsesNestedQuery) {
     const std::string query = "FIND {employees birthday month} day";
@@ -71,7 +71,7 @@ TEST(QueryParser, ParsesNestedQuery) {
     EXPECT_EQ(queryparser::getparsedquery(), expected);
 }
 
-// This test places a nested group at the end of the query.  -- James Test ParseNestedFindQuery2
+// This test places a nested group at the end of the query.  -- Moustafa Test ParseNestedFindQuery2
 // It checks that the parser stores the final braced value as a nested vector.
 TEST(QueryParser, ParsesNestedQueryAtEnd) {
     const std::string query = "FIND day {employees}";
@@ -87,7 +87,7 @@ TEST(QueryParser, ParsesNestedQueryAtEnd) {
     EXPECT_EQ(queryparser::getparsedquery(), expected);
 }
 
-// This test contains several levels of braces. -- James Test ParseMultiNestedFindQuery1
+// This test contains several levels of braces. -- Moustafa Test ParseMultiNestedFindQuery1
 // It checks that parsequery() can build nested JSONTypes vectors recursively.
 TEST(QueryParser, ParsesDeeplyNestedQuery) {
     const std::string query = "FIND a b {c d {e f {g h}}}";
@@ -112,7 +112,7 @@ TEST(QueryParser, ParsesDeeplyNestedQuery) {
     EXPECT_EQ(queryparser::getparsedquery(), expected);
 }
 
-// This test contains several separate nested groups inside one outer group. -- James Test ParseMultiNestedFindQuery2
+// This test contains several separate nested groups inside one outer group. -- Moustafa Test ParseMultiNestedFindQuery2
 // It checks that each braced section is stored as its own nested vector.
 TEST(QueryParser, ParsesMultipleNestedGroups) {
     const std::string query = "FIND ab cd {{ef gh} i {jk lm} {no pq}}";
@@ -281,4 +281,153 @@ TEST(JsonParser, RepeatedCheckOfOpenFileSucceeds) {
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
     EXPECT_EQ(json_parser::test(json), 0);
+}
+
+// Reads employee.json and checks that jsonToString() copies the file contents
+// into a non-empty string containing expected employee data.
+TEST(JsonParser, ConvertsEmployeeFileToString) {
+    std::ifstream file("../src/jsonFiles/employee.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    EXPECT_FALSE(jsonText.empty());
+    EXPECT_NE(jsonText.find("\"employees\""), std::string::npos);
+    EXPECT_NE(jsonText.find("\"Laura\""), std::string::npos);
+}
+
+// Follows employees -> 0 -> name and checks that the first employee is Laura.
+// Strings are returned as raw JSON text, so the quotation marks are included.
+TEST(JsonParser, FindsFirstEmployeeName) {
+    std::ifstream file("../src/jsonFiles/employee.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "employees",
+        "0",
+        "name"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"Laura\"");
+}
+
+// Follows employees -> 2 -> salary and checks that numeric values can be read
+// from an object stored inside an array.
+TEST(JsonParser, FindsEmployeeSalary) {
+    std::ifstream file("../src/jsonFiles/employee.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "employees",
+        "2",
+        "salary"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "95000");
+}
+
+// Follows employees -> 0 -> skills -> 1 and checks that the parser can move
+// through an object, an array, and then another array.
+TEST(JsonParser, FindsEmployeeSkill) {
+    std::ifstream file("../src/jsonFiles/employee.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "employees",
+        "0",
+        "skills",
+        "1"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"Git\"");
+}
+
+// Follows products -> 0 -> price and checks that a decimal JSON number
+// is returned correctly from product.json.
+TEST(JsonParser, FindsProductPrice) {
+    std::ifstream file("../src/jsonFiles/product.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "products",
+        "0",
+        "price"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "89.99");
+}
+
+// Follows university -> location -> city and checks that the parser can
+// retrieve a string from nested objects.
+TEST(JsonParser, FindsUniversityCity) {
+    std::ifstream file("../src/jsonFiles/university.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "university",
+        "location",
+        "city"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"Riverside\"");
+}
+
+// Follows university -> departments -> 0 -> courses -> 1 and checks that
+// the parser can traverse multiple nested objects and arrays.
+TEST(JsonParser, FindsUniversityCourse) {
+    std::ifstream file("../src/jsonFiles/university.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "university",
+        "departments",
+        "0",
+        "courses",
+        "1"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"CS 179K\"");
+}
+
+// Requests a field that does not exist and checks that parsejson()
+// returns an empty string_view instead of an incorrect value.
+TEST(JsonParser, ReturnsEmptyForMissingKey) {
+    std::ifstream file("../src/jsonFiles/employee.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "employees",
+        "0",
+        "age"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_TRUE(result.empty());
 }
