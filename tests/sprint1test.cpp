@@ -231,7 +231,7 @@ TEST(QueryParser, HandlesUnmatchedClosingBrace) {
 // This test opens employee.json from the jsonFiles folder.
 // It checks that the stream is open and that json_parser::test() returns 0 for success.
 TEST(JsonParser, OpensEmployeeFile) {
-    std::ifstream json("../src/jsonFiles/employee.json");
+    std::ifstream json(JSON_DATA_DIR "/employee.json");
 
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
@@ -240,7 +240,7 @@ TEST(JsonParser, OpensEmployeeFile) {
 // This test opens product.json from the jsonFiles folder.
 // It checks that the stream is open and that json_parser::test() returns 0 for success.
 TEST(JsonParser, OpensProductFile) {
-    std::ifstream json("../src/jsonFiles/product.json");
+    std::ifstream json(JSON_DATA_DIR "/product.json");
 
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
@@ -249,7 +249,7 @@ TEST(JsonParser, OpensProductFile) {
 // This test opens university.json from the jsonFiles folder.
 // It checks that the stream is open and that json_parser::test() returns 0 for success.
 TEST(JsonParser, OpensUniversityFile) {
-    std::ifstream json("../src/jsonFiles/university.json");
+    std::ifstream json(JSON_DATA_DIR "/university.json");
 
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
@@ -258,7 +258,7 @@ TEST(JsonParser, OpensUniversityFile) {
 // This test tries to open a file that does not exist.
 // It checks that the stream remains closed and that json_parser::test() returns 1.
 TEST(JsonParser, RejectsMissingFile) {
-    std::ifstream json("../src/jsonFiles/missing.json");
+    std::ifstream json(JSON_DATA_DIR "/missing.json");
 
     EXPECT_FALSE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 1);
@@ -276,7 +276,7 @@ TEST(JsonParser, RejectsEmptyFilename) {
 // This test calls json_parser::test() twice using the same open file stream.
 // It checks that the function continues returning 0 while the stream remains open.
 TEST(JsonParser, RepeatedCheckOfOpenFileSucceeds) {
-    std::ifstream json("../src/jsonFiles/employee.json");
+    std::ifstream json(JSON_DATA_DIR "/employee.json");
 
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
@@ -286,7 +286,7 @@ TEST(JsonParser, RepeatedCheckOfOpenFileSucceeds) {
 // Reads employee.json and checks that jsonToString() copies the file contents
 // into a non-empty string containing expected employee data.
 TEST(JsonParser, ConvertsEmployeeFileToString) {
-    std::ifstream file("../src/jsonFiles/employee.json");
+    std::ifstream file(JSON_DATA_DIR "/employee.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -299,7 +299,7 @@ TEST(JsonParser, ConvertsEmployeeFileToString) {
 // Follows employees -> 0 -> name and checks that the first employee is Laura.
 // Strings are returned as raw JSON text, so the quotation marks are included.
 TEST(JsonParser, FindsFirstEmployeeName) {
-    std::ifstream file("../src/jsonFiles/employee.json");
+    std::ifstream file(JSON_DATA_DIR "/employee.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -318,7 +318,7 @@ TEST(JsonParser, FindsFirstEmployeeName) {
 // Follows employees -> 2 -> salary and checks that numeric values can be read
 // from an object stored inside an array.
 TEST(JsonParser, FindsEmployeeSalary) {
-    std::ifstream file("../src/jsonFiles/employee.json");
+    std::ifstream file(JSON_DATA_DIR "/employee.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -337,7 +337,7 @@ TEST(JsonParser, FindsEmployeeSalary) {
 // Follows employees -> 0 -> skills -> 1 and checks that the parser can move
 // through an object, an array, and then another array.
 TEST(JsonParser, FindsEmployeeSkill) {
-    std::ifstream file("../src/jsonFiles/employee.json");
+    std::ifstream file(JSON_DATA_DIR "/employee.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -357,7 +357,7 @@ TEST(JsonParser, FindsEmployeeSkill) {
 // Follows products -> 0 -> price and checks that a decimal JSON number
 // is returned correctly from product.json.
 TEST(JsonParser, FindsProductPrice) {
-    std::ifstream file("../src/jsonFiles/product.json");
+    std::ifstream file(JSON_DATA_DIR "/product.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -376,7 +376,7 @@ TEST(JsonParser, FindsProductPrice) {
 // Follows university -> location -> city and checks that the parser can
 // retrieve a string from nested objects.
 TEST(JsonParser, FindsUniversityCity) {
-    std::ifstream file("../src/jsonFiles/university.json");
+    std::ifstream file(JSON_DATA_DIR "/university.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -395,7 +395,7 @@ TEST(JsonParser, FindsUniversityCity) {
 // Follows university -> departments -> 0 -> courses -> 1 and checks that
 // the parser can traverse multiple nested objects and arrays.
 TEST(JsonParser, FindsUniversityCourse) {
-    std::ifstream file("../src/jsonFiles/university.json");
+    std::ifstream file(JSON_DATA_DIR "/university.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -416,7 +416,7 @@ TEST(JsonParser, FindsUniversityCourse) {
 // Requests a field that does not exist and checks that parsejson()
 // returns an empty string_view instead of an incorrect value.
 TEST(JsonParser, ReturnsEmptyForMissingKey) {
-    std::ifstream file("../src/jsonFiles/employee.json");
+    std::ifstream file(JSON_DATA_DIR "/employee.json");
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);

@@ -10,3 +10,5 @@ JSONQLTests*
 _deps/
 cmake_install.cmake
 lib/
+Testing
+Makefile
