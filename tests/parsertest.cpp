@@ -12,7 +12,6 @@ TEST(QueryParser, ParseSimpleFindQuery1) {
     EXPECT_EQ(parsed, expected1);
 }
 
-
 TEST(QueryParser, ParseSimpleFindQuery2){
     std::string query2 = "FIND employees name";
     const std::vector<JSONTypes> expected2 = {"FIND", "employees", "name"};
