@@ -20,7 +20,9 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(JSONQLTests
     src/queryparser.cpp
+    src/jsonparser.cpp
     tests/parsertest.cpp
+    tests/sprint1test.cpp
 )
 
 target_include_directories(JSONQLTests PRIVATE src)

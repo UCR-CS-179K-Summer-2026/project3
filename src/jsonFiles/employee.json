@@ -1,0 +1,33 @@
+{
+    "employees": [
+      {
+        "id": 101,
+        "name": "Laura",
+        "department": "Product",
+        "salary": 90000,
+        "active": true,
+        "skills": ["C++", "Git", "JSON"]
+      },
+      {
+        "id": 102,
+        "name": "Moustafa",
+        "department": "IT Support",
+        "salary": 80000,
+        "active": true,
+        "skills": ["Networking", "Linux", "Troubleshooting"]
+      },
+      {
+        "id": 103,
+        "name": "James",
+        "department": "Engineering",
+        "salary": 95000,
+        "active": false,
+        "skills": ["C++", "Testing", "CMake"]
+      }
+    ],
+    "company_info": {
+      "company_name": "UC Riverside",
+      "location": "Riverside, California",
+      "remote_work": true
+    }
+  }

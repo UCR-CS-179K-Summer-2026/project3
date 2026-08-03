@@ -1,0 +1,33 @@
+{
+    "products": [
+      {
+        "id": 201,
+        "name": "Mechanical Keyboard",
+        "category": "Electronics",
+        "price": 89.99,
+        "in_stock": true,
+        "tags": ["keyboard", "office", "usb"]
+      },
+      {
+        "id": 202,
+        "name": "USB-C Hub",
+        "category": "Electronics",
+        "price": 34.5,
+        "in_stock": false,
+        "tags": ["usb-c", "adapter", "laptop"]
+      },
+      {
+        "id": 203,
+        "name": "Notebook",
+        "category": "Office Supplies",
+        "price": 6.25,
+        "in_stock": true,
+        "tags": ["paper", "school", "notes"]
+      }
+    ],
+    "store": {
+      "name": "Campus Tech Store",
+      "open": true,
+      "inventory_count": 3
+    }
+  }
