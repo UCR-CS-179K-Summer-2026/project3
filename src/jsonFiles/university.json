@@ -1,0 +1,30 @@
+{
+    "university": {
+      "name": "University of California, Riverside",
+      "location": {
+        "city": "Riverside",
+        "state": "California",
+        "country": "United States"
+      },
+      "departments": [
+        {
+          "name": "Computer Science",
+          "courses": ["CS 100", "CS 179K", "CS 180"]
+        },
+        {
+          "name": "Mathematics",
+          "courses": ["MATH 009C", "MATH 031", "MATH 046"]
+        },
+        {
+          "name": "Art",
+          "courses": []
+        }
+      ],
+      "student_services": {
+        "tutoring": true,
+        "career_center": true,
+        "parking_available": false
+      },
+      "accreditation": null
+    }
+  }
