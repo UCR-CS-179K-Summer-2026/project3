@@ -7,7 +7,7 @@ namespace json_parser {
             return 1;
         }
         return 0;
-    }  
+    }
 
     namespace {
 
@@ -31,9 +31,16 @@ namespace json_parser {
             const char* start = ++p;
 
             while (p < end) {
+                
                 if (*p == '\\') {   // escape: skip the backslash AND the next byte
-                    p += 2;
-                    continue;
+                    if(*(p+1) == 'u') { // the is the unicode case.
+                        // C STD lib for unicode 
+                        p += 2;
+                        continue;
+                    } else {
+                        p += 2;
+                        continue;
+                    }
                 }
                 if (*p == '"') {
                     raw = std::string_view(start, static_cast<size_t>(p - start));
@@ -59,8 +66,7 @@ namespace json_parser {
             }
 
             if (*p == '{' || *p == '[') {
-                // One counter is enough: we are skipping, not validating, so it
-                // does not matter whether a ']' closes a '{'.
+                // count the depth to make sure we skip the correct object
                 int depth = 0;
                 do {
                     if (p >= end) {

@@ -8,6 +8,7 @@
 // JSONTypes will allow us to have a recursive structure.
 // structure holds the structure of our query.
 
+// a b {c d { e f }}
 struct JSONTypes {
     std::variant<
         std::string,

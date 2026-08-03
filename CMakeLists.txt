@@ -23,6 +23,7 @@ file(GLOB SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
+<<<<<<< HEAD
 file(GLOB TEST_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
 )
@@ -33,6 +34,15 @@ add_executable(JSONQL
 )
 
 target_include_directories(JSONQL PRIVATE include)
+=======
+add_executable(jsonquery
+    src/main.cpp
+    src/jsonparser.cpp
+    src/queryparser.cpp
+)
+
+target_include_directories(JSONQLTests PRIVATE src)
+>>>>>>> 2a562b3 (starting to think about unicode...)
 
 # Absolute path to the sample JSON files so tests do not depend on the working
 # directory they are run from.
