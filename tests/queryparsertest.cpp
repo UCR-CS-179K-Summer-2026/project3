@@ -215,17 +215,12 @@ TEST(QueryParser, PreservesQuotationMarks) {
 TEST(QueryParser, HandlesUnmatchedClosingBrace) {
     const std::string query = "FIND employees }";
 
-    const std::vector<JSONTypes> expected = {
-        "FIND",
-        "employees"
-    };
-
     EXPECT_THROW(queryparser::parsequery(query), std::runtime_error);
 }
 
 // Test invalid FIND queries
 
 TEST(QueryParser, ParseInvalidQuery1) {
-    std::string query7 = "FIND {";
-    EXPECT_THROW(queryparser::parsequery(query7), std::runtime_error);
+    std::string query = "FIND }";
+    EXPECT_THROW(queryparser::parsequery(query), std::runtime_error);
 }

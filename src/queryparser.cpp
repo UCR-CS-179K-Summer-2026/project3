@@ -29,6 +29,14 @@ namespace{
         std::cout << "]";
     }
 
+    void validatecurlybraces(){
+        if(curlybraces.empty() || (!curlybraces.empty() && curlybraces.top() != '{')){
+            throw std::runtime_error("Parsing Error: Invalid use of curly braces.");
+        }
+
+        curlybraces.pop();
+    }
+
     void parsenested(int& start, const std::string& query, std::vector<JSONTypes>& parsed) {
         start++; // Skip left curly brace
         std::string append = "";
@@ -50,12 +58,8 @@ namespace{
                     parsenested(start, query, substructure);
                     break;
                 case '}':
-                    if(!curlybraces.empty() && curlybraces.top() != '{'){
-                        throw std::runtime_error("Parsing Error: Invalid use of curly braces.");
-                    }
-
-                    curlybraces.pop();
-
+                    validatecurlybraces();
+                    
                     if(!append.empty()){
                         substructure.push_back(append);
                         append.clear();
@@ -98,11 +102,7 @@ namespace queryparser {
                     parsenested(i, query, parsedquery);
                     break;
                 case '}':
-                    if(!curlybraces.empty() && curlybraces.top() != '{'){
-                        throw std::runtime_error("Parsing Error: Invalid use of curly braces.");
-                    }
-
-                    curlybraces.pop();
+                    validatecurlybraces();
                     break;
                 default:
                     append += c;
