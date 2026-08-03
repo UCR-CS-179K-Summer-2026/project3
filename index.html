@@ -1,207 +1,484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON Analytics Engine - System Design</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JSON Query Language System Design</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+            color: #222;
+            background-color: #f7f7f7;
+        }
+
+        header,
+        section {
+            background-color: white;
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #1f4b7a;
+        }
+
+        code {
+            background-color: #eeeeee;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: #1e1e1e;
+            color: white;
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: 6px;
+        }
+
+        .architecture {
+            font-family: monospace;
+            white-space: pre;
+            background-color: #eeeeee;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        ul,
+        ol {
+            padding-left: 24px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #555;
+        }
+    </style>
 </head>
 
 <body>
 
-  <h1>JSON Analytics Engine - System Design</h1>
+<header>
+    <h1>JSON Query Language System Design</h1>
 
-  <h2>System Architecture</h2>
+    <p>
+        JSON Query Language is a C++ project that retrieves values from JSON
+        data using a path made of object keys and array indices.
+    </p>
 
-  <pre>
-JSON File ---> JSON Parser
-                  |
-                  v
-Query ---> Query Parser ---> Query Engine ---> Result
-  </pre>
+    <p>
+        The current system includes a query parser, a JSON parser, a command-line
+        program, sample JSON files, and automated tests.
+    </p>
+</header>
 
-  <h3>Main Modules</h3>
+<section>
+    <h2>System Architecture</h2>
 
-  <h4>JSON Parser</h4>
+    <p>
+        The project is divided into modules so that query parsing, JSON traversal,
+        user input, and testing can be developed separately.
+    </p>
 
-  <ul>
-    <li>Reads JSON/JSONL files</li>
-    <li>Parses objects, arrays, strings, numbers, booleans, and null</li>
-    <li>Handles nested JSON</li>
-  </ul>
+    <div class="architecture">
+User Input
+    |
+    v
+main.cpp
+    |
+    +----------------------+
+    |                      |
+    v                      v
+Query Parser          JSON File Input
+    |                      |
+    v                      v
+Parsed Query          JSON Text
+    |                      |
+    +----------+-----------+
+               |
+               v
+          JSON Parser
+               |
+               v
+       Requested JSON Value
+    </div>
 
-  <p>Current files:</p>
+    <p>
+        The query parser currently creates a structured representation of a query.
+        The JSON parser can already follow object keys and array indices to return
+        an actual value from JSON text. Full integration between both modules is
+        planned for a later sprint.
+    </p>
+</section>
 
-  <pre>
-src/jsonparser.h
-src/jsonparser.cpp
-  </pre>
+<section>
+    <h2>Major Modules</h2>
 
-  <p>Current interface:</p>
+    <h3>Main Program</h3>
 
-  <pre>
-int test(std::ifstream& json);
-  </pre>
+    <p>
+        The main program is located in <code>src/main.cpp</code>.
+    </p>
 
-  <h4>Query Parser</h4>
+    <p>Its responsibilities include:</p>
 
-  <ul>
-    <li>Reads the user query</li>
-    <li>Separates query commands and arguments</li>
-    <li>Handles nested {} structures</li>
-  </ul>
+    <ul>
+        <li>Reading the JSON filename from the user.</li>
+        <li>Opening the selected JSON file.</li>
+        <li>Reading the file into a string.</li>
+        <li>Receiving a lookup path.</li>
+        <li>Calling the JSON parser.</li>
+        <li>Displaying the returned value.</li>
+    </ul>
 
-  <p>Current files:</p>
+    <h3>Query Parser</h3>
 
-  <pre>
-src/queryparser.h
-src/queryparser.cpp
-  </pre>
+    <p>
+        The query parser is implemented in
+        <code>src/queryparser.h</code> and
+        <code>src/queryparser.cpp</code>.
+    </p>
 
-  <p>Current interfaces:</p>
+    <p>
+        It converts a query string into a recursive
+        <code>std::vector&lt;JSONTypes&gt;</code> structure.
+    </p>
 
-  <pre>
-void parsequery(std::string& query);
-void displaylastparsedquery();
-  </pre>
+    <p>Example query:</p>
 
-  <h4>Main Program</h4>
+    <pre><code>FIND employees name</code></pre>
 
-  <ul>
-    <li>Reads the JSON filename</li>
-    <li>Opens the file</li>
-    <li>Connects the parser modules</li>
-  </ul>
+    <p>Parsed result:</p>
 
-  <p>Current file:</p>
+    <pre><code>{"FIND", "employees", "name"}</code></pre>
 
-  <pre>
-src/main.cpp
-  </pre>
+    <p>Nested query:</p>
 
-  <hr>
+    <pre><code>FIND {employees birthday month} day</code></pre>
 
-  <h2>Query Syntax</h2>
+    <p>Parsed result:</p>
 
-  <p>Supported operations:</p>
+    <pre><code>{"FIND", {"employees", "birthday", "month"}, "day"}</code></pre>
 
-  <pre>
-FIND
-FILTER
-DISPLAY
-ALLOF
-  </pre>
+    <h3>JSON Parser</h3>
 
-  <p>Keys must use double quotes.</p>
-  <p>Array indexes do not use quotes.</p>
+    <p>
+        The JSON parser is implemented in
+        <code>src/jsonparser.h</code> and
+        <code>src/jsonparser.cpp</code>.
+    </p>
 
-  <h3>FIND</h3>
+    <p>
+        It receives JSON text and a path represented as a vector of strings.
+        Each string represents either an object key or an array index.
+    </p>
 
-  <p>Checks if a path exists.</p>
+    <p>Example path:</p>
 
-  <pre>
-FIND {"employees", 0, "name"}
-Result: true
-  </pre>
+    <pre><code>std::vector&lt;std::string&gt; path = {
+    "employees",
+    "0",
+    "name"
+};</code></pre>
 
-  <h3>DISPLAY</h3>
+    <p>The parser interprets this path as:</p>
 
-  <p>Returns the value at a path.</p>
+    <ol>
+        <li>Find the <code>employees</code> key.</li>
+        <li>Enter array index <code>0</code>.</li>
+        <li>Find the <code>name</code> key.</li>
+        <li>Return the value at that location.</li>
+    </ol>
+</section>
 
-  <pre>
-DISPLAY {"employees", 0, "name"}
-Result: "Laura"
-  </pre>
+<section>
+    <h2>Module Interfaces</h2>
 
-  <h3>ALLOF</h3>
+    <h3>Check Whether a File Opened</h3>
 
-  <p>Returns all values for a field in an array.</p>
+    <pre><code>int json_parser::isFileOpen(std::ifstream&amp; json);</code></pre>
 
-  <pre>
-ALLOF {"employees", "name"}
-Result: ["Laura", "Moustafa", "James"]
-  </pre>
+    <p>Return values:</p>
 
-  <h3>FILTER</h3>
+    <ul>
+        <li><code>0</code> means the file opened successfully.</li>
+        <li><code>1</code> means the file failed to open.</li>
+    </ul>
 
-  <p>Regex example:</p>
+    <p>Example:</p>
 
-  <pre>
-FILTER {{"employees", "name"}, "^L"}
-Result: ["Laura"]
-  </pre>
+    <pre><code>std::ifstream file("src/jsonFiles/employee.json");
 
-  <p>Numeric range example:</p>
+if (json_parser::isFileOpen(file) != 0) {
+    std::cerr &lt;&lt; "File could not be opened";
+}</code></pre>
 
-  <pre>
-FILTER {{"employees", "salary"}, 80000, 100000}
-  </pre>
+    <h3>Convert a JSON File to a String</h3>
 
-  <p>The range is inclusive.</p>
+    <pre><code>std::string json_parser::jsonToString(std::ifstream&amp; json);</code></pre>
 
-  <hr>
+    <p>
+        This function reads the complete contents of a JSON file and returns them
+        as a string.
+    </p>
 
-  <h2>Algorithms</h2>
+    <p>Example:</p>
 
-  <h3>Query Parsing</h3>
+    <pre><code>std::ifstream file("src/jsonFiles/employee.json");
 
-  <p>
-    The parser reads the query character by character and tracks
-    curly braces so nested query sections are handled correctly.
-  </p>
+std::string jsonText =
+    json_parser::jsonToString(file);</code></pre>
 
-  <h3>Path Traversal</h3>
+    <h3>Parse JSON Data</h3>
 
-  <p>Example:</p>
+    <pre><code>std::string_view json_parser::parsejson(
+    std::string_view json,
+    const std::vector&lt;std::string&gt;&amp; query
+);</code></pre>
 
-  <pre>
-DISPLAY {"employees", 0, "name"}
-  </pre>
+    <p>
+        This function follows the requested path through the JSON text and returns
+        the raw JSON value at that location.
+    </p>
 
-  <p>Traversal:</p>
+    <p>Example:</p>
 
-  <pre>
-root -> employees -> index 0 -> name
-  </pre>
+    <pre><code>std::vector&lt;std::string&gt; path = {
+    "employees",
+    "0",
+    "name"
+};
 
-  <h3>Filtering</h3>
+std::string_view result =
+    json_parser::parsejson(jsonText, path);</code></pre>
 
-  <ol>
-    <li>Find the requested array.</li>
-    <li>Check each item.</li>
-    <li>Apply the regex or numeric range.</li>
-    <li>Return matching results.</li>
-  </ol>
+    <p>Possible result:</p>
 
-  <hr>
+    <pre><code>"Laura"</code></pre>
 
-  <h2>Planned Optimizations</h2>
+    <p>
+        If the requested path cannot be found, the parser returns an empty
+        <code>std::string_view</code>.
+    </p>
 
-  <ul>
-    <li>Buffered file reading</li>
-    <li>Streaming JSONL</li>
-    <li>Early termination</li>
-    <li>Query preprocessing</li>
-    <li>Reduced data copying</li>
-    <li>Caching</li>
-    <li>Indexing</li>
-  </ul>
+    <p>
+        The original JSON string must remain alive while the returned
+        <code>std::string_view</code> is being used.
+    </p>
 
-  <hr>
+    <h3>Parse a Query</h3>
 
-  <h2>Edge Cases</h2>
+    <pre><code>void queryparser::parsequery(const std::string&amp; query);</code></pre>
 
-  <p>The engine should handle:</p>
+    <p>
+        This function reads a query string and stores its parsed recursive
+        structure.
+    </p>
 
-  <ul>
-    <li>Missing keys</li>
-    <li>Invalid array indexes</li>
-    <li>Empty arrays</li>
-    <li>Null values</li>
-    <li>Keys with spaces</li>
-    <li>Keys with commas</li>
-    <li>Invalid regex</li>
-    <li>Invalid query syntax</li>
-  </ul>
+    <p>Example:</p>
+
+    <pre><code>queryparser::parsequery(
+    "FIND {employees birthday month} day"
+);</code></pre>
+
+    <h3>Retrieve the Parsed Query</h3>
+
+    <pre><code>const std::vector&lt;JSONTypes&gt;&amp;
+queryparser::getparsedquery();</code></pre>
+
+    <p>Example:</p>
+
+    <pre><code>const std::vector&lt;JSONTypes&gt;&amp; parsed =
+    queryparser::getparsedquery();</code></pre>
+</section>
+
+<section>
+    <h2>Algorithms</h2>
+
+    <h3>Query Parsing Algorithm</h3>
+
+    <p>The query parser reads the query one character at a time.</p>
+
+    <ol>
+        <li>Characters are collected into the current token.</li>
+        <li>Spaces separate normal tokens.</li>
+        <li>An opening brace begins a nested group.</li>
+        <li>A closing brace ends the nested group.</li>
+        <li>Nested groups are parsed recursively.</li>
+        <li>The completed result is stored as a vector of <code>JSONTypes</code>.</li>
+    </ol>
+
+    <h3>JSON Object Lookup</h3>
+
+    <p>When the JSON parser reaches an object, it:</p>
+
+    <ol>
+        <li>Scans each quoted object key.</li>
+        <li>Compares the key with the current path component.</li>
+        <li>Skips values that do not match.</li>
+        <li>Continues from the value belonging to the matching key.</li>
+    </ol>
+
+    <h3>JSON Array Lookup</h3>
+
+    <p>When the parser reaches an array, it:</p>
+
+    <ol>
+        <li>Converts the current path component into an array index.</li>
+        <li>Moves through the array values.</li>
+        <li>Skips values until the requested index is reached.</li>
+        <li>Continues parsing from that element.</li>
+    </ol>
+
+    <h3>Value Scanning</h3>
+
+    <p>The parser can scan and skip:</p>
+
+    <ul>
+        <li>Strings</li>
+        <li>Numbers</li>
+        <li>Booleans</li>
+        <li><code>null</code></li>
+        <li>Objects</li>
+        <li>Arrays</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Optimizations</h2>
+
+    <p>
+        The current implementation scans the original JSON string directly
+        instead of building a complete object tree.
+    </p>
+
+    <p>Current optimization choices include:</p>
+
+    <ul>
+        <li>Skipping JSON values that are not part of the requested path.</li>
+        <li>Stopping after the requested value is found.</li>
+        <li>Returning a <code>std::string_view</code> instead of copying the result.</li>
+        <li>Using recursive query structures instead of flattening nested groups.</li>
+    </ul>
+
+    <p>Possible future optimizations include:</p>
+
+    <ul>
+        <li>Reducing repeated scans of large JSON documents.</li>
+        <li>Adding indexed object lookup.</li>
+        <li>Reducing unnecessary string copies.</li>
+        <li>Validating query paths before JSON traversal.</li>
+        <li>Adding performance tests for large files.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Testing</h2>
+
+    <p>
+        The project uses GoogleTest to verify both the query parser and the JSON
+        parser.
+    </p>
+
+    <p>Query parser tests include:</p>
+
+    <ul>
+        <li>Simple queries</li>
+        <li>Multiple query fields</li>
+        <li>Nested queries</li>
+        <li>Deeply nested queries</li>
+        <li>Empty queries</li>
+        <li>Whitespace edge cases</li>
+        <li>Array-index tokens</li>
+    </ul>
+
+    <p>JSON parser tests include:</p>
+
+    <ul>
+        <li>Reading a file into a string</li>
+        <li>Finding object values</li>
+        <li>Finding array elements</li>
+        <li>Reading nested values</li>
+        <li>Reading strings, integers, and decimal values</li>
+        <li>Handling a missing key</li>
+    </ul>
+
+    <p>Example test:</p>
+
+    <pre><code>TEST(JsonParser, FindsFirstEmployeeName) {
+    std::ifstream file("../src/jsonFiles/employee.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText =
+        json_parser::jsonToString(file);
+
+    const std::vector&lt;std::string&gt; path = {
+        "employees",
+        "0",
+        "name"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"Laura\"");
+}</code></pre>
+</section>
+
+<section>
+    <h2>Sample JSON Data</h2>
+
+    <p>The project contains three sample JSON files:</p>
+
+    <ul>
+        <li><code>src/jsonFiles/employee.json</code></li>
+        <li><code>src/jsonFiles/product.json</code></li>
+        <li><code>src/jsonFiles/university.json</code></li>
+    </ul>
+
+    <p>These files include:</p>
+
+    <ul>
+        <li>Objects</li>
+        <li>Arrays</li>
+        <li>Nested objects</li>
+        <li>Nested arrays</li>
+        <li>Strings</li>
+        <li>Integers</li>
+        <li>Decimal values</li>
+        <li>Booleans</li>
+        <li><code>null</code></li>
+    </ul>
+</section>
+
+<section>
+    <h2>Planned Improvements</h2>
+
+    <ul>
+        <li>Connect parsed queries directly to JSON traversal.</li>
+        <li>Support complete query commands such as <code>FIND</code>.</li>
+        <li>Return typed values instead of raw JSON text.</li>
+        <li>Add clearer error messages.</li>
+        <li>Validate malformed JSON input.</li>
+        <li>Improve array-index validation.</li>
+        <li>Add integration and performance tests.</li>
+    </ul>
+</section>
+
+<footer>
+    <p>JSON Query Language — System Design Documentation</p>
+</footer>
 
 </body>
 </html>
