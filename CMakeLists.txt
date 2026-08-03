@@ -27,6 +27,11 @@ add_executable(JSONQLTests
 
 target_include_directories(JSONQLTests PRIVATE src)
 
+# Absolute path to the sample JSON files so tests do not depend on the working
+# directory they are run from.
+target_compile_definitions(JSONQLTests PRIVATE
+    JSON_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/jsonFiles")
+
 target_link_libraries(JSONQLTests PRIVATE GTest::gtest_main)
 
 include(GoogleTest)
