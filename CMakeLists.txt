@@ -16,23 +16,30 @@ enable_testing()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_TYPE Debug)
 
-add_executable(JSONQLTests
-    src/queryparser.cpp
-    src/jsonparser.cpp
-    tests/parsertest.cpp
-    tests/sprint1test.cpp
+file(GLOB SRC_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
-target_include_directories(JSONQLTests PRIVATE src)
+file(GLOB TEST_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
+)
+
+add_executable(JSONQL
+    ${SRC_FILES}
+    ${TEST_FILES}
+)
+
+target_include_directories(JSONQL PRIVATE include)
 
 # Absolute path to the sample JSON files so tests do not depend on the working
 # directory they are run from.
-target_compile_definitions(JSONQLTests PRIVATE
-    JSON_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/src/jsonFiles")
+target_compile_definitions(JSONQL PRIVATE
+    JSON_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/jsonFiles")
 
-target_link_libraries(JSONQLTests PRIVATE GTest::gtest_main)
+target_link_libraries(JSONQL PRIVATE GTest::gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(JSONQLTests)
+gtest_discover_tests(JSONQL)

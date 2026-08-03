@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <stack>
 
 #include "queryparser.h"
@@ -6,6 +7,7 @@
 // Private
 namespace{
     std::vector<JSONTypes> parsedquery;
+    std::stack<char> curlybraces;
 
     // Private recursive display helper function for displaylastparsedquery
     void display(const std::vector<JSONTypes> queryStruct) {
@@ -44,9 +46,16 @@ namespace{
 
                     break;
                 case '{':
+                    curlybraces.push('{');
                     parsenested(start, query, substructure);
                     break;
                 case '}':
+                    if(!curlybraces.empty() && curlybraces.top() != '{'){
+                        throw std::runtime_error("Parsing Error: Invalid use of curly braces.");
+                    }
+
+                    curlybraces.pop();
+
                     if(!append.empty()){
                         substructure.push_back(append);
                         append.clear();
@@ -66,6 +75,10 @@ namespace{
 namespace queryparser {
     void parsequery(const std::string& query){
         parsedquery.clear();
+
+        if(!curlybraces.empty()){
+            curlybraces = std::stack<char>();
+        }
         
         std::string append = "";
 
@@ -81,14 +94,24 @@ namespace queryparser {
 
                     break;
                 case '{':
+                    curlybraces.push('{');
                     parsenested(i, query, parsedquery);
                     break;
                 case '}':
-                    break; // Skip, we already know its valid.
+                    if(!curlybraces.empty() && curlybraces.top() != '{'){
+                        throw std::runtime_error("Parsing Error: Invalid use of curly braces.");
+                    }
+
+                    curlybraces.pop();
+                    break;
                 default:
                     append += c;
                     break;
             }
+        }
+
+        if(!curlybraces.empty()){
+            throw std::runtime_error("Parsing Error: Invalid use of curly braces.");
         }
 
         if(append != ""){
