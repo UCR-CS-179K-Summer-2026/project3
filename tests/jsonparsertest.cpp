@@ -210,3 +210,19 @@ TEST(JsonParser, ReturnsEmptyForMissingKey) {
 
     EXPECT_TRUE(result.empty());
 }
+
+// ...
+TEST(JsonParser, TestEscapeChar) {
+    std::ifstream file(JSON_DATA_DIR "/test.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "\"a"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "1");
+}

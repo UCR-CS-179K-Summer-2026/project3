@@ -17,19 +17,7 @@ int main() {
     std::string fileName;
     std::cout << "Please input json filename to query.\nFor example, \"EX.json\"" << std::endl;
     std::getline(std::cin, fileName);
-    fileName = "src/jsonFiles/" + fileName;
-
-    // these are temporary until the query reader is rigged up
-    std::cout << "Path to look up, space separated.\nFor example: employees 0 name" << std::endl;
-    std::string line;
-    std::getline(std::cin, line);
-
-    std::vector<std::string> query;
-    std::istringstream components(line);
-    std::string component;
-    while (components >> component) {
-        query.push_back(component);
-    }
+    fileName = "jsonFiles/" + fileName;
 
     std::ifstream json(fileName);
 
@@ -41,15 +29,36 @@ int main() {
 
     // json_string owns the bytes; the view returned below points into it.
     const std::string json_string = json_parser::jsonToString(json);
-    json.close();
 
-    std::string_view value = json_parser::parsejson(json_string, query);
+    bool repeat = 1;
+    while(repeat) {
+        // these are temporary until the query reader is rigged up
+        std::cout << "Query:: " << std::endl;
+        std::string line;
+        std::getline(std::cin, line);
 
-    if (value.empty()) {
-        std::cout << "not found" << std::endl;
-        return 1;
+        std::vector<std::string> query = {};
+        std::istringstream components(line);
+        std::string component;
+        while (components >> component) {
+            query.push_back(component);
+        }
+
+        if(query[0] == "X") {
+            repeat = 0;
+            break;
+        }
+        
+        std::string_view value = json_parser::parsejson(json_string, query);
+
+        if (value.empty()) {
+            std::cout << "not found" << std::endl;
+            return 1;
+        }
+
+        std::cout << value << "\nX to exit, otherwise, query again:: " << std::endl;
     }
 
-    std::cout << value << std::endl;
+    json.close();
     return 0;
 }
