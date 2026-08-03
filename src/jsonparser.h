@@ -8,6 +8,8 @@
 
 namespace json_parser {
 
+    int test(std::ifstream& json);
+
     std::string jsonToString(std::ifstream& json);
 
     int isFileOpen(std::ifstream& json);

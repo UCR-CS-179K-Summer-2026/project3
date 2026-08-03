@@ -3,3 +3,10 @@ bin
 build
 test
 .vscode/build-cmake/
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+JSONQLTests*
+_deps/
+cmake_install.cmake
+lib/
