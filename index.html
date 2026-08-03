@@ -7,50 +7,88 @@
     <title>JSON Query Language System Design</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
-            max-width: 1000px;
+            max-width: 1050px;
             margin: 0 auto;
             padding: 24px;
-            color: #222;
-            background-color: #f7f7f7;
+            color: #1f2937;
+            background-color: #f8fafc;
         }
 
         header,
         section {
-            background-color: white;
-            padding: 24px;
-            margin-bottom: 20px;
-            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 28px;
+            margin-bottom: 22px;
+            border: 1px solid #dbe3ec;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
         }
 
-        h1,
-        h2,
+        h1 {
+            color: #173f67;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #1f4f7a;
+            margin-top: 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dbeafe;
+        }
+
         h3 {
-            color: #1f4b7a;
+            color: #2a5f8f;
+            margin-top: 28px;
+        }
+
+        p,
+        li {
+            font-size: 1rem;
         }
 
         code {
-            background-color: #eeeeee;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+            background-color: #eef2f7;
+            color: #1f2937;
             padding: 2px 6px;
             border-radius: 4px;
         }
 
         pre {
-            background-color: #1e1e1e;
-            color: white;
-            padding: 16px;
+            background-color: #f3f6f9;
+            color: #111827;
+            padding: 18px;
             overflow-x: auto;
-            border-radius: 6px;
+            border: 1px solid #cfd8e3;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        pre code {
+            display: block;
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            white-space: pre-wrap;
         }
 
         .architecture {
-            font-family: monospace;
-            white-space: pre;
-            background-color: #eeeeee;
-            padding: 16px;
-            border-radius: 6px;
+            font-family: "SFMono-Regular", Consolas, monospace;
+            white-space: pre-wrap;
+            background-color: #f3f6f9;
+            color: #111827;
+            padding: 18px;
+            border: 1px solid #cfd8e3;
+            border-radius: 8px;
             overflow-x: auto;
         }
 
@@ -62,7 +100,23 @@
         footer {
             text-align: center;
             padding: 20px;
-            color: #555;
+            color: #64748b;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 12px;
+            }
+
+            header,
+            section {
+                padding: 18px;
+            }
+
+            pre,
+            .architecture {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -115,10 +169,10 @@ Parsed Query          JSON Text
     </div>
 
     <p>
-        The query parser currently creates a structured representation of a query.
-        The JSON parser can already follow object keys and array indices to return
-        an actual value from JSON text. Full integration between both modules is
-        planned for a later sprint.
+        The query parser creates a structured representation of a query.
+        The JSON parser follows object keys and array indices to return
+        an actual value from JSON text. Full integration between both modules
+        is planned for a later sprint.
     </p>
 </section>
 
@@ -316,7 +370,7 @@ queryparser::getparsedquery();</code></pre>
         <li>An opening brace begins a nested group.</li>
         <li>A closing brace ends the nested group.</li>
         <li>Nested groups are parsed recursively.</li>
-        <li>The completed result is stored as a vector of <code>JSONTypes</code>.</li>
+        <li>The result is stored as a vector of <code>JSONTypes</code>.</li>
     </ol>
 
     <h3>JSON Object Lookup</h3>
