@@ -6,21 +6,21 @@
 
 // Private
 namespace{
-    std::vector<JSONTypes> parsedquery;
+    std::vector<JSONType> parsedquery;
     std::stack<char> curlybraces;
 
     // Private recursive display helper function for displaylastparsedquery
-    void display(const std::vector<JSONTypes> queryStruct) {
+    void display(const std::vector<JSONType> queryStruct) {
         std::cout << "[ ";
 
-        for(const JSONTypes& query : queryStruct){
+        for(const JSONType& query : queryStruct){
             switch(query.structure.index()){
                 case 0:
                     std::cout << std::get<std::string>(query.structure) << " ";
                     break;
                 case 1:
                     // Recursively print the nested structure.
-                    display(std::get<std::vector<JSONTypes>>(query.structure));
+                    display(std::get<std::vector<JSONType>>(query.structure));
                     std::cout << " ";
                     break;
             }
@@ -37,10 +37,10 @@ namespace{
         curlybraces.pop();
     }
 
-    void parsenested(int& start, const std::string& query, std::vector<JSONTypes>& parsed) {
+    void parsenested(int& start, const std::string& query, std::vector<JSONType>& parsed) {
         start++; // Skip left curly brace
         std::string append = "";
-        std::vector<JSONTypes> substructure;
+        std::vector<JSONType> substructure;
 
         for(start; start < query.length(); start++){
             char c = query[start];
@@ -127,7 +127,7 @@ namespace queryparser {
         std::cout << std::endl;
     }
 
-    const std::vector<JSONTypes>& getparsedquery() {
+    const std::vector<JSONType>& getparsedquery() {
         return parsedquery;
     }
 }

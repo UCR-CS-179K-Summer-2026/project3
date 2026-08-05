@@ -5,22 +5,22 @@
 #include <vector>
 #include <initializer_list>
 
-// JSONTypes will allow us to have a recursive structure.
+// JSONType will allow us to have a recursive structure.
 // structure holds the structure of our query.
 
 // a b {c d { e f }}
-struct JSONTypes {
+struct JSONType {
     std::variant<
         std::string,
-        std::vector<JSONTypes>
+        std::vector<JSONType>
     > structure;
 
-    JSONTypes(const char* s) : structure(s) {}
-    JSONTypes(const std::string& s) : structure(s) {}
-    JSONTypes(const std::vector<JSONTypes>& v) : structure(v) {}
-    JSONTypes(const std::initializer_list<JSONTypes>& v) : structure(std::vector<JSONTypes>(v)) {};
+    JSONType(const char* s) : structure(s) {}
+    JSONType(const std::string& s) : structure(s) {}
+    JSONType(const std::vector<JSONType>& v) : structure(v) {}
+    JSONType(const std::initializer_list<JSONType>& v) : structure(std::vector<JSONType>(v)) {}
 
-    bool operator==(const JSONTypes& other) const = default;
+    bool operator==(const JSONType& other) const = default;
 };
 
 namespace queryparser {
@@ -30,5 +30,5 @@ namespace queryparser {
     void displaylastparsedquery();
 
     // Returns last parsed query
-    const std::vector<JSONTypes>& getparsedquery(); 
+    const std::vector<JSONType>& getparsedquery(); 
 }
