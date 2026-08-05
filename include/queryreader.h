@@ -5,16 +5,38 @@
 #include <vector>
 #include <string>
 
+#include "queryparser.h"
 
-struct JSONValueTypes {
-    std::variant<
-        int,
-        double,
-        std::string,
-        std::vector<JSONValueTypes>
-    > value;
+enum class Query {
+    FIND,
+    FILTER,
+    DISPLAY,
+    ALLOF
 };
 
-namespace query_reader {
-    
+class QueryConstruct {
+    Query query;
+    std::vector<JSONType> keys;
+    std::string regex;
+    std::vector<std::string> params;
+
+    public:
+        QueryConstruct() = default;
+
+        // FIND, DISPLAY, ALLOF
+        QueryConstruct(const Query& q, const std::vector<JSONType>& k) : query(q), keys(k) {}
+
+        // FILTER
+        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::string& r)
+        : query(q), keys(k), regex(r) {}
+
+        // FILTER
+        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<std::string>& p)
+        : query(q), keys(k), params(p) {}
+
+
+};
+
+namespace queryreader {
+    const QueryConstruct readquery(const std::vector<JSONType>& parsedquery);
 }

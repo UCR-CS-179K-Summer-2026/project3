@@ -51,20 +51,20 @@ C++
 
 #### FIND
 
-Checks whether a specified path exists.
+Checks whether all specified keys at each level exists.
 
 Syntax:
 
 ```text
 FIND "key"
-FIND "key" "subkey" "sub-subkey"
+FIND "key" { "subkey" { "sub-subkey" }}
 ```
 
 Example:
 
 ```text
 Query:
-FIND "employees" 0 "name"
+FIND "employees" { "0" { "name" }}
 
 Result:
 true
@@ -87,14 +87,14 @@ Returns values or records that satisfy a filter.
 Regex syntax:
 
 ```text
-FILTER {"key" "subkey"} "regex"
+FILTER "key" { "subkey" } "regex"
 ```
 
 Example:
 
 ```text
 Query:
-FILTER {"employees" "name"} "^L"
+FILTER "employees" { "name" } "^L"
 
 Result:
 ["Laura"]
@@ -103,7 +103,7 @@ Result:
 Numeric range syntax:
 
 ```text
-FILTER {"key" "subkey"} lower-bound upper-bound
+FILTER "key" { "subkey" } lower-bound upper-bound
 ```
 
 Example:
@@ -126,14 +126,14 @@ Syntax:
 
 ```text
 DISPLAY "key"
-DISPLAY "key" "subkey" "sub-subkey"
+DISPLAY "key" { "subkey" { "sub-subkey" }}
 ```
 
 Example:
 
 ```text
 Query:
-DISPLAY "employees" 0 "name"
+DISPLAY "employees" { "0" { "name" }}
 
 Result:
 "Laura"
@@ -143,7 +143,7 @@ Another example:
 
 ```text
 Query:
-DISPLAY "employees" 1 "department"
+DISPLAY "employees" { "1" { "department" }}
 
 Result:
 "IT Support"
@@ -156,14 +156,14 @@ Returns all values for a specified key within an array.
 Syntax:
 
 ```text
-ALLOF "key" "subkey"
+ALLOF "key" { "subkey" }
 ```
 
 Example:
 
 ```text
 Query:
-ALLOF "employees" "name"
+ALLOF "employees" { "name" }
 
 Result:
 ["Laura", "Moustafa", "James"]
@@ -173,8 +173,7 @@ Another example:
 
 ```text
 Query:
-ALLOF "employees" "salary"
-
+ALLOF "employees" { "salary" }
 Result:
 [90000, 120000, 90000]
 ```
@@ -196,7 +195,7 @@ Example:
 
 ```text
 Query:
-FIND "employees" 10 "name"
+FIND "employees" { "10" { "name" }}
 
 Result:
 false
