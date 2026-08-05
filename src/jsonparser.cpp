@@ -164,7 +164,7 @@ namespace json_parser {
         return json_string;
     }
     
-    std::string_view parsejson(std::string_view json, const std::vector<std::string>& query) {
+    std::string parsejson(std::string_view json, const std::vector<std::string>& query) {
 
         const char* p = json.data();
         const char* end = p + json.size();
@@ -238,7 +238,7 @@ namespace json_parser {
             return {};
         }
 
-        return std::string_view(start, static_cast<size_t>(p - start));
+        return convertUnicode(std::string(start, static_cast<size_t>(p - start)));
     }
 
     int isFileOpen(std::ifstream& json){

@@ -257,3 +257,20 @@ TEST(JsonParser, UnicodeKeyAndSubkey) {
 
     EXPECT_EQ(result, "\"Apple\"");
 }
+
+
+TEST(JsonParser, UnicodeKeyAndSubkeAndValue) {
+    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "b", 
+        "d"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"a\"");
+}
