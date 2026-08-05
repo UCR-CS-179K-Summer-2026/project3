@@ -21,9 +21,51 @@ namespace json_parser {
             }
         }
 
+        // Copies raw, replacing every \uXXXX escape with the character it names.
+        // Only ASCII is supported: anything above 0x7F, or a malformed escape, is
+        // left in place as literal text.
+        std::string convertUnicode(std::string_view raw) {
+            std::string out;
+            out.reserve(raw.size());
+
+            for (size_t i = 0; i < raw.size(); ++i) {
+                if (raw[i] != '\\' || i + 5 >= raw.size() || raw[i + 1] != 'u') {
+                    out += raw[i];
+                    continue;
+                }
+
+                unsigned code = 0;
+                size_t digits = 0;
+                for (; digits < 4; ++digits) {
+                    char c = raw[i + 2 + digits];
+                    unsigned value;
+                    if (c >= '0' && c <= '9') {
+                        value = static_cast<unsigned>(c - '0');
+                    } else if (c >= 'a' && c <= 'f') {
+                        value = static_cast<unsigned>(c - 'a') + 10;
+                    } else if (c >= 'A' && c <= 'F') {
+                        value = static_cast<unsigned>(c - 'A') + 10;
+                    } else {
+                        break;
+                    }
+                    code = code * 16 + value;
+                }
+
+                if (digits < 4 || code > 0x7F) {   // malformed, or not ASCII
+                    out += raw[i];
+                    continue;
+                }
+
+                out += static_cast<char>(code);
+                i += 5;   // the loop's ++i steps past the last hex digit
+            }
+
+            return out;
+        }
+
         // p points at the opening quote. Leaves p just past the closing quote,
-        // and raw = the text between them.
-        bool scanString(const char*& p, const char* end, std::string_view& raw) {
+        // and out = the text between them with \uXXXX escapes converted to ASCII.
+        bool scanString(const char*& p, const char* end, std::string& out) {
             if (p >= end || *p != '"') {
                 return false;
             }
@@ -31,19 +73,15 @@ namespace json_parser {
             const char* start = ++p;
 
             while (p < end) {
-                
                 if (*p == '\\') {   // escape: skip the backslash AND the next byte
-                    if(*(p+1) == 'u') { // the is the unicode case.
-                        // C STD lib for unicode 
-                        p += 2;
-                        continue;
-                    } else {
-                        p += 2;
-                        continue;
+                    if (p + 1 >= end) {
+                        return false;   // trailing backslash: unterminated
                     }
+                    p += 2;
+                    continue;
                 }
                 if (*p == '"') {
-                    raw = std::string_view(start, static_cast<size_t>(p - start));
+                    out = convertUnicode(std::string_view(start, static_cast<size_t>(p - start)));
                     ++p;
                     return true;
                 }
@@ -61,7 +99,7 @@ namespace json_parser {
             }
 
             if (*p == '"') {
-                std::string_view ignored;
+                std::string ignored;
                 return scanString(p, end, ignored);
             }
 
@@ -73,7 +111,7 @@ namespace json_parser {
                         return false;
                     }
                     if (*p == '"') {   // braces inside a string are not structure
-                        std::string_view ignored;
+                        std::string ignored;
                         if (!scanString(p, end, ignored)) {
                             return false;
                         }
@@ -142,7 +180,7 @@ namespace json_parser {
 
                 bool matched = false;
                 while (p < end) {
-                    std::string_view key;
+                    std::string key;
                     skipWs(p, end);
                     if (!scanString(p, end, key)) {
                         return {};   // '}' of an empty object, or malformed
