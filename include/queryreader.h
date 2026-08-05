@@ -5,16 +5,11 @@
 #include <vector>
 #include <string>
 
-
-struct JSONValueTypes {
-    std::variant<
-        int,
-        double,
-        std::string,
-        std::vector<JSONValueTypes>
-    > value;
-};
-
 namespace query_reader {
-    
+    enum class Query {
+        FIND,
+        FILTER,
+        DISPLAY,
+        ALLOF
+    };
 }
