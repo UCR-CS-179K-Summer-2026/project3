@@ -51,7 +51,7 @@ C++
 
 #### FIND
 
-Checks whether a specified path exists.
+Checks whether all specified keys at each level exists.
 
 Syntax:
 
@@ -64,7 +64,7 @@ Example:
 
 ```text
 Query:
-FIND "employees" {0 "name"}
+FIND "employees" { "0" { "name" }}
 
 Result:
 true
