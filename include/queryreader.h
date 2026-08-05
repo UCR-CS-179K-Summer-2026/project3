@@ -21,8 +21,6 @@ class QueryConstruct {
     std::vector<std::string> params;
 
     public:
-        QueryConstruct() = default;
-
         // FIND, DISPLAY, ALLOF
         QueryConstruct(const Query& q, const std::vector<JSONType>& k) : query(q), keys(k) {}
 
@@ -33,10 +31,9 @@ class QueryConstruct {
         // FILTER
         QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<std::string>& p)
         : query(q), keys(k), params(p) {}
-
-
 };
 
 namespace queryreader {
     const QueryConstruct readquery(const std::vector<JSONType>& parsedquery);
+    void applyquery(const QueryConstruct& query, const std::string& json);
 }
