@@ -178,6 +178,22 @@ Result:
 [90000, 120000, 90000]
 ```
 
+### Unicode Support
+
+As of right now, conversion of unicode such as ```\uXXXX``` to direct ascii characters currently works. For Example, the JSON:
+```
+{
+    "\u0061": "Bob",
+    "\u0062": {
+        "\u0063": "Apple",
+        "\u0064": "\u0061"
+    }
+}
+``` 
+Returns "a" if the query "b", "d" is given. This will change as we implement the real query language, and not the simple testing language. 
+
+We also want to support more UTF encoding, which is in the works.
+
 ### Edge Cases
 
 The query system should handle cases such as:
