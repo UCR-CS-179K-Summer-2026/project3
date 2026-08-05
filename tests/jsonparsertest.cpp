@@ -218,11 +218,59 @@ TEST(JsonParser, TestEscapeChar) {
 
     const std::string jsonText = json_parser::jsonToString(file);
     const std::vector<std::string> path = {
-        "\"a"
+        "\\\"a"
     };
 
     const std::string_view result =
         json_parser::parsejson(jsonText, path);
 
     EXPECT_EQ(result, "1");
+}
+
+TEST(JsonParser, UnicodeKey) {
+    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "a"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"Bob\"");
+}
+
+TEST(JsonParser, UnicodeKeyAndSubkey) {
+    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "b", 
+        "c"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"Apple\"");
+}
+
+
+TEST(JsonParser, UnicodeKeyAndSubkeAndValue) {
+    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "b", 
+        "d"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"a\"");
 }
