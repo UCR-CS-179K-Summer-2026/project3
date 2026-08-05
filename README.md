@@ -173,8 +173,7 @@ Another example:
 
 ```text
 Query:
-ALLOF "employees" "salary"
-
+ALLOF "employees" { "salary" }
 Result:
 [90000, 120000, 90000]
 ```
@@ -196,7 +195,7 @@ Example:
 
 ```text
 Query:
-FIND "employees" 10 "name"
+FIND "employees" { "10" { "name" }}
 
 Result:
 false
