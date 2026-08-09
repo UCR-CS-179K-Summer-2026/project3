@@ -21,43 +21,88 @@ namespace json_parser {
             }
         }
 
-        // Copies raw, replacing every \uXXXX escape with the character it names.
-        // Only ASCII is supported: anything above 0x7F, or a malformed escape, is
-        // left in place as literal text.
+        // Reads the four hex digits of the \uXXXX escape whose backslash sits at i.
+        // Fails if the escape is cut short by the end of raw or is not valid hex.
+        bool readHex4(std::string_view raw, size_t i, unsigned& out) {
+            if (i + 5 >= raw.size() || raw[i] != '\\' || raw[i + 1] != 'u') {
+                return false;
+            }
+
+            unsigned code = 0;
+            for (size_t digit = 0; digit < 4; ++digit) {
+                char c = raw[i + 2 + digit];
+                unsigned value;
+                if (c >= '0' && c <= '9') {
+                    value = static_cast<unsigned>(c - '0');
+                } else if (c >= 'a' && c <= 'f') {
+                    value = static_cast<unsigned>(c - 'a') + 10;
+                } else if (c >= 'A' && c <= 'F') {
+                    value = static_cast<unsigned>(c - 'A') + 10;
+                } else {
+                    return false;
+                }
+                code = code * 16 + value;
+            }
+
+            out = code;
+            return true;
+        }
+
+        // this is pretty much defined by UTF specs, just implementing
+        // the logic of moving the bits around and whatnot so that
+        // == comparison works
+        void appendUtf8(std::string& out, unsigned code) {
+            if (code <= 0x7F) {
+                out += static_cast<char>(code);
+            } else if (code <= 0x7FF) {
+                out += static_cast<char>(0xC0 | (code >> 6));
+                out += static_cast<char>(0x80 | (code & 0x3F));
+            } else if (code <= 0xFFFF) {
+                out += static_cast<char>(0xE0 | (code >> 12));
+                out += static_cast<char>(0x80 | ((code >> 6) & 0x3F));
+                out += static_cast<char>(0x80 | (code & 0x3F));
+            } else {
+                out += static_cast<char>(0xF0 | (code >> 18));
+                out += static_cast<char>(0x80 | ((code >> 12) & 0x3F));
+                out += static_cast<char>(0x80 | ((code >> 6) & 0x3F));
+                out += static_cast<char>(0x80 | (code & 0x3F));
+            }
+        }
+
+        // Copies raw, replacing every \uXXXX escape with the UTF-8 encoding of the
+        // character it names. A surrogate pair spells a single character and is
+        // decoded as one unit. Malformed escapes and unpaired surrogates carry no
+        // character, so they are left in place as literal text.
         std::string convertUnicode(std::string_view raw) {
             std::string out;
             out.reserve(raw.size());
 
             for (size_t i = 0; i < raw.size(); ++i) {
-                if (raw[i] != '\\' || i + 5 >= raw.size() || raw[i + 1] != 'u') {
+                unsigned code;
+                if (!readHex4(raw, i, code)) {
                     out += raw[i];
                     continue;
                 }
 
-                unsigned code = 0;
-                size_t digits = 0;
-                for (; digits < 4; ++digits) {
-                    char c = raw[i + 2 + digits];
-                    unsigned value;
-                    if (c >= '0' && c <= '9') {
-                        value = static_cast<unsigned>(c - '0');
-                    } else if (c >= 'a' && c <= 'f') {
-                        value = static_cast<unsigned>(c - 'a') + 10;
-                    } else if (c >= 'A' && c <= 'F') {
-                        value = static_cast<unsigned>(c - 'A') + 10;
-                    } else {
-                        break;
+                size_t width = 6;   // \uXXXX
+
+                if (code >= 0xD800 && code <= 0xDBFF) {          // leading surrogate
+                    unsigned trailing;
+                    if (!readHex4(raw, i + 6, trailing) ||
+                        trailing < 0xDC00 || trailing > 0xDFFF) {
+                        out += raw[i];
+                        continue;
                     }
-                    code = code * 16 + value;
-                }
 
-                if (digits < 4 || code > 0x7F) {   // malformed, or not ASCII
+                    code = 0x10000 + ((code - 0xD800) << 10) + (trailing - 0xDC00);
+                    width = 12;
+                } else if (code >= 0xDC00 && code <= 0xDFFF) {   // trailing with no lead
                     out += raw[i];
                     continue;
                 }
 
-                out += static_cast<char>(code);
-                i += 5;   // the loop's ++i steps past the last hex digit
+                appendUtf8(out, code);
+                i += width - 1;   // the loop's ++i steps past the last hex digit
             }
 
             return out;
