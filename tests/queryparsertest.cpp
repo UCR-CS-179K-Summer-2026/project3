@@ -7,27 +7,28 @@
 // This test gives the parser a basic FIND query with one field name. -- Moustafa Test ParseSimpleFindQuery1
 // It checks that parsequery() separates the command and field into two tokens.
 TEST(QueryParser, ParsesSimpleFindQuery) {
-    const std::string query = "FIND employees";
+    const std::string query = "FIND {employees}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "employees"
+        {"employees"}
     };
 
     queryparser::parsequery(query);
+    const std::vector<JSONType> result = queryparser::getparsedquery();
 
-    EXPECT_EQ(queryparser::getparsedquery(), expected);
+    EXPECT_EQ(result, expected);
 }
 
 // This test gives the parser a query with two field names after FIND. -- Moustafa Test ParseSimpleFindQuery2
 // It checks that the tokens remain in the same order as the original query.
 TEST(QueryParser, ParsesMultiFieldQuery) {
-    const std::string query = "FIND employees name";
+    const std::string query = "FIND {employees name}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "employees",
-        "name"
+        {"employees",
+        "name"}
     };
 
     queryparser::parsequery(query);
@@ -38,13 +39,13 @@ TEST(QueryParser, ParsesMultiFieldQuery) {
 // This test includes 0 as part of the query path.
 // The parser does not convert it to an integer, so the expected value is the string "0".
 TEST(QueryParser, ParsesArrayIndexToken) {
-    const std::string query = "FIND employees 0 name";
+    const std::string query = "FIND {employees 0 name}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "employees",
+        {"employees",
         "0",
-        "name"
+        "name"}
     };
 
     queryparser::parsequery(query);
@@ -55,12 +56,14 @@ TEST(QueryParser, ParsesArrayIndexToken) {
 // This test uses braces around part of the query.  -- Moustafa Test ParseNestedFindQuery1
 // It checks that the values inside the braces are stored in a nested JSONType vector.
 TEST(QueryParser, ParsesNestedQuery) {
-    const std::string query = "FIND {employees birthday month} day";
+    const std::string query = "FIND {{employees birthday month} day}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        {"employees", "birthday", "month"},
-        "day"
+        {
+            {"employees", "birthday", "month"},
+            "day"
+        }
     };
 
     queryparser::parsequery(query);
@@ -71,12 +74,14 @@ TEST(QueryParser, ParsesNestedQuery) {
 // This test places a nested group at the end of the query.  -- Moustafa Test ParseNestedFindQuery2
 // It checks that the parser stores the final braced value as a nested vector.
 TEST(QueryParser, ParsesNestedQueryAtEnd) {
-    const std::string query = "FIND day {employees}";
+    const std::string query = "FIND {day {employees}}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "day",
-        {"employees"}
+        {
+            "day",
+            {"employees"}
+        }
     };
 
     queryparser::parsequery(query);
@@ -87,19 +92,21 @@ TEST(QueryParser, ParsesNestedQueryAtEnd) {
 // This test contains several levels of braces. -- Moustafa Test ParseMultiNestedFindQuery1
 // It checks that parsequery() can build nested JSONType vectors recursively.
 TEST(QueryParser, ParsesDeeplyNestedQuery) {
-    const std::string query = "FIND a b {c d {e f {g h}}}";
+    const std::string query = "FIND {a b {c d {e f {g h}}}}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "a",
-        "b",
         {
-            "c",
-            "d",
+            "a",
+            "b",
             {
-                "e",
-                "f",
-                {"g", "h"}
+                "c",
+                "d",
+                {
+                    "e",
+                    "f",
+                    {"g", "h"}
+                }
             }
         }
     };
@@ -112,18 +119,18 @@ TEST(QueryParser, ParsesDeeplyNestedQuery) {
 // This test contains several separate nested groups inside one outer group. -- Moustafa Test ParseMultiNestedFindQuery2
 // It checks that each braced section is stored as its own nested vector.
 TEST(QueryParser, ParsesMultipleNestedGroups) {
-    const std::string query = "FIND ab cd {{ef gh} i {jk lm} {no pq}}";
+    const std::string query = "FIND {ab cd {{ef gh} i {jk lm} {no pq}}}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "ab",
+        {"ab",
         "cd",
         {
             {"ef", "gh"},
             "i",
             {"jk", "lm"},
             {"no", "pq"}
-        }
+        }}
     };
 
     queryparser::parsequery(query);
@@ -150,12 +157,12 @@ TEST(QueryParser, HandlesWhitespaceOnlyQuery) {
 // This test adds several spaces between each query word.
 // It checks that repeated spaces do not create empty values in the parsed result.
 TEST(QueryParser, IgnoresRepeatedSpaces) {
-    const std::string query = "FIND   employees    name";
+    const std::string query = "FIND   {employees    name}";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "employees",
-        "name"
+        {"employees",
+        "name"}
     };
 
     queryparser::parsequery(query);
@@ -166,12 +173,12 @@ TEST(QueryParser, IgnoresRepeatedSpaces) {
 // This test adds spaces before and after the query.
 // It checks that those outside spaces are not included in the parsed tokens.
 TEST(QueryParser, IgnoresLeadingAndTrailingSpaces) {
-    const std::string query = "   FIND employees name   ";
+    const std::string query = "   FIND {employees name}   ";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "employees",
-        "name"
+        {"employees",
+        "name"}
     };
 
     queryparser::parsequery(query);
@@ -182,13 +189,13 @@ TEST(QueryParser, IgnoresLeadingAndTrailingSpaces) {
 // This test parses one query and then immediately parses a different query.
 // It checks that the second call replaces the old parsed result instead of appending to it.
 TEST(QueryParser, ReplacesPreviousParsedQuery) {
-    queryparser::parsequery("FIND employees name");
-    queryparser::parsequery("FIND products price");
+    queryparser::parsequery("FIND {employees name}");
+    queryparser::parsequery("FIND {products price}");
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "products",
-        "price"
+        {"products",
+        "price"}
     };
 
     EXPECT_EQ(queryparser::getparsedquery(), expected);
@@ -197,12 +204,12 @@ TEST(QueryParser, ReplacesPreviousParsedQuery) {
 // This test includes quotation marks around field names.
 // It checks the parser's current behavior, which keeps the quotation marks inside each token.
 TEST(QueryParser, PreservesQuotationMarks) {
-    const std::string query = R"(FIND "employees" "name")";
+    const std::string query = R"(FIND {"employees" "name"})";
 
     const std::vector<JSONType> expected = {
         "FIND",
-        "\"employees\"",
-        "\"name\""
+        {"\"employees\"",
+        "\"name\""}
     };
 
     queryparser::parsequery(query);

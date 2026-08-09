@@ -79,8 +79,6 @@ namespace{
 namespace queryparser {
     void parsequery(const std::string& query){
         parsedquery.clear();
-
-        bool queryended = false;
         
         if(!curlybraces.empty()){
             curlybraces = std::stack<char>();
@@ -96,11 +94,6 @@ namespace queryparser {
                     if(!append.empty()){
                         parsedquery.push_back(append);
                         append.clear();
-
-                        if(!queryended){
-                            queryended = true;
-                            parsedquery.push_back(std::vector<JSONType>());
-                        }
                     }
 
                     break;
