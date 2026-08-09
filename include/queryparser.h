@@ -20,7 +20,7 @@ struct JSONType {
     JSONType(const std::vector<JSONType>& v) : structure(v) {}
     JSONType(const std::initializer_list<JSONType>& v) : structure(std::vector<JSONType>(v)) {}
 
-    // Helper Functions
+    // Getters
 
     bool isstring();
     bool isvector();

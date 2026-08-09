@@ -14,23 +14,37 @@ enum class Query {
     ALLOF
 };
 
-class QueryConstruct {
+struct QueryConstruct {
     Query query;
     std::vector<JSONType> keys;
-    std::string regex;
+    std::string param;
     std::vector<JSONType> params;
 
-    public:
-        // FIND, DISPLAY, ALLOF
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k) : query(q), keys(k) {}
+    bool isregexquery = false;
+    bool isparamsquery = true;
+    
+    // FIND, DISPLAY, ALLOF
+    QueryConstruct(const Query& q, const std::vector<JSONType>& k) : query(q), keys(k) {}
 
-        // FILTER
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::string& r)
-        : query(q), keys(k), regex(r) {}
+    // FILTER
+    QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::string& p, const bool isregex)
+    : query(q), keys(k), param(r), regexquery(isregex), paramsquery(!isregex) {}
 
-        // FILTER
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<JSONType>& p)
-        : query(q), keys(k), params(p) {}
+    // FILTER
+    QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<JSONType>& p)
+    : query(q), keys(k), params(p) {}
+
+    bool operator==(const QueryConstruct& other){
+        return 
+            (   
+                query == other.query &&
+                keys == other.keys &&
+                (param == other.param || param.empty() && other.param.empty()) &&
+                (params == other.params || params.empty() && other.params.empty()) &&
+                isregexquery == other.isregexquery &&
+                isparamsquery == other.isparamsquery
+            );
+    }
 };
 
 namespace queryreader {
