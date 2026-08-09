@@ -1,4 +1,3 @@
-#include "queryparser.h"
 #include "queryreader.h"
 
 namespace queryreader {
@@ -19,7 +18,24 @@ namespace queryreader {
             throw std::runtime_error("Invalid query!");
         }
 
-        return QueryConstruct(query, queryparser::getparsedquery());
+        std::vector<JSONType> params;
+        std::vector<JSONType> keys = parsedquery[1].asvector();
+
+        for(int i = 2; i < parsedquery.size(); i++){
+            params.push_back(parsedquery[i]);
+        }
+
+        switch(params.size()) {
+            case 0:
+                return QueryConstruct(query, keys);
+            case 1:
+                if(params[0].isstring())
+                    return QueryConstruct(query, keys, params[0].asstring());
+                else
+                    return QueryConstruct(query, keys, params[0].asvector());
+            default:
+                return QueryConstruct(query, keys, params);
+        }
     }
 
     void applyquery(const QueryConstruct& applyquery, const std::string& json) {

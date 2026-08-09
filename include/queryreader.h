@@ -18,7 +18,7 @@ class QueryConstruct {
     Query query;
     std::vector<JSONType> keys;
     std::string regex;
-    std::vector<std::string> params;
+    std::vector<JSONType> params;
 
     public:
         // FIND, DISPLAY, ALLOF
@@ -29,7 +29,7 @@ class QueryConstruct {
         : query(q), keys(k), regex(r) {}
 
         // FILTER
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<std::string>& p)
+        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<JSONType>& p)
         : query(q), keys(k), params(p) {}
 };
 
