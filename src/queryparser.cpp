@@ -4,6 +4,22 @@
 
 #include "queryparser.h"
 
+bool JSONType::isstring() {
+    return std::holds_alternative<std::string>(structure);
+}
+
+bool JSONType::isvector() {
+    return std::holds_alternative<std::vector<JSONType>>(structure);
+}
+
+const std::string& JSONType::asstring() const {
+    return std::get<std::string>(structure);
+}
+
+const std::vector<JSONType>& JSONType::asvector() const {
+    return std::get<std::vector<JSONType>>(structure);
+}
+
 // Private
 namespace{
     std::vector<JSONType> parsedquery;
