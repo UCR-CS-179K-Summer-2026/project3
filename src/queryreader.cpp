@@ -4,25 +4,37 @@ namespace queryreader {
     const QueryConstruct readquery(const std::vector<JSONType>& parsedquery) {
         Query query;
 
-        if(std::get_if<std::string>(parsedquery[0].structure)){
-            switch(std::get<std::string>(parsedquery[0].structure)){
-                case "FIND":
-                    query = Query::FIND;
-                    break;
-                case "FILTER":
-                    query = Query::FILTER;
-                    break;
-                case "DISPLAY":
-                    query = Query::DISPLAY;
-                    break;
-                case "ALLOF":
-                    query = Query::ALLOF;
-                    break;
-                default:
-                    throw std::runtime_error("Invalid query!");
-            }
+        if(parsedquery[0].structure.index() == 0){
+            const std::string compare = std::get<std::string>(parsedquery[0].structure);
+            if(compare == "FIND")
+                query = Query::FIND;
+            else if(compare == "FILTER")
+                query = Query::FILTER;
+            else if(compare == "DISPLAY")
+                query = Query::DISPLAY;
+            else if(compare == "ALLOF")
+                query = Query::ALLOF;
         }else{
             throw std::runtime_error("Invalid query!");
+        }
+
+        std::vector<JSONType> params;
+        std::vector<JSONType> keys = parsedquery[1].asvector();
+
+        for(int i = 2; i < parsedquery.size(); i++){
+            params.push_back(parsedquery[i]);
+        }
+
+        switch(params.size()) {
+            case 0:
+                return QueryConstruct(query, keys);
+            case 1:
+                if(params[0].isstring())
+                    return QueryConstruct(query, keys, params[0].asstring());
+                else
+                    return QueryConstruct(query, keys, params[0].asvector());
+            default:
+                return QueryConstruct(query, keys, params);
         }
     }
 
