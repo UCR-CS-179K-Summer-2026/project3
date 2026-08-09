@@ -180,7 +180,7 @@ Result:
 
 ### Unicode Support
 
-As of right now, conversion of unicode such as ```\uXXXX``` to direct ascii characters currently works. For Example, the JSON:
+Unicode (UTF-16) is fully supported. Unicode is read in as \uXXXX, and converted to the corresponding byte sequence. Surrogates (\uXXXX\uXXXX) are also checked, and converted to their corresponding byte sequence for comparisons.
 ```
 {
     "\u0061": "Bob",
@@ -191,8 +191,6 @@ As of right now, conversion of unicode such as ```\uXXXX``` to direct ascii char
 }
 ``` 
 Returns "a" if the query "b", "d" is given. This will change as we implement the real query language, and not the simple testing language. 
-
-We also want to support more UTF encoding, which is in the works.
 
 ### Edge Cases
 
