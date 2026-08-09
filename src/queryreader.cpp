@@ -1,3 +1,4 @@
+#include <regex>
 #include "queryreader.h"
 
 namespace queryreader {
@@ -29,10 +30,16 @@ namespace queryreader {
             case 0:
                 return QueryConstruct(query, keys);
             case 1:
-                if(params[0].isstring())
-                    return QueryConstruct(query, keys, params[0].asstring());
-                else
+                if(params[0].isstring()){
+                    try {
+                        std::regex regex(params[0]);
+                        return QueryConstruct(query, keys, params[0], false);
+                    } catch (const std::regex_error&) {
+                        return QueryConstruct(query, keys, params[0], false);
+                    }
+                }else{
                     return QueryConstruct(query, keys, params[0].asvector());
+                }
             default:
                 return QueryConstruct(query, keys, params);
         }
