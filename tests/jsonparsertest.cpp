@@ -259,7 +259,7 @@ TEST(JsonParser, UnicodeKeyAndSubkey) {
 }
 
 
-TEST(JsonParser, UnicodeKeyAndSubkeAndValue) {
+TEST(JsonParser, UnicodeKeyAndSubkeyAndValue) {
     std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
     ASSERT_TRUE(file.is_open());
 
@@ -267,6 +267,257 @@ TEST(JsonParser, UnicodeKeyAndSubkeAndValue) {
     const std::vector<std::string> path = {
         "b", 
         "d"
+    };
+
+    const std::string_view result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"a\"");
+}
+
+// Looks up a key written directly as UTF-8 rather than as \uXXXX escapes.
+// Every byte of a multi-byte character is above 0x7F, so the scanner cannot
+// mistake one for a quote or a brace and the text survives unchanged.
+TEST(JsonParser, FindsAccentedKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "naïve"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"café\"");
+}
+
+// Checks that a Cyrillic key and value pass through unchanged.
+TEST(JsonParser, FindsCyrillicKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "привет"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"мир\"");
+}
+
+// Checks that a right-to-left script is carried through by byte order, which
+// is the order it is stored in regardless of how it is displayed.
+TEST(JsonParser, FindsArabicKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "مرحبا"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"العالم\"");
+}
+
+// Checks a Greek key whose value is made of mathematical symbols, so the
+// value is non-ASCII as well as the key.
+TEST(JsonParser, FindsGreekKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "αβγ"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"∞≠√\"");
+}
+
+// Checks a CJK key, whose characters are three UTF-8 bytes each.
+TEST(JsonParser, FindsCjkKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "城市"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"東京\"");
+}
+
+// Emoji sit outside the Basic Multilingual Plane and take four UTF-8 bytes,
+// which is the widest character the scanner has to carry through.
+TEST(JsonParser, FindsEmojiKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "emoji😀"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"🌍\"");
+}
+
+// Checks a key that mixes a script with an emoji, so characters of two
+// different byte widths sit inside one key.
+TEST(JsonParser, FindsMixedWidthKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "ключ🔑"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"значение✨\"");
+}
+
+// Requests the ASCII spelling of an accented key and checks that it does not
+// match, so the tests above are comparing whole keys and not prefixes.
+TEST(JsonParser, RejectsUnaccentedKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "naive"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_TRUE(result.empty());
+}
+
+// A \uXXXX escape naming a character above 0x7F is written out as the two
+// UTF-8 bytes that encode it.
+TEST(JsonParser, DecodesTwoByteEscape) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "café"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"naïve\"");
+}
+
+// Characters higher up the range encode to three UTF-8 bytes.
+TEST(JsonParser, DecodesThreeByteEscape) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "日本"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"東京\"");
+}
+
+// A character above U+FFFF is spelled as a surrogate pair: two escapes that
+// together name one character and encode to four UTF-8 bytes.
+TEST(JsonParser, DecodesSurrogatePair) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "🔑"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "\"😀\"");
+}
+
+// An escaped key and the same key written directly are the same key, so a
+// query can be written either way.
+TEST(JsonParser, EscapedKeyMatchesRawKey) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "é"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, "1");
+}
+
+// A leading surrogate with no partner names no character, so it is left as
+// literal text rather than turned into a stand-in character.
+TEST(JsonParser, LeavesUnpairedLeadSurrogateAsText) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "lead"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, R"("\ud800")");
+}
+
+// A trailing surrogate that never followed a leading one is left alone for
+// the same reason.
+TEST(JsonParser, LeavesUnpairedTrailSurrogateAsText) {
+    std::ifstream file(JSON_DATA_DIR "/unicode.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "trail"
+    };
+
+    const std::string result =
+        json_parser::parsejson(jsonText, path);
+
+    EXPECT_EQ(result, R"("\udc00")");
+}
+
+TEST(JsonParser, nullKey) {
+    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::vector<std::string> path = {
+        "\0a"
     };
 
     const std::string_view result =
