@@ -48,6 +48,9 @@ namespace json_parser {
             return true;
         }
 
+        // this is pretty much defined by UTF specs, just implementing
+        // the logic of moving the bits around and whatnot so that
+        // == comparison works
         void appendUtf8(std::string& out, unsigned code) {
             if (code <= 0x7F) {
                 out += static_cast<char>(code);
