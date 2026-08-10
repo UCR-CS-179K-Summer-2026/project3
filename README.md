@@ -74,7 +74,7 @@ If the path does not exist:
 
 ```text
 Query:
-FIND {"employees" 0 "age"}
+FIND {"employees" "0" "age"}
 
 Result:
 false
