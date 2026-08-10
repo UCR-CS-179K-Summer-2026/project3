@@ -1,5 +1,5 @@
-// Times reading the small Bookings file, then reading entry 1800 out of the
-// large one.
+// Times reading the small Bookings file, 
+// then reading entry 1800 out of the large one.
 
 #include <chrono>
 #include <fstream>
@@ -12,13 +12,12 @@
 #define JSON_DATA_DIR "jsonFiles"
 #endif
 
-int main() {
-
+int singleQuery() {
     std::cout << "How many times to run test? :: " << std::flush;
     unsigned repeat = 0;
     std::cin >> repeat;
 
-    if (!std::cin || repeat == 0) {
+    if (!std::cin || repeat <= 0) {
         std::cerr << "Error: please enter a run count of at least 1.\n";
         return 1;
     }
@@ -57,5 +56,34 @@ int main() {
                   << "1 MB, entry 1800: " << largeTotal / repeat << " ms\n";
     }
 
+    return 0;
+}
+
+int manyQueries() {
+    std::cout << "not implemented yet!" << std::endl;
+    return 0;
+}
+
+
+int main() {
+
+    std::cout << "Which test?\n1 : Single Query\n2 : Many Queries\n:: " << std::flush;
+    int queryType;
+    std::cin >> queryType;
+    if(!std::cin || queryType < 1) {
+        std::cout << "Invalid Query. 1 or 2." << std::endl;
+        return 1;
+    }
+
+    switch(queryType) {
+        case 1:
+            singleQuery();
+            break;
+        case 2:
+            manyQueries();
+            break;
+        default:
+            return 1;
+    }
     return 0;
 }
