@@ -15,6 +15,8 @@ enum class Query {
 };
 
 class QueryConstruct {
+    private:
+        std::vector<JSONType> jsonparams;
     public:
         virtual void applyquery() = 0; 
 }
