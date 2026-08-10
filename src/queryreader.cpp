@@ -30,12 +30,20 @@ namespace queryreader {
             case 0:
                 return QueryConstruct(query, keys);
             case 1:
-                if(params[0].isstring()){
+                if (params[0].isstring()) {
+                    // Convert JSONType to the string value required by std::regex.
+                    const std::string& param = params[0].asstring();
+
                     try {
-                        std::regex regex(params[0]);
-                        return QueryConstruct(query, keys, params[0], false);
+                        std::regex regex(param);
+
+                        // Regex is valid, so mark this as a regex query.
+                        return QueryConstruct(query, keys, param, true);
+
                     } catch (const std::regex_error&) {
-                        return QueryConstruct(query, keys, params[0], false);
+
+                        // Invalid regex; treat it as a normal string parameter.
+                        return QueryConstruct(query, keys, param, false);
                     }
                 }else{
                     return QueryConstruct(query, keys, params[0].asvector());

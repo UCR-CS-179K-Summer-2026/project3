@@ -27,8 +27,13 @@ struct QueryConstruct {
     QueryConstruct(const Query& q, const std::vector<JSONType>& k) : query(q), keys(k) {}
 
     // FILTER
-    QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::string& p, const bool isregex)
-    : query(q), keys(k), param(r), regexquery(isregex), paramsquery(!isregex) {}
+    QueryConstruct(const Query& q, const std::vector<JSONType>& k,
+               const std::string& p, const bool isregex)
+    : query(q),
+      keys(k),
+      param(p),
+      isregexquery(isregex),
+      isparamsquery(!isregex) {}
 
     // FILTER
     QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<JSONType>& p)
