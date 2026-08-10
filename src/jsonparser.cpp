@@ -108,25 +108,33 @@ namespace json_parser {
             return out;
         }
 
-        // p points at the opening quote. Leaves p just past the closing quote,
-        // and out = the text between them with \uXXXX escapes converted to ASCII.
-        bool scanString(const char*& p, const char* end, std::string& out) {
+        // p points at the opening quote. Leaves p just past the closing quote.
+        // span is the text between them exactly as the document spells it, and
+        // escaped says whether a backslash appears anywhere in that text.
+        //
+        // convertUnicode only ever rewrites at a backslash, so a span without
+        // one already reads as the text it names and callers can compare it
+        // where it lies instead of building a converted copy first.
+        bool scanStringSpan(const char*& p, const char* end,
+                            std::string_view& span, bool& escaped) {
             if (p >= end || *p != '"') {
                 return false;
             }
 
             const char* start = ++p;
+            escaped = false;
 
             while (p < end) {
                 if (*p == '\\') {   // escape: skip the backslash AND the next byte
                     if (p + 1 >= end) {
                         return false;   // trailing backslash: unterminated
                     }
+                    escaped = true;
                     p += 2;
                     continue;
                 }
                 if (*p == '"') {
-                    out = convertUnicode(std::string_view(start, static_cast<size_t>(p - start)));
+                    span = std::string_view(start, static_cast<size_t>(p - start));
                     ++p;
                     return true;
                 }
@@ -134,6 +142,13 @@ namespace json_parser {
             }
 
             return false;   // unterminated
+        }
+
+        // Moves p past a string nobody is going to read the contents of.
+        bool skipString(const char*& p, const char* end) {
+            std::string_view span;
+            bool escaped;
+            return scanStringSpan(p, end, span, escaped);
         }
 
         // Moves p past one complete value without interpreting it.
@@ -144,8 +159,7 @@ namespace json_parser {
             }
 
             if (*p == '"') {
-                std::string ignored;
-                return scanString(p, end, ignored);
+                return skipString(p, end);
             }
 
             if (*p == '{' || *p == '[') {
@@ -156,11 +170,10 @@ namespace json_parser {
                         return false;
                     }
                     if (*p == '"') {   // braces inside a string are not structure
-                        std::string ignored;
-                        if (!scanString(p, end, ignored)) {
+                        if (!skipString(p, end)) {
                             return false;
                         }
-                        continue;      // scanString already moved p
+                        continue;      // skipString already moved p
                     }
                     if (*p == '{' || *p == '[') {
                         ++depth;
@@ -225,10 +238,11 @@ namespace json_parser {
 
                 bool matched = false;
                 while (p < end) {
-                    std::string key;
+                    std::string_view key;
+                    bool escaped;
                     skipWs(p, end);
-                    if (!scanString(p, end, key)) {
-                        return {};   // '}' of an empty object, or malformed
+                    if (!scanStringSpan(p, end, key, escaped)) {
+                        return {};  // '}' of an empty object, or malformed
                     }
 
                     skipWs(p, end);
@@ -237,9 +251,10 @@ namespace json_parser {
                     }
                     ++p;
 
-                    if (key == want) {
+                    // Only a key with an escape needs to be built out before it can be compared.
+                    if (escaped ? convertUnicode(key) == want : key == want) {
                         matched = true;
-                        break;       // p is now sitting on the value we want
+                        break;  // p is now sitting on the value we want
                     }
 
                     if (!skipValue(p, end)) {
@@ -247,7 +262,7 @@ namespace json_parser {
                     }
                     skipWs(p, end);
                     if (p >= end || *p != ',') {
-                        return {};   // hit '}': the key is not in this object
+                        return {};  // hit '}': the key is not in this object
                     }
                     ++p;
                 }
@@ -258,7 +273,7 @@ namespace json_parser {
             } else if (*p == '[') {
                 size_t index = 0;
                 if (!toIndex(want, index)) {
-                    return {};       // array level needs a numeric component
+                    return {};  // array level needs a numeric component
                 }
 
                 ++p;
@@ -268,12 +283,12 @@ namespace json_parser {
                     }
                     skipWs(p, end);
                     if (p >= end || *p != ',') {
-                        return {};   // index past the end
+                        return {};  // index past the end
                     }
                     ++p;
                 }
             } else {
-                return {};           // path continues but the value is a scalar
+                return {};  // path continues but the value is a scalar
             }
         }
 
@@ -283,7 +298,7 @@ namespace json_parser {
             return {};
         }
 
-        return convertUnicode(std::string(start, static_cast<size_t>(p - start)));
+        return convertUnicode(std::string_view(start, static_cast<size_t>(p - start)));
     }
 
     int isFileOpen(std::ifstream& json){

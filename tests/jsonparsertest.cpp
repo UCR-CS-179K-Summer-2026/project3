@@ -7,6 +7,10 @@
 #include "queryparser.h"
 #include "jsonparser.h"
 
+#ifndef JSON_DATA_DIR
+#define JSON_DATA_DIR "jsonFiles"
+#endif
+
 namespace {
 constexpr auto EMPLOYEE_FILE =
     JSON_DATA_DIR "/basic/employee.json";
