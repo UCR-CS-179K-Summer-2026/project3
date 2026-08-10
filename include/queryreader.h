@@ -21,13 +21,20 @@ class QueryConstruct {
     public:
         virtual ~QueryConstruct() = default;
         virtual void applyquery() = 0; 
+<<<<<<< HEAD
         QueryConstruct(const std::vector<JSONType>& json) : jsonparams(json) {}
+=======
+>>>>>>> 65c13a9 (added semicolons)
 };
 
 class QueryFind : public QueryConstruct {
     public:
+<<<<<<< HEAD
         QueryFind(const std::vector<JSONType>& json) : QueryConstruct(json) {}
         void applyquery() override;
+=======
+        QueryFind(const std::vector<JSONType>& json) : jsonparams(json) {};
+>>>>>>> 65c13a9 (added semicolons)
 };
 
 class QueryFilter : public QueryConstruct {
@@ -37,6 +44,7 @@ class QueryFilter : public QueryConstruct {
         int upperbound;
     
     public:
+<<<<<<< HEAD
         QueryFilter(const std::vector<JSONType>& json, const std::string& r)
         : QueryConstruct(json), regex(r) {}
 
@@ -45,6 +53,9 @@ class QueryFilter : public QueryConstruct {
         : QueryConstruct(json), lowerbound(std::stoi(lower)), upperbound(std::stoi(upper)) {}
 
         void applyquery() override;
+=======
+        QueryFilter();
+>>>>>>> 65c13a9 (added semicolons)
 };
 
 class QueryDisplay : public QueryConstruct {
@@ -56,9 +67,12 @@ class QueryDisplay : public QueryConstruct {
 
 class QueryAllof : QueryConstruct {
     // Laura
+<<<<<<< HEAD
 
     public:
         void applyquery() override;
+=======
+>>>>>>> 65c13a9 (added semicolons)
 };
 
 namespace queryreader {
