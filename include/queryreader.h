@@ -16,7 +16,7 @@ enum class Query {
 
 class QueryConstruct {
     public:
-        virtual void getquery() const = 0; 
+        virtual void applyquery() = 0; 
 }
 
 class QueryFind : QueryConstruct {
