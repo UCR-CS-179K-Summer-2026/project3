@@ -37,12 +37,21 @@ add_executable(jsonquery
     ${SRC_FILES}
 )
 
+add_executable(benchmark
+    benchmark.cpp
+    ${SRC_FILES}
+)
+
 target_include_directories(JSONQL PRIVATE include)
 target_include_directories(jsonquery PRIVATE include)
+target_include_directories(benchmark PRIVATE include)
 
 # Absolute path to the sample JSON files so tests do not depend on the working
 # directory they are run from.
 target_compile_definitions(JSONQL PRIVATE
+    JSON_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/jsonFiles")
+
+target_compile_definitions(benchmark PRIVATE
     JSON_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/jsonFiles")
 
 target_link_libraries(JSONQL PRIVATE GTest::gtest_main)
