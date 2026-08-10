@@ -4,11 +4,11 @@
 
 #include "queryparser.h"
 
-bool JSONType::isstring() {
+bool JSONType::isstring() const {
     return std::holds_alternative<std::string>(structure);
 }
 
-bool JSONType::isvector() {
+bool JSONType::isvector() const {
     return std::holds_alternative<std::vector<JSONType>>(structure);
 }
 
