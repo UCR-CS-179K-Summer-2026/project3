@@ -7,6 +7,10 @@
 #include "queryparser.h"
 #include "jsonparser.h"
 
+#ifndef JSON_DATA_DIR
+#define JSON_DATA_DIR "jsonFiles"
+#endif
+
 // This test opens employee.json from the jsonFiles folder.
 // It checks that the stream is open and that json_parser::test() returns 0 for success.
 TEST(JsonParser, OpensEmployeeFile) {
