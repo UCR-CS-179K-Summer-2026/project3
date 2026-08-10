@@ -4,6 +4,22 @@
 
 #include "queryparser.h"
 
+bool JSONType::isstring() {
+    return std::holds_alternative<std::string>(structure);
+}
+
+bool JSONType::isvector() {
+    return std::holds_alternative<std::vector<JSONType>>(structure);
+}
+
+const std::string& JSONType::asstring() const {
+    return std::get<std::string>(structure);
+}
+
+const std::vector<JSONType>& JSONType::asvector() const {
+    return std::get<std::vector<JSONType>>(structure);
+}
+
 // Private
 namespace{
     std::vector<JSONType> parsedquery;
@@ -79,8 +95,6 @@ namespace{
 namespace queryparser {
     void parsequery(const std::string& query){
         parsedquery.clear();
-
-        bool queryended = false;
         
         if(!curlybraces.empty()){
             curlybraces = std::stack<char>();
@@ -96,11 +110,6 @@ namespace queryparser {
                     if(!append.empty()){
                         parsedquery.push_back(append);
                         append.clear();
-
-                        if(!queryended){
-                            queryended = true;
-                            parsedquery.push_back(std::vector<JSONType>());
-                        }
                     }
 
                     break;

@@ -1,0 +1,25 @@
+[
+  {
+    "﻿Date": "2024-07-26 14:00:00",
+    "Time": "14:00:00",
+    "Booking_ID": "CNR7153255142",
+    "Booking_Status": "Canceled by Driver",
+    "Customer_ID": "CID713523",
+    "Vehicle_Type": "Prime Sedan",
+    "Pickup_Location": "Tumkur Road",
+    "Drop_Location": "RT Nagar",
+    "V_TAT": "null",
+    "C_TAT": "null",
+    "Canceled_Rides_by_Customer": "null",
+    "Canceled_Rides_by_Driver": "Personal & Car related issue",
+    "Incomplete_Rides": "null",
+    "Incomplete_Rides_Reason": "null",
+    "Booking_Value": "444",
+    "Payment_Method": "null",
+    "Ride_Distance": "0",
+    "Driver_Ratings": "null",
+    "Customer_Rating": "null",
+    "Vehicle Images": "#NAME?",
+    "": ""
+  }
+]

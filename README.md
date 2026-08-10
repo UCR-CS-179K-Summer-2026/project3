@@ -178,6 +178,20 @@ Result:
 [90000, 120000, 90000]
 ```
 
+### Unicode Support
+
+Unicode (UTF-16) is fully supported. Unicode is read in as \uXXXX, and converted to the corresponding byte sequence. Surrogates (\uXXXX\uXXXX) are also checked, and converted to their corresponding byte sequence for comparisons.
+```
+{
+    "\u0061": "Bob",
+    "\u0062": {
+        "\u0063": "Apple",
+        "\u0064": "\u0061"
+    }
+}
+``` 
+Returns "a" if the query "b", "d" is given. This will change as we implement the real query language, and not the simple testing language. 
+
 ### Edge Cases
 
 The query system should handle cases such as:

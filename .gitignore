@@ -15,3 +15,5 @@ Testing
 jsonquery
 JSONQL*
 compile_commands*
+.DS_Store
+benchmark
