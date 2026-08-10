@@ -15,23 +15,25 @@ enum class Query {
 };
 
 class QueryConstruct {
-    Query query;
-    std::vector<JSONType> keys;
-    std::string regex;
-    std::vector<std::string> params;
-
     public:
-        // FIND, DISPLAY, ALLOF
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k) : query(q), keys(k) {}
+        virtual void getquery() const = 0; 
+}
 
-        // FILTER
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::string& r)
-        : query(q), keys(k), regex(r) {}
+class QueryFind : QueryConstruct {
 
-        // FILTER
-        QueryConstruct(const Query& q, const std::vector<JSONType>& k, const std::vector<std::string>& p)
-        : query(q), keys(k), params(p) {}
 };
+
+class QueryFilter : QueryConstruct {
+
+};
+
+class QueryDisplay : QueryConstruct {
+    // Laura
+};
+
+class QueryAllof : QueryConstruct {
+    // Laura
+}
 
 namespace queryreader {
     const QueryConstruct readquery(const std::vector<JSONType>& parsedquery);
