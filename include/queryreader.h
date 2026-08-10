@@ -17,7 +17,7 @@ enum class Query {
 class QueryConstruct {
     public:
         virtual void applyquery() = 0; 
-}
+};
 
 class QueryFind : QueryConstruct {
 
@@ -33,7 +33,7 @@ class QueryDisplay : QueryConstruct {
 
 class QueryAllof : QueryConstruct {
     // Laura
-}
+};
 
 namespace queryreader {
     const QueryConstruct readquery(const std::vector<JSONType>& parsedquery);
