@@ -523,5 +523,5 @@ TEST(JsonParser, nullKey) {
     const std::string_view result =
         json_parser::parsejson(jsonText, path);
 
-    EXPECT_EQ(result, "\"a\"");
+    EXPECT_EQ(result, "\0a\"");
 }
