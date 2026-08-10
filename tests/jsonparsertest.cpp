@@ -11,35 +11,87 @@
 #define JSON_DATA_DIR "jsonFiles"
 #endif
 
-// This test opens employee.json from the jsonFiles folder.
-// It checks that the stream is open and that json_parser::test() returns 0 for success.
-TEST(JsonParser, OpensEmployeeFile) {
-    std::ifstream json(JSON_DATA_DIR "/employee.json");
+namespace {
+constexpr auto EMPLOYEE_FILE =
+    JSON_DATA_DIR "/basic/employee.json";
+
+constexpr auto PRODUCT_FILE =
+    JSON_DATA_DIR "/basic/product.json";
+
+constexpr auto UNIVERSITY_FILE =
+    JSON_DATA_DIR "/basic/university.json";
+
+constexpr auto ESCAPED_QUOTE_FILE =
+    JSON_DATA_DIR "/unicode/escapedquote.json";
+
+constexpr auto ODD_KEYS_FILE =
+    JSON_DATA_DIR "/unicode/oddKeys.json";
+
+constexpr auto UNICODE_FILE =
+    JSON_DATA_DIR "/unicode/unicode.json";
+
+constexpr auto EMBEDDED_NULL_FILE =
+    JSON_DATA_DIR "/edgecases/embeddednull.json";
+
+constexpr auto LITERAL_TYPES_FILE =
+    JSON_DATA_DIR "/edgecases/literaltypes.json";
+
+constexpr auto EMPTY_STRUCTURES_FILE =
+    JSON_DATA_DIR "/edgecases/emptystructures.json";
+
+// Reads a fixture once and returns its full JSON text.
+// ASSERT_TRUE stays in each test so a missing fixture gives a clear failure.
+std::string readJsonFile(const char* filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        return {};
+    }
+    return json_parser::jsonToString(file);
+}
+
+// GoogleTest uses this field to give each parameterized case a readable name.
+template <typename ParamType>
+std::string caseName(const ::testing::TestParamInfo<ParamType>& info) {
+    return info.param.name;
+}
+
+// ====================
+// Basic file handling
+// ====================
+
+struct FileOpenCase {
+    const char* name;
+    const char* filename;
+};
+
+class JsonFileOpenTest : public ::testing::TestWithParam<FileOpenCase> {};
+
+// These cases use the same behavior with different basic fixtures, so one
+// parameterized test avoids repeating identical open/test assertions.
+TEST_P(JsonFileOpenTest, OpensBasicFixture) {
+    const auto& test = GetParam();
+    std::ifstream json(test.filename);
 
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
 }
 
-// This test opens product.json from the jsonFiles folder.
-// It checks that the stream is open and that json_parser::test() returns 0 for success.
-TEST(JsonParser, OpensProductFile) {
-    std::ifstream json(JSON_DATA_DIR "/product.json");
-
-    ASSERT_TRUE(json.is_open());
-    EXPECT_EQ(json_parser::test(json), 0);
-}
-
-// This test opens university.json from the jsonFiles folder.
-// It checks that the stream is open and that json_parser::test() returns 0 for success.
-TEST(JsonParser, OpensUniversityFile) {
-    std::ifstream json(JSON_DATA_DIR "/university.json");
-
-    ASSERT_TRUE(json.is_open());
-    EXPECT_EQ(json_parser::test(json), 0);
-}
+INSTANTIATE_TEST_SUITE_P(
+    BasicFiles,
+    JsonFileOpenTest,
+    ::testing::Values(
+        // Verifies the employee fixture opens successfully.
+        FileOpenCase{"OpensEmployeeFile", EMPLOYEE_FILE},
+        // Verifies the product fixture opens successfully.
+        FileOpenCase{"OpensProductFile", PRODUCT_FILE},
+        // Verifies the university fixture opens successfully.
+        FileOpenCase{"OpensUniversityFile", UNIVERSITY_FILE}
+    ),
+    caseName<FileOpenCase>
+);
 
 // This test tries to open a file that does not exist.
-// It checks that the stream remains closed and that json_parser::test() returns 1.
+// It checks that the stream remains closed and json_parser::test() returns 1.
 TEST(JsonParser, RejectsMissingFile) {
     std::ifstream json(JSON_DATA_DIR "/missing.json");
 
@@ -48,7 +100,7 @@ TEST(JsonParser, RejectsMissingFile) {
 }
 
 // This test creates an input stream using an empty filename.
-// It checks that no file opens and that json_parser::test() returns 1.
+// It checks that no file opens and json_parser::test() returns 1.
 TEST(JsonParser, RejectsEmptyFilename) {
     std::ifstream json("");
 
@@ -56,10 +108,10 @@ TEST(JsonParser, RejectsEmptyFilename) {
     EXPECT_EQ(json_parser::test(json), 1);
 }
 
-// This test calls json_parser::test() twice using the same open file stream.
-// It checks that the function continues returning 0 while the stream remains open.
+// Calls json_parser::test() twice on the same open stream.
+// The stream should remain valid and both calls should report success.
 TEST(JsonParser, RepeatedCheckOfOpenFileSucceeds) {
-    std::ifstream json(JSON_DATA_DIR "/employee.json");
+    std::ifstream json(EMPLOYEE_FILE);
 
     ASSERT_TRUE(json.is_open());
     EXPECT_EQ(json_parser::test(json), 0);
@@ -69,7 +121,7 @@ TEST(JsonParser, RepeatedCheckOfOpenFileSucceeds) {
 // Reads employee.json and checks that jsonToString() copies the file contents
 // into a non-empty string containing expected employee data.
 TEST(JsonParser, ConvertsEmployeeFileToString) {
-    std::ifstream file(JSON_DATA_DIR "/employee.json");
+    std::ifstream file(EMPLOYEE_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -79,127 +131,87 @@ TEST(JsonParser, ConvertsEmployeeFileToString) {
     EXPECT_NE(jsonText.find("\"Laura\""), std::string::npos);
 }
 
-// Follows employees -> 0 -> name and checks that the first employee is Laura.
-// Strings are returned as raw JSON text, so the quotation marks are included.
-TEST(JsonParser, FindsFirstEmployeeName) {
-    std::ifstream file(JSON_DATA_DIR "/employee.json");
+// ====================
+// Basic path traversal
+// ====================
+
+struct ParseCase {
+    const char* name;
+    const char* filename;
+    std::vector<std::string> path;
+    std::string expected;
+};
+
+class JsonBasicParseTest : public ::testing::TestWithParam<ParseCase> {};
+
+// Each case follows a different valid path through a basic fixture.
+// The shared test checks that the fixture opens and parsejson() returns exactly
+// the JSON text expected for that path.
+TEST_P(JsonBasicParseTest, ReturnsExpectedValue) {
+    const auto& test = GetParam();
+    std::ifstream file(test.filename);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "employees",
-        "0",
-        "name"
-    };
+    const std::string result = json_parser::parsejson(jsonText, test.path);
 
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"Laura\"");
+    EXPECT_EQ(result, test.expected);
 }
 
-// Follows employees -> 2 -> salary and checks that numeric values can be read
-// from an object stored inside an array.
-TEST(JsonParser, FindsEmployeeSalary) {
-    std::ifstream file(JSON_DATA_DIR "/employee.json");
-    ASSERT_TRUE(file.is_open());
+INSTANTIATE_TEST_SUITE_P(
+    BasicTraversal,
+    JsonBasicParseTest,
+    ::testing::Values(
+        // Follows employees -> 0 -> name and returns the first employee name.
+        ParseCase{
+            "FindsFirstEmployeeName",
+            EMPLOYEE_FILE,
+            {"employees", "0", "name"},
+            "\"Laura\""
+        },
+        // Follows employees -> 2 -> salary and reads a number from an object in an array.
+        ParseCase{
+            "FindsEmployeeSalary",
+            EMPLOYEE_FILE,
+            {"employees", "2", "salary"},
+            "95000"
+        },
+        // Follows employees -> 0 -> skills -> 1 through nested arrays/objects.
+        ParseCase{
+            "FindsEmployeeSkill",
+            EMPLOYEE_FILE,
+            {"employees", "0", "skills", "1"},
+            "\"Git\""
+        },
+        // Follows products -> 0 -> price and preserves the decimal value.
+        ParseCase{
+            "FindsProductPrice",
+            PRODUCT_FILE,
+            {"products", "0", "price"},
+            "89.99"
+        },
+        // Follows university -> location -> city through nested objects.
+        ParseCase{
+            "FindsUniversityCity",
+            UNIVERSITY_FILE,
+            {"university", "location", "city"},
+            "\"Riverside\""
+        },
+        // Follows university -> departments -> 0 -> courses -> 1 through deep nesting.
+        ParseCase{
+            "FindsUniversityCourse",
+            UNIVERSITY_FILE,
+            {"university", "departments", "0", "courses", "1"},
+            "\"CS 179K\""
+        }
+    ),
+    caseName<ParseCase>
+);
 
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "employees",
-        "2",
-        "salary"
-    };
-
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "95000");
-}
-
-// Follows employees -> 0 -> skills -> 1 and checks that the parser can move
-// through an object, an array, and then another array.
-TEST(JsonParser, FindsEmployeeSkill) {
-    std::ifstream file(JSON_DATA_DIR "/employee.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "employees",
-        "0",
-        "skills",
-        "1"
-    };
-
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"Git\"");
-}
-
-// Follows products -> 0 -> price and checks that a decimal JSON number
-// is returned correctly from product.json.
-TEST(JsonParser, FindsProductPrice) {
-    std::ifstream file(JSON_DATA_DIR "/product.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "products",
-        "0",
-        "price"
-    };
-
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "89.99");
-}
-
-// Follows university -> location -> city and checks that the parser can
-// retrieve a string from nested objects.
-TEST(JsonParser, FindsUniversityCity) {
-    std::ifstream file(JSON_DATA_DIR "/university.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "university",
-        "location",
-        "city"
-    };
-
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"Riverside\"");
-}
-
-// Follows university -> departments -> 0 -> courses -> 1 and checks that
-// the parser can traverse multiple nested objects and arrays.
-TEST(JsonParser, FindsUniversityCourse) {
-    std::ifstream file(JSON_DATA_DIR "/university.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "university",
-        "departments",
-        "0",
-        "courses",
-        "1"
-    };
-
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"CS 179K\"");
-}
-
-// Requests a field that does not exist and checks that parsejson()
-// returns an empty string_view instead of an incorrect value.
+// Requests a field that does not exist.
+// parsejson() should return an empty result instead of an incorrect value.
 TEST(JsonParser, ReturnsEmptyForMissingKey) {
-    std::ifstream file(JSON_DATA_DIR "/employee.json");
+    std::ifstream file(EMPLOYEE_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -209,314 +221,128 @@ TEST(JsonParser, ReturnsEmptyForMissingKey) {
         "age"
     };
 
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
+    const std::string result = json_parser::parsejson(jsonText, path);
     EXPECT_TRUE(result.empty());
 }
 
-// ...
+// ====================
+// Unicode and escaped-key fixtures
+// ====================
+
+// Looks up a key containing an escaped quotation mark.
+// The fixture was renamed from test.json so its purpose is clear.
 TEST(JsonParser, TestEscapeChar) {
-    std::ifstream file(JSON_DATA_DIR "/test.json");
+    std::ifstream file(ESCAPED_QUOTE_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "\\\"a"
-    };
+    const std::vector<std::string> path = {"\\\"a"};
 
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
+    const std::string result = json_parser::parsejson(jsonText, path);
     EXPECT_EQ(result, "1");
 }
 
-TEST(JsonParser, UnicodeKey) {
-    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+struct OddKeyCase {
+    const char* name;
+    std::vector<std::string> path;
+    std::string expected;
+};
+
+class JsonOddKeyTest : public ::testing::TestWithParam<OddKeyCase> {};
+
+// These cases all use oddKeys.json and differ only in the path and expected
+// result, so the table makes the key/subkey coverage easy to scan.
+TEST_P(JsonOddKeyTest, ReturnsExpectedValue) {
+    const auto& test = GetParam();
+    std::ifstream file(ODD_KEYS_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "a"
-    };
+    const std::string result = json_parser::parsejson(jsonText, test.path);
 
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"Bob\"");
+    EXPECT_EQ(result, test.expected);
 }
 
-TEST(JsonParser, UnicodeKeyAndSubkey) {
-    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+INSTANTIATE_TEST_SUITE_P(
+    OddKeys,
+    JsonOddKeyTest,
+    ::testing::Values(
+        // Reads a top-level key from the odd-key fixture.
+        OddKeyCase{"UnicodeKey", {"a"}, "\"Bob\""},
+        // Reads a nested subkey b -> c.
+        OddKeyCase{"UnicodeKeyAndSubkey", {"b", "c"}, "\"Apple\""},
+        // Reads a second nested value b -> d.
+        OddKeyCase{"UnicodeKeyAndSubkeyAndValue", {"b", "d"}, "\"a\""}
+    ),
+    caseName<OddKeyCase>
+);
+
+struct UnicodeCase {
+    const char* name;
+    std::vector<std::string> path;
+    std::string expected;
+    bool expectEmpty;
+};
+
+class JsonUnicodeTest : public ::testing::TestWithParam<UnicodeCase> {};
+
+// All cases below exercise the same unicode.json fixture. Keeping the data in
+// one table makes script, byte-width, escape, and surrogate coverage explicit.
+TEST_P(JsonUnicodeTest, HandlesUnicodeCase) {
+    const auto& test = GetParam();
+    std::ifstream file(UNICODE_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "b", 
-        "c"
-    };
+    const std::string result = json_parser::parsejson(jsonText, test.path);
 
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"Apple\"");
+    if (test.expectEmpty) {
+        EXPECT_TRUE(result.empty());
+    } else {
+        EXPECT_EQ(result, test.expected);
+    }
 }
 
+INSTANTIATE_TEST_SUITE_P(
+    UnicodeCases,
+    JsonUnicodeTest,
+    ::testing::Values(
+        // Direct UTF-8 accented key/value lookup.
+        UnicodeCase{"FindsAccentedKey", {"naïve"}, "\"café\"", false},
+        // Cyrillic key/value should pass through unchanged.
+        UnicodeCase{"FindsCyrillicKey", {"привет"}, "\"мир\"", false},
+        // Right-to-left Arabic text should preserve stored byte order.
+        UnicodeCase{"FindsArabicKey", {"مرحبا"}, "\"العالم\"", false},
+        // Greek key with non-ASCII mathematical-symbol value.
+        UnicodeCase{"FindsGreekKey", {"αβγ"}, "\"∞≠√\"", false},
+        // CJK characters exercise three-byte UTF-8 sequences.
+        UnicodeCase{"FindsCjkKey", {"城市"}, "\"東京\"", false},
+        // Emoji exercise four-byte UTF-8 sequences outside the BMP.
+        UnicodeCase{"FindsEmojiKey", {"emoji😀"}, "\"🌍\"", false},
+        // Mixed Cyrillic and emoji checks different byte widths in one key.
+        UnicodeCase{"FindsMixedWidthKey", {"ключ🔑"}, "\"значение✨\"", false},
+        // ASCII spelling must not match the accented key "naïve".
+        UnicodeCase{"RejectsUnaccentedKey", {"naive"}, "", true},
+        // A \uXXXX escape that becomes a two-byte UTF-8 character.
+        UnicodeCase{"DecodesTwoByteEscape", {"café"}, "\"naïve\"", false},
+        // A \uXXXX escape that becomes a three-byte UTF-8 character.
+        UnicodeCase{"DecodesThreeByteEscape", {"日本"}, "\"東京\"", false},
+        // A surrogate pair should decode to one four-byte UTF-8 character.
+        UnicodeCase{"DecodesSurrogatePair", {"🔑"}, "\"😀\"", false},
+        // Escaped and raw forms of the same key should match.
+        UnicodeCase{"EscapedKeyMatchesRawKey", {"é"}, "1", false},
+        // An unpaired leading surrogate is preserved as literal text.
+        UnicodeCase{"LeavesUnpairedLeadSurrogateAsText", {"lead"}, R"("\ud800")", false},
+        // An unpaired trailing surrogate is preserved as literal text.
+        UnicodeCase{"LeavesUnpairedTrailSurrogateAsText", {"trail"}, R"("\udc00")", false}
+    ),
+    caseName<UnicodeCase>
+);
 
-TEST(JsonParser, UnicodeKeyAndSubkeyAndValue) {
-    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "b", 
-        "d"
-    };
-
-    const std::string_view result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"a\"");
-}
-
-// Looks up a key written directly as UTF-8 rather than as \uXXXX escapes.
-// Every byte of a multi-byte character is above 0x7F, so the scanner cannot
-// mistake one for a quote or a brace and the text survives unchanged.
-TEST(JsonParser, FindsAccentedKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "naïve"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"café\"");
-}
-
-// Checks that a Cyrillic key and value pass through unchanged.
-TEST(JsonParser, FindsCyrillicKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "привет"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"мир\"");
-}
-
-// Checks that a right-to-left script is carried through by byte order, which
-// is the order it is stored in regardless of how it is displayed.
-TEST(JsonParser, FindsArabicKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "مرحبا"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"العالم\"");
-}
-
-// Checks a Greek key whose value is made of mathematical symbols, so the
-// value is non-ASCII as well as the key.
-TEST(JsonParser, FindsGreekKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "αβγ"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"∞≠√\"");
-}
-
-// Checks a CJK key, whose characters are three UTF-8 bytes each.
-TEST(JsonParser, FindsCjkKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "城市"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"東京\"");
-}
-
-// Emoji sit outside the Basic Multilingual Plane and take four UTF-8 bytes,
-// which is the widest character the scanner has to carry through.
-TEST(JsonParser, FindsEmojiKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "emoji😀"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"🌍\"");
-}
-
-// Checks a key that mixes a script with an emoji, so characters of two
-// different byte widths sit inside one key.
-TEST(JsonParser, FindsMixedWidthKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "ключ🔑"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"значение✨\"");
-}
-
-// Requests the ASCII spelling of an accented key and checks that it does not
-// match, so the tests above are comparing whole keys and not prefixes.
-TEST(JsonParser, RejectsUnaccentedKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "naive"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_TRUE(result.empty());
-}
-
-// A \uXXXX escape naming a character above 0x7F is written out as the two
-// UTF-8 bytes that encode it.
-TEST(JsonParser, DecodesTwoByteEscape) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "café"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"naïve\"");
-}
-
-// Characters higher up the range encode to three UTF-8 bytes.
-TEST(JsonParser, DecodesThreeByteEscape) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "日本"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"東京\"");
-}
-
-// A character above U+FFFF is spelled as a surrogate pair: two escapes that
-// together name one character and encode to four UTF-8 bytes.
-TEST(JsonParser, DecodesSurrogatePair) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "🔑"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "\"😀\"");
-}
-
-// An escaped key and the same key written directly are the same key, so a
-// query can be written either way.
-TEST(JsonParser, EscapedKeyMatchesRawKey) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "é"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, "1");
-}
-
-// A leading surrogate with no partner names no character, so it is left as
-// literal text rather than turned into a stand-in character.
-TEST(JsonParser, LeavesUnpairedLeadSurrogateAsText) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "lead"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, R"("\ud800")");
-}
-
-// A trailing surrogate that never followed a leading one is left alone for
-// the same reason.
-TEST(JsonParser, LeavesUnpairedTrailSurrogateAsText) {
-    std::ifstream file(JSON_DATA_DIR "/unicode.json");
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    const std::vector<std::string> path = {
-        "trail"
-    };
-
-    const std::string result =
-        json_parser::parsejson(jsonText, path);
-
-    EXPECT_EQ(result, R"("\udc00")");
-}
-
+// Keeps the original null-key case separate because its string literal has
+// embedded-null behavior that is clearer to inspect outside a case table.
 TEST(JsonParser, nullKey) {
-    std::ifstream file(JSON_DATA_DIR "/oddKeys.json");
+    std::ifstream file(ODD_KEYS_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
@@ -524,8 +350,130 @@ TEST(JsonParser, nullKey) {
         "\0a"
     };
 
-    const std::string_view result =
+    const std::string result =
         json_parser::parsejson(jsonText, path);
 
     EXPECT_EQ(result, "\0a\"");
+}
+
+// ====================
+// File-open helper behavior
+// ====================
+
+// Calls isFileOpen() on employee.json, which is already open.
+// It should return 0, matching json_parser::test() for a valid stream.
+TEST(JsonParser, IsFileOpenAgreesWithTestForOpenFile) {
+    std::ifstream json(EMPLOYEE_FILE);
+
+    ASSERT_TRUE(json.is_open());
+    EXPECT_EQ(json_parser::isFileOpen(json), 0);
+}
+
+// Calls isFileOpen() on a missing file.
+// It should return 1, matching json_parser::test() for an invalid stream.
+TEST(JsonParser, IsFileOpenAgreesWithTestForMissingFile) {
+    std::ifstream json(JSON_DATA_DIR "/missing.json");
+
+    EXPECT_FALSE(json.is_open());
+    EXPECT_EQ(json_parser::isFileOpen(json), 1);
+}
+
+// ====================
+// Edge-case fixtures
+// ====================
+
+// Reads a \u0000 escape from embeddednull.json.
+// parsejson() decodes it to an actual embedded null byte in the returned string.
+TEST(JsonParser, HandlesEscapedNullSequenceInValue) {
+    std::ifstream file(EMBEDDED_NULL_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::string result =
+        json_parser::parsejson(jsonText, {"null_escape"});
+
+    // Explicit length keeps the embedded null instead of treating it as a terminator.
+    const std::string expected("\"abc\0def\"", 9);
+    EXPECT_EQ(result.size(), expected.size());
+    EXPECT_EQ(result, expected);
+}
+
+// Reads a value containing an actual embedded null byte.
+// The parser should return the text on both sides instead of truncating early.
+TEST(JsonParser, DoesNotTruncateAtEmbeddedRawNullByte) {
+    std::ifstream file(EMBEDDED_NULL_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    const std::string result =
+        json_parser::parsejson(jsonText, {"embedded_raw_null"});
+
+    // Explicit length preserves the embedded null in the expected string.
+    const std::string expected("\"abc\0def\"", 9);
+    EXPECT_EQ(result.size(), expected.size());
+    EXPECT_EQ(result, expected);
+}
+
+// This test looks up a key whose value is the JSON literal null.
+// It checks that parsejson() returns the text "null" rather than an empty result.
+TEST(JsonParser, ReturnsNullLiteralForNullValue) {
+    std::ifstream file(LITERAL_TYPES_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    EXPECT_EQ(json_parser::parsejson(jsonText, {"null_literal"}), "null");
+}
+
+// Checks both a negative decimal and exponent notation in the same fixture.
+// Both numbers should be returned exactly as they are written in the JSON.
+TEST(JsonParser, HandlesNegativeAndExponentNumbers) {
+    std::ifstream file(LITERAL_TYPES_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    EXPECT_EQ(json_parser::parsejson(jsonText, {"negative_num"}), "-273.15");
+    EXPECT_EQ(json_parser::parsejson(jsonText, {"exponent_num"}), "6.022e23");
+}
+
+// This test looks up a JSON boolean literal.
+// parsejson() should return the literal text "true".
+TEST(JsonParser, HandlesBooleanLiteral) {
+    std::ifstream file(LITERAL_TYPES_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    EXPECT_EQ(json_parser::parsejson(jsonText, {"bool_true"}), "true");
+}
+
+struct EmptyStructureCase {
+    const char* name;
+    std::vector<std::string> path;
+};
+
+class JsonEmptyStructureTest
+    : public ::testing::TestWithParam<EmptyStructureCase> {};
+
+// Both cases intentionally request a value that cannot exist in an empty
+// structure. The parser should return an empty result rather than an invalid one.
+TEST_P(JsonEmptyStructureTest, ReturnsEmptyForInvalidLookup) {
+    const auto& test = GetParam();
+    std::ifstream file(EMPTY_STRUCTURES_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    EXPECT_TRUE(json_parser::parsejson(jsonText, test.path).empty());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    EmptyStructures,
+    JsonEmptyStructureTest,
+    ::testing::Values(
+        // Requests index 0 from an empty array.
+        EmptyStructureCase{"ReturnsEmptyForIndexIntoEmptyArray", {"empty_array", "0"}},
+        // Requests a key from an empty object.
+        EmptyStructureCase{"ReturnsEmptyForKeyIntoEmptyObject", {"empty_object", "anything"}}
+    ),
+    caseName<EmptyStructureCase>
+);
 }
