@@ -22,8 +22,8 @@ struct JSONType {
 
     // Getters
 
-    bool isstring();
-    bool isvector();
+    bool isstring() const;
+    bool isvector() const;
     const std::string& asstring() const;
     const std::vector<JSONType>& asvector() const;
 

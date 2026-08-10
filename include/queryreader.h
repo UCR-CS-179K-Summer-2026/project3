@@ -4,6 +4,7 @@
 #include <variant>
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "queryparser.h"
 
@@ -18,15 +19,18 @@ class QueryConstruct {
     protected:
         std::vector<JSONType> jsonparams;
     public:
+        virtual ~QueryConstruct() = default;
         virtual void applyquery() = 0; 
+        QueryConstruct(const std::vector<JSONType>& json) : jsonparams(json) {}
 };
 
-class QueryFind : QueryConstruct {
+class QueryFind : public QueryConstruct {
     public:
-        QueryFind(const std::vector<JSONType>& json) : jsonparams(json) {}
+        QueryFind(const std::vector<JSONType>& json) : QueryConstruct(json) {}
+        void applyquery() override;
 };
 
-class QueryFilter : QueryConstruct {
+class QueryFilter : public QueryConstruct {
     private:
         std::string regex;
         int lowerbound;
@@ -34,21 +38,29 @@ class QueryFilter : QueryConstruct {
     
     public:
         QueryFilter(const std::vector<JSONType>& json, const std::string& r)
-        : jsonparams(json), regex(r) {}
+        : QueryConstruct(json), regex(r) {}
 
-        QueryFilter(const std::vector<JSONType>& json, int lower, int upper)
-        : jsonparams(json), lowerbound(lower), upperbound(upper) {}
+        QueryFilter(const std::vector<JSONType>& json, const std::string& lower, 
+            const std::string& upper)
+        : QueryConstruct(json), lowerbound(std::stoi(lower)), upperbound(std::stoi(upper)) {}
+
+        void applyquery() override;
 };
 
-class QueryDisplay : QueryConstruct {
+class QueryDisplay : public QueryConstruct {
     // Laura
+
+    public:
+        void applyquery() override;
 };
 
 class QueryAllof : QueryConstruct {
     // Laura
+
+    public:
+        void applyquery() override;
 };
 
 namespace queryreader {
-    const QueryConstruct readquery(const std::vector<JSONType>& parsedquery);
-    void applyquery(const QueryConstruct& query, const std::string& json);
+    std::unique_ptr<QueryConstruct> readquery(const std::vector<JSONType>& parsedquery);
 }

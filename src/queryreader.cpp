@@ -1,12 +1,28 @@
 #include <regex>
 #include "queryreader.h"
 
+void QueryFind::applyquery() {
+    // TODO
+}
+
+void QueryFilter::applyquery() {
+    // TODO
+}
+
+void QueryDisplay::applyquery() {
+    // Laura TODO
+}
+
+void QueryAllof::applyquery() {
+    // Laura TODO
+}
+
 namespace queryreader {
-    const QueryConstruct readquery(const std::vector<JSONType>& parsedquery) {
+    std::unique_ptr<QueryConstruct> readquery (const std::vector<JSONType>& parsedquery) {
         Query query;
 
-        if(parsedquery[0].structure.index() == 0){
-            const std::string compare = std::get<std::string>(parsedquery[0].structure);
+        if(parsedquery[0].isstring()){
+            const std::string compare = parsedquery[0].asstring();
             if(compare == "FIND")
                 query = Query::FIND;
             else if(compare == "FILTER")
@@ -26,34 +42,18 @@ namespace queryreader {
             params.push_back(parsedquery[i]);
         }
 
-        switch(params.size()) {
-            case 0:
-                return QueryConstruct(query, keys);
-            case 1:
-                if (params[0].isstring()) {
-                    // Convert JSONType to the string value required by std::regex.
-                    const std::string& param = params[0].asstring();
-
-                    try {
-                        std::regex regex(param);
-
-                        // Regex is valid, so mark this as a regex query.
-                        return QueryConstruct(query, keys, param, true);
-
-                    } catch (const std::regex_error&) {
-
-                        // Invalid regex; treat it as a normal string parameter.
-                        return QueryConstruct(query, keys, param, false);
-                    }
-                }else{
-                    return QueryConstruct(query, keys, params[0].asvector());
+        switch (query) {
+            case Query::FIND:
+                return std::make_unique<QueryFind>(keys);
+            case Query::FILTER:
+                if(params.size() == 1){
+                    return std::make_unique<QueryFilter>(keys, params[0].asstring());
+                } else {
+                    return std::make_unique<QueryFilter>(keys, params[0].asstring(), params[1].asstring());
                 }
-            default:
-                return QueryConstruct(query, keys, params);
+            // Laura: Implement these cases.
         }
-    }
 
-    void applyquery(const QueryConstruct* applyquery, const std::string& json) {
-        // To be implemented
+        throw std::runtime_error("Error Reading: Cannot read query.");
     }
 }
