@@ -465,6 +465,16 @@ TEST_P(JsonEmptyStructureTest, ReturnsEmptyForInvalidLookup) {
     EXPECT_TRUE(json_parser::parsejson(jsonText, test.path).empty());
 }
 
+// "" is a legal object key, so a path naming it should reach the value it holds
+// rather than being treated as a missing component.
+TEST(JsonParser, ReturnsValueForEmptyKey) {
+    std::ifstream file(EMPTY_STRUCTURES_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    EXPECT_EQ(json_parser::parsejson(jsonText, {""}), "\"Empty key\"");
+}
+
 INSTANTIATE_TEST_SUITE_P(
     EmptyStructures,
     JsonEmptyStructureTest,
