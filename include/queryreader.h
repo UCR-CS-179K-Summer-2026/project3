@@ -19,12 +19,12 @@ class QueryConstruct {
         std::vector<JSONType> jsonparams;
     public:
         virtual void applyquery() = 0; 
-}
+};
 
 class QueryFind : QueryConstruct {
     public:
         QueryFind(const std::vector<JSONType>& json) : jsonparams(json) {}
-}
+};
 
 class QueryFilter : QueryConstruct {
     private:
@@ -33,7 +33,11 @@ class QueryFilter : QueryConstruct {
         int upperbound;
     
     public:
-        QueryFilter()
+        QueryFilter(const std::vector<JSONType>& json, const std::string& r)
+        : jsonparams(json), regex(r) {}
+
+        QueryFilter(const std::vector<JSONType>& json, int lower, int upper)
+        : jsonparams(json), lowerbound(lower), upperbound(upper) {}
 };
 
 class QueryDisplay : QueryConstruct {
@@ -42,7 +46,7 @@ class QueryDisplay : QueryConstruct {
 
 class QueryAllof : QueryConstruct {
     // Laura
-}
+};
 
 namespace queryreader {
     const QueryConstruct readquery(const std::vector<JSONType>& parsedquery);
