@@ -53,7 +53,7 @@ namespace queryreader {
         }
     }
 
-    void applyquery(const QueryConstruct& applyquery, const std::string& json) {
+    void applyquery(const QueryConstruct* applyquery, const std::string& json) {
         // To be implemented
     }
 }
