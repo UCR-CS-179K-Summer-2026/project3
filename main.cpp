@@ -9,16 +9,49 @@
 #include "jsonparser.h"
 #include "queryreader.h"
 
+void printWelcomeUI(std::string& fileName) {
+
+    using std::cout;
+    using std::endl;
+    
+    cout << "+-----------------------------------------------+\n";
+    cout << "|                                               |\n";
+    cout << "|    Welcome to the JSON analytical Engine      |\n";
+    cout << "|                                               |\n";
+    cout << "|    Made by:                                   |\n";
+    cout << "|   Laura Canon, Moustafa Soliman, James Mace   |\n";
+    cout << "|                                               |\n";
+    cout << "|                    -------                    |\n";
+    cout << "|                                               |\n";
+    cout << "| Please enter filename you would like to query |\n";
+    cout << "| For example : big                             |\n";
+    cout << "|                                               |\n";
+    cout << "+-----------------------------------------------+\n\n";
+}
+
+void openJSONUI() {
+    std::cout << "+-----------------------------------------------+\n";
+    std::cout << "|                                               |\n";
+    std::cout << "|           JSON opened successfully.           |\n";
+    std::cout << "|                                               |\n";
+    std::cout << "|              Please enter Query               |\n";
+    std::cout << "|                                               |\n";
+    std::cout << "+-----------------------------------------------+\n\n";
+}
+
 int main() {
 
     std::cin.tie(nullptr);
     std::ios_base::sync_with_stdio(false);
 
     std::string fileName;
-    std::cout << "Please input json filename to query.\nFor example, \"EX.json\"" << std::endl;
-    std::getline(std::cin, fileName);
-    fileName = "jsonFiles/" + fileName;
+    printWelcomeUI(fileName);
 
+    std::cout << "> " << std::flush;
+    std::getline(std::cin, fileName);
+    fileName = "jsonFiles/" + fileName + ".json";
+    
+    std::cout << std::endl;
     std::ifstream json(fileName);
 
     // verify file opened correctly
@@ -30,10 +63,12 @@ int main() {
     // json_string owns the bytes; the view returned below points into it.
     const std::string json_string = json_parser::jsonToString(json);
 
+    openJSONUI();
+
     bool repeat = 1;
     while(repeat) {
+        std::cout << "> " << std::flush;
         // these are temporary until the query reader is rigged up
-        std::cout << "Query:: " << std::endl;
         std::string line;
         std::getline(std::cin, line);
 
@@ -43,20 +78,47 @@ int main() {
         while (components >> component) {
             query.push_back(component);
         }
-
-        if(query[0] == "X") {
-            repeat = 0;
-            break;
-        }
         
         std::string_view value = json_parser::parsejson(json_string, query);
 
         if (value.empty()) {
-            std::cout << "not found" << std::endl;
+            std::cout << "+-----------------------------------------------+\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|               Value not found.                |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|                 Query again?                  |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|                    (y/n)                      |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "+-----------------------------------------------+\n";
+            std::cout << std::flush;
             return 1;
-        }
+        } else {
+            std::cout << "+-----------------------------------------------+\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|                 Value found.                  |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|                Printing below.                |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "+-----------------------------------------------+\n";
+            std::cout << std::endl;
+            std::cout << value << std::endl;
+            std::cout << std::endl;
+            std::cout << "+-----------------------------------------------+\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|                 Query again?                  |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|                    (y/n)                      |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "+-----------------------------------------------+\n";
 
-        std::cout << value << "\nX to exit, otherwise, query again:: " << std::endl;
+            std::cout << "> " << std::flush;
+            std::string userWantRepeat;
+            std::cin >> userWantRepeat;
+            if(!(userWantRepeat == "y") || !(userWantRepeat == "Y")) {
+                repeat = 0;
+            }
+        }
     }
 
     json.close();
