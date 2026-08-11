@@ -198,6 +198,17 @@
             .status-grid, .two-column { grid-template-columns: 1fr; }
             pre, .flow { font-size: 0.9rem; }
         }
+
+        .diagram-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #dbe3ec;
+            border-radius: 10px;
+            background: white;
+        }
+        
     </style>
 </head>
 
@@ -276,11 +287,11 @@
         <em>what</em> operation should happen; the JSON side provides the data that operation acts on.
     </p>
 
-    <div class="diagram-placeholder">
-        <div>
-            <strong>DIAGRAM  — System Architecture</strong>
-        </div>
-    </div>
+    <img
+        src="images/SystemArchi.png"
+        alt="System architecture diagram showing the query processing pipeline, JSON loader, execution layer, and traversal engine"
+        class="diagram-image"
+    >
 
     <div class="warning">
         <strong>Current-state note:</strong> the architecture above represents the intended complete pipeline.
@@ -300,11 +311,11 @@
         to unit test.
     </p>
 
-    <div class="diagram-placeholder">
-        <div>
-            <strong>Internal System Design</strong>
-        </div>
-    </div>
+    <img
+        src="images/InternalSystem.png"
+        alt="Internal system design diagram for the JSON Query Engine"
+        class="diagram-image"
+    >
 
     <h3>Main Program</h3>
     <p>
@@ -522,11 +533,11 @@ queryparser::getparsedquery();</code></pre>
 
     <h3>3. JSON Traversal Algorithm</h3>
 
-    <div class="diagram-placeholder">
-        <div>
-            <strong>JSON Traversal Flowchart</strong>
-        </div>
-    </div>
+    <img
+        src="images/JSONTraversal.png"
+        alt="Flowchart showing JSON object and array traversal logic"
+        class="diagram-image"
+    >
 
     <p>
         The traversal processes one path component at a time. At each step, the parser determines
