@@ -35,7 +35,7 @@ add_executable(JSONQL
     ${TEST_FILES}
 )
 
-add_executable(jsonquery
+add_executable(json
     main.cpp
     ${SRC_FILES}
 )
@@ -46,7 +46,7 @@ add_executable(benchmark
 )
 
 target_include_directories(JSONQL PRIVATE include)
-target_include_directories(jsonquery PRIVATE include)
+target_include_directories(json PRIVATE include)
 target_include_directories(benchmark PRIVATE include)
 
 # Absolute path to the sample JSON files so tests do not depend on the working
