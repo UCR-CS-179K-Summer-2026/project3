@@ -12,7 +12,7 @@ _deps/
 cmake_install.cmake
 lib/
 Testing
-jsonquery
+json
 JSONQL*
 compile_commands*
 .DS_Store
