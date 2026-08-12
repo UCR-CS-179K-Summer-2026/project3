@@ -39,6 +39,58 @@ void openJSONUI() {
     std::cout << "+-----------------------------------------------+\n\n";
 }
 
+std::vector<std::string> getQuery() {
+    std::cout << "> " << std::flush;
+    // these are temporary until the query reader is rigged up
+    std::string line = "";
+    std::getline(std::cin, line);
+
+    std::vector<std::string> query = {};
+    std::istringstream components(line);
+    std::string component = "";
+    while (components >> component) {
+        query.push_back(component);
+    }
+    return query;
+}
+
+void query(std::string json_string) {
+    std::vector<std::string> query = getQuery();
+        
+    std::string value = json_parser::parsejson(json_string, query);
+
+    std::cout << "\n";
+
+    if (value.empty()) {
+        std::cout << "+-----------------------------------------------+\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|               Value not found.                |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|                 Query again?                  |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|                    (y/n)                      |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "+-----------------------------------------------+\n";
+    } else {
+        std::cout << "+-----------------------------------------------+\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|                Value found...                 |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|                Printing below.                |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "+-----------------------------------------------+\n";
+        std::cout << "\n" << value << "\n\n";
+        std::cout << "+-----------------------------------------------+\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|                 Query again?                  |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "|                    (y/n)                      |\n";
+        std::cout << "|                                               |\n";
+        std::cout << "+-----------------------------------------------+\n";
+    }
+    std::cout << "\n> " << std::flush;
+}
+
 int main() {
 
     std::cin.tie(nullptr);
@@ -64,62 +116,35 @@ int main() {
     const std::string json_string = json_parser::jsonToString(json);
 
     openJSONUI();
-
-    bool repeat = 1;
-    while(repeat) {
-        std::cout << "> " << std::flush;
-        // these are temporary until the query reader is rigged up
-        std::string line;
-        std::getline(std::cin, line);
-
-        std::vector<std::string> query = {};
-        std::istringstream components(line);
-        std::string component;
-        while (components >> component) {
-            query.push_back(component);
+    bool looped = false;
+    while(true) {
+        if(looped) {
+            std::cout << "\n";
+            std::cout << "+-----------------------------------------------+\n";
+            std::cout << "|                                               |\n";
+            std::cout << "|              Please enter Query               |\n";
+            std::cout << "|                                               |\n";
+            std::cout << "+-----------------------------------------------+\n\n";
         }
+        looped = true;
         
-        std::string_view value = json_parser::parsejson(json_string, query);
+        query(json_string);
 
-        if (value.empty()) {
-            std::cout << "+-----------------------------------------------+\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|               Value not found.                |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|                 Query again?                  |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|                    (y/n)                      |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "+-----------------------------------------------+\n";
-            std::cout << std::flush;
-            return 1;
-        } else {
-            std::cout << "+-----------------------------------------------+\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|                 Value found.                  |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|                Printing below.                |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "+-----------------------------------------------+\n";
-            std::cout << std::endl;
-            std::cout << value << std::endl;
-            std::cout << std::endl;
-            std::cout << "+-----------------------------------------------+\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|                 Query again?                  |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "|                    (y/n)                      |\n";
-            std::cout << "|                                               |\n";
-            std::cout << "+-----------------------------------------------+\n";
-
-            std::cout << "> " << std::flush;
-            std::string userWantRepeat;
-            std::cin >> userWantRepeat;
-            if(!(userWantRepeat == "y") || !(userWantRepeat == "Y")) {
-                repeat = 0;
-            }
+        // getline, not >>, so the newline does not survive into the next getQuery
+        std::string userWantRepeat;
+        if(!std::getline(std::cin, userWantRepeat)) {
+            break;
+        }
+        if(!(userWantRepeat == "y" || userWantRepeat == "Y")) {
+            break;
         }
     }
+    std::cout << "\n";
+    std::cout << "+-----------------------------------------------+\n";
+    std::cout << "|                                               |\n";
+    std::cout << "|                   Exiting...                  |\n";
+    std::cout << "|                                               |\n";
+    std::cout << "+-----------------------------------------------+\n";
 
     json.close();
     return 0;
