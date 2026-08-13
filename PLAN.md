@@ -2,8 +2,6 @@
 
 ## Sprint 1 Plan:
 
-Goal: Set up the project, document the main features, define the query format, and prepare the C++ environment.
-
 ### Laura — Documentation, JSON Files, and Testing
 
 - Updated `README.md`, `PLAN.md`, and GitHub Pages.
@@ -31,19 +29,35 @@ Goal: Set up the project, document the main features, define the query format, a
 - Added tests for simple, nested, and deeply nested queries.
 - Prepared the parsed query format for later JSON lookup.
 
-### Sprint 1 Results
-
-- The C++ project builds successfully.
-- The query parser handles simple and nested queries.
-- The JSON parser can navigate JSON data using keys and indices.
-- Sample JSON files are available for testing and demonstrations.
-- Sprint 1 tests pass.
-- Project documentation and GitHub Pages are updated.
-
 ## Sprint 2:
-Complex structure (arrays, etc) and querying.
 
-Examples: Finding all data corresponding to a specific key
+### Laura — Testing and Architecture
+
+* Organized and improved the project testing system.
+* Added more tests for JSON parsing, query parsing, arrays, nested data, and edge cases.
+* Helped organize the overall project structure.
+* Improved how the JSON parser, query parser, and query reader work together.
+* Made sure Sprint 1 features still worked after the new changes.
+
+### James — Unicode Support and Optimization
+
+* Added Unicode support to the JSON parser.
+* Added support for Unicode escape sequences and special characters.
+* Improved how Unicode keys are handled in queries.
+* Optimized the JSON parser to reduce unnecessary work.
+* Improved object and array searching.
+* Added performance tests for different types of JSON data.
+* Made the JSON parser about **4× faster than the original version**.
+
+### Moustafa — Query Reader and Query Constructor
+
+* Created the query reader.
+* Created the `QueryConstruct` structure for storing queries.
+* Added support for `FIND`, `FILTER`, `DISPLAY`, and `ALLOF`.
+* Converted parsed queries into structured commands, paths, and parameters.
+* Added support for different types of query parameters.
+* Helped separate query parsing from query execution.
+* Prepared the query system to work with the JSON parser.
 
 
 ## Sprint 3:
