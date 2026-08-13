@@ -47,7 +47,7 @@
 * Optimized the JSON parser to reduce unnecessary work.
 * Improved object and array searching.
 * Added performance tests for different types of JSON data.
-* Made the JSON parser about **4× faster than the original version**.
+* Made the JSON parser about 4× faster than the original version**.
 
 ### Moustafa — Query Reader and Query Constructor
 
