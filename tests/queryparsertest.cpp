@@ -34,6 +34,8 @@ INSTANTIATE_TEST_SUITE_P(
     ValidQueries,
     QueryParserValidCaseTest,
     ::testing::Values(
+        // FIND Queries
+
         // Basic FIND query with one field.
         // Checks that the command and field are stored as two parsed elements.
         QueryParseCase{
@@ -163,6 +165,50 @@ INSTANTIATE_TEST_SUITE_P(
             std::vector<JSONType>{
                 "FIND",
                 {"\"employees\"", "\"name\""}
+            }
+        },
+
+        // FILTER Queries
+
+        QueryParseCase{
+            "BasicFilterRegexQuery",
+            "FILTER {a} ^L",
+            std::vector<JSONType>{
+                "FILTER",
+                {"a"},
+                "^L"
+            }
+        },
+
+        QueryParseCase{
+            "BasicFilterNumberQuery",
+            "FILTER {a} 1000 3000",
+            std::vector<JSONType>{
+                "FILTER",
+                {"a"},
+                "1000",
+                "3000"
+            }
+        },
+
+        QueryParseCase{
+            "AdvancedFilterRegexQuery",
+            "FILTER {a {b {c}}} ^M",
+            std::vector<JSONType>{
+                "FILTER",
+                {"a", {"b", {"c"}}},
+                "^M"
+            }
+        },
+
+        QueryParseCase{
+            "AdvancedFilterNumberQuery",
+            "FILTER {a {b {c}}} 1000 3000",
+            std::vector<JSONType>{
+                "FILTER",
+                {"a", {"b", {"c"}}},
+                "1000",
+                "3000"
             }
         }
     ),
