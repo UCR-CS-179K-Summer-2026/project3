@@ -230,7 +230,6 @@ TEST(JsonParser, ReturnsEmptyForMissingKey) {
 // ====================
 
 // Looks up a key containing an escaped quotation mark.
-// The fixture was renamed from test.json so its purpose is clear.
 TEST(JsonParser, TestEscapeChar) {
     std::ifstream file(ESCAPED_QUOTE_FILE);
     ASSERT_TRUE(file.is_open());
@@ -251,7 +250,7 @@ struct OddKeyCase {
 class JsonOddKeyTest : public ::testing::TestWithParam<OddKeyCase> {};
 
 // These cases all use oddKeys.json and differ only in the path and expected
-// result, so the table makes the key/subkey coverage easy to scan.
+// result.
 TEST_P(JsonOddKeyTest, ReturnsExpectedValue) {
     const auto& test = GetParam();
     std::ifstream file(ODD_KEYS_FILE);
@@ -286,8 +285,7 @@ struct UnicodeCase {
 
 class JsonUnicodeTest : public ::testing::TestWithParam<UnicodeCase> {};
 
-// All cases below exercise the same unicode.json fixture. Keeping the data in
-// one table makes script, byte-width, escape, and surrogate coverage explicit.
+// All cases below exercise the same unicode.json fixture. 
 TEST_P(JsonUnicodeTest, HandlesUnicodeCase) {
     const auto& test = GetParam();
     std::ifstream file(UNICODE_FILE);
