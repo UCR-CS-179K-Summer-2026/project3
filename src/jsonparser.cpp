@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "jsonparser.h"
 
 namespace json_parser {
@@ -115,8 +117,7 @@ namespace json_parser {
         // convertUnicode only ever rewrites at a backslash, so a span without
         // one already reads as the text it names and callers can compare it
         // where it lies instead of building a converted copy first.
-        bool scanStringSpan(const char*& p, const char* end,
-                            std::string_view& span, bool& escaped) {
+        bool scanStringSpan(const char*& p, const char* end, std::string_view& span, bool& escaped) {
             if (p >= end || *p != '"') {
                 return false;
             }
@@ -211,6 +212,117 @@ namespace json_parser {
             return true;
         }
 
+        // True when a value really sits at p. An index past the last element of an
+        // array leaves p on the closing bracket, which names nothing.
+        bool hasValue(const char*& p, const char* end) {
+            skipWs(p, end);
+            return p < end && *p != ']' && *p != '}';
+        }
+
+        // Moves p from the start of an object or array to the value the component
+        // names. Returns false when this container does not hold it. Components are
+        // compared exactly as the query spells them; the query parser has already
+        // stripped the quotes.
+        bool seekComponent(const char*& p, const char* end, const std::string& want) {
+            skipWs(p, end);
+            if (p >= end) {
+                return false;
+            }
+
+            if (*p == '{') {
+                ++p;
+
+                while (p < end) {
+                    std::string_view key;
+                    bool escaped;
+                    skipWs(p, end);
+                    if (!scanStringSpan(p, end, key, escaped)) {
+                        return false;  // '}' of an empty object, or malformed
+                    }
+
+                    skipWs(p, end);
+                    if (p >= end || *p != ':') {
+                        return false;
+                    }
+                    ++p;
+
+                    // Only a key with an escape needs to be built out before it can be compared.
+                    if (escaped ? convertUnicode(key) == want : key == want) {
+                        return true;  // p is now sitting on the value we want
+                    }
+
+                    if (!skipValue(p, end)) {
+                        return false;
+                    }
+                    skipWs(p, end);
+                    if (p >= end || *p != ',') {
+                        return false;  // hit '}': the key is not in this object
+                    }
+                    ++p;
+                }
+
+                return false;  // ran off the end of the object
+            }
+
+            if (*p == '[') {
+                size_t index = 0;
+                if (!toIndex(want, index)) {
+                    return false;  // array level needs a numeric component
+                }
+
+                ++p;
+                for (size_t i = 0; i < index; ++i) {
+                    if (!skipValue(p, end)) {
+                        return false;
+                    }
+                    skipWs(p, end);
+                    if (p >= end || *p != ',') {
+                        return false;  // index past the end
+                    }
+                    ++p;
+                }
+
+                return true;
+            }
+
+            return false;  // the query descends but the value is a scalar
+        }
+
+        // Walks p along a linear path, one component per level.
+        bool seekValue(const char*& p, const char* end, const std::vector<std::string>& path) {
+            for (const std::string& want : path) {
+                if (!seekComponent(p, end, want)) {
+                    return false;
+                }
+            }
+
+            return hasValue(p, end);
+        }
+
+        // Runs a query group against the container that starts at container.
+        // Siblings each name a target at this level, so every one of them is looked
+        // up from that same starting point. A nested group descends from the sibling
+        // right before it, or stays at this level when nothing precedes it. Every
+        // target has to be there for the group to hold.
+        bool findGroup(const char* container, const char* end, const std::vector<JSONType>& group, size_t from = 0) {
+            const char* previous = container;
+
+            for (size_t i = from; i < group.size(); ++i) {
+                if (group[i].isstring()) {
+                    const char* p = container;
+                    if (!seekComponent(p, end, group[i].asstring()) || !hasValue(p, end)) {
+                        return false;
+                    }
+
+                    previous = p;
+                } else if (!findGroup(previous, end, group[i].asvector())) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
     }
 
     std::string jsonToString(std::ifstream& json) {
@@ -222,83 +334,50 @@ namespace json_parser {
         return json_string;
     }
     
-    std::string parsejson(std::string_view json, const std::vector<std::string>& query) {
+    std::string parsejson(std::string_view json, const std::vector<std::string>& path) {
 
         const char* p = json.data();
         const char* end = p + json.size();
 
-        for (const std::string& want : query) {
-            skipWs(p, end);
-            if (p >= end) {
-                return {};
-            }
-
-            if (*p == '{') {
-                ++p;
-
-                bool matched = false;
-                while (p < end) {
-                    std::string_view key;
-                    bool escaped;
-                    skipWs(p, end);
-                    if (!scanStringSpan(p, end, key, escaped)) {
-                        return {};  // '}' of an empty object, or malformed
-                    }
-
-                    skipWs(p, end);
-                    if (p >= end || *p != ':') {
-                        return {};
-                    }
-                    ++p;
-
-                    // Only a key with an escape needs to be built out before it can be compared.
-                    if (escaped ? convertUnicode(key) == want : key == want) {
-                        matched = true;
-                        break;  // p is now sitting on the value we want
-                    }
-
-                    if (!skipValue(p, end)) {
-                        return {};
-                    }
-                    skipWs(p, end);
-                    if (p >= end || *p != ',') {
-                        return {};  // hit '}': the key is not in this object
-                    }
-                    ++p;
-                }
-
-                if (!matched) {
-                    return {};
-                }
-            } else if (*p == '[') {
-                size_t index = 0;
-                if (!toIndex(want, index)) {
-                    return {};  // array level needs a numeric component
-                }
-
-                ++p;
-                for (size_t i = 0; i < index; ++i) {
-                    if (!skipValue(p, end)) {
-                        return {};
-                    }
-                    skipWs(p, end);
-                    if (p >= end || *p != ',') {
-                        return {};  // index past the end
-                    }
-                    ++p;
-                }
-            } else {
-                return {};  // path continues but the value is a scalar
-            }
+        if (!seekValue(p, end, path)) {
+            return {};
         }
 
-        skipWs(p, end);
         const char* start = p;
         if (!skipValue(p, end)) {
             return {};
         }
 
         return convertUnicode(std::string_view(start, static_cast<size_t>(p - start)));
+    }
+
+    std::string parsejson(std::string_view json, const ParsedQuery& query) {
+
+        switch (query.command) {
+            case Query::FIND: {
+                const char* p = json.data();
+                const char* end = p + json.size();
+
+                // Everything after the command names targets to check.
+                return findGroup(p, end, query.parts, 1) ? "true" : "false";
+            }
+
+            case Query::DISPLAY: {
+                
+            }
+
+            case Query::FILTER: {
+                // TODO: Moustafa?
+            }
+
+            case Query::ALLOF: {
+                //ToDO: Laura?
+            }
+            
+
+            default:
+                throw std::runtime_error("Unsupported query type.");
+        }
     }
 
     int isFileOpen(std::ifstream& json){

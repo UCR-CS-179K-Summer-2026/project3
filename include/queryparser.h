@@ -30,10 +30,18 @@ struct JSONType {
     bool operator==(const JSONType& other) const = default;
 };
 
+enum class Query {
+    FIND,
+    FILTER,
+    DISPLAY,
+    ALLOF
+};
+
 // Stores the parsed query along with information that the JSON parser
-// will need later so it does not have to infer the filter type.
+// will need later so it does not have to infer the command or filter type.
 struct ParsedQuery {
     std::vector<JSONType> parts;
+    Query command = Query::FIND;
     bool isRegexFilter = false;
 
     bool operator==(const ParsedQuery& other) const = default;

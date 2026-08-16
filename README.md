@@ -53,10 +53,13 @@ C++
 
 Checks whether all specified keys at each level exists.
 
+Keys listed side by side are separate targets at the same level, and all of them must exist. A nested group descends from the key immediately before it.
+
 Syntax:
 
 ```text
 FIND {"key"}
+FIND {"key" "other key"}
 FIND {"key" { "subkey" { "sub-subkey" }}}
 ```
 
@@ -74,7 +77,7 @@ If the path does not exist:
 
 ```text
 Query:
-FIND {"employees" "0" "age"}
+FIND {"employees" { "0" { "age" }}}
 
 Result:
 false
@@ -110,7 +113,7 @@ Example:
 
 ```text
 Query:
-FILTER {"employees" "salary"} 80000 100000
+FILTER {"employees" { "salary" }} 80000 100000
 
 Result:
 ["Laura", "James"]

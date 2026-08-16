@@ -8,13 +8,6 @@
 
 #include "queryparser.h"
 
-enum class Query {
-    FIND,
-    FILTER,
-    DISPLAY,
-    ALLOF
-};
-
 class QueryConstruct {
     protected:
         std::vector<JSONType> jsonparams;

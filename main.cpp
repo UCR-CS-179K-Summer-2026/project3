@@ -1,12 +1,12 @@
 // C++ STD libraries
 #include<iostream>  // console IO
 #include<fstream>   // file IO
-#include<sstream>
 #include<string>
 #include<vector>
 
 // Header Files
 #include "jsonparser.h"
+#include "queryparser.h"
 #include "queryreader.h"
 
 void printWelcomeUI(std::string& fileName) {
@@ -39,25 +39,20 @@ void openJSONUI() {
     std::cout << "+-----------------------------------------------+\n\n";
 }
 
-std::vector<std::string> getQuery() {
+void query(std::string json_string) {
     std::cout << "> " << std::flush;
-    // these are temporary until the query reader is rigged up
     std::string line = "";
     std::getline(std::cin, line);
 
-    std::vector<std::string> query = {};
-    std::istringstream components(line);
-    std::string component = "";
-    while (components >> component) {
-        query.push_back(component);
+    std::string value;
+    try {
+        queryparser::parsequery(line);
+        value = json_parser::parsejson(json_string, queryparser::getparsedquery());
+    } catch (const std::exception& e) {
+        std::cout << "\n" << e.what() << "\n";
+        std::cout << "\n> " << std::flush;
+        return;
     }
-    return query;
-}
-
-void query(std::string json_string) {
-    std::vector<std::string> query = getQuery();
-        
-    std::string value = json_parser::parsejson(json_string, query);
 
     std::cout << "\n";
 
