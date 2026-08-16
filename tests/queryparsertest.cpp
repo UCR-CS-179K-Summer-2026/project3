@@ -20,14 +20,12 @@ class QueryParserValidCaseTest
     : public ::testing::TestWithParam<QueryParseCase> {};
 
 // Runs the same parser check for each valid query case below.
-// Parameterizing these cases keeps the test logic consistent while making
-// each input, expected structure, and behavior easy to compare.
 TEST_P(QueryParserValidCaseTest, ParsesExpectedStructure) {
     const QueryParseCase& test = GetParam();
 
     queryparser::parsequery(test.query);
 
-    EXPECT_EQ(queryparser::getparsedquery(), test.expected);
+    EXPECT_EQ(queryparser::getparsedquery().parts, test.expected);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -188,7 +186,7 @@ TEST_P(QueryParserEmptyCaseTest, ProducesEmptyResult) {
 
     queryparser::parsequery(test.query);
 
-    EXPECT_TRUE(queryparser::getparsedquery().empty());
+    EXPECT_TRUE(queryparser::getparsedquery().parts.empty());
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -248,8 +246,6 @@ INSTANTIATE_TEST_SUITE_P(
 }  // namespace
 
 
-// This behavior is kept as a standalone test because it depends on two
-// consecutive parsequery() calls rather than one independent input case.
 // It checks that the second parse replaces the previous result instead of appending to it.
 TEST(QueryParser, ReplacesPreviousParsedQuery) {
     queryparser::parsequery("FIND {employees name}");
@@ -260,5 +256,37 @@ TEST(QueryParser, ReplacesPreviousParsedQuery) {
         {"products", "price"}
     };
 
-    EXPECT_EQ(queryparser::getparsedquery(), expected);
+    EXPECT_EQ(queryparser::getparsedquery().parts, expected);
 }
+
+// One FILTER argument after the path means regex.
+TEST(QueryParser, IdentifiesRegexFilter) {
+    queryparser::parsequery(
+        R"(FILTER {"employees" {"name"}} "^L")"
+    );
+
+    EXPECT_TRUE(queryparser::getparsedquery().isRegexFilter);
+}
+
+// Two FILTER arguments after the path mean numeric range.
+TEST(QueryParser, IdentifiesNumericFilter) {
+    queryparser::parsequery(
+        R"(FILTER {"employees" "salary"} 80000 100000)"
+    );
+
+    EXPECT_FALSE(queryparser::getparsedquery().isRegexFilter);
+}
+
+// Make sure filter metadata does not carry into the next query.
+TEST(QueryParser, ResetsFilterType) {
+    queryparser::parsequery(
+        R"(FILTER {"employees" {"name"}} "^L")"
+    );
+
+    EXPECT_TRUE(queryparser::getparsedquery().isRegexFilter);
+
+    queryparser::parsequery("FIND {employees}");
+
+    EXPECT_FALSE(queryparser::getparsedquery().isRegexFilter);
+}
+

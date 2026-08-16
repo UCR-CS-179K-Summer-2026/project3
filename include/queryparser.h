@@ -30,12 +30,21 @@ struct JSONType {
     bool operator==(const JSONType& other) const = default;
 };
 
+// Stores the parsed query along with information that the JSON parser
+// will need later so it does not have to infer the filter type.
+struct ParsedQuery {
+    std::vector<JSONType> parts;
+    bool isRegexFilter = false;
+
+    bool operator==(const ParsedQuery& other) const = default;
+};
+
 namespace queryparser {
     void parsequery(const std::string& query);
 
     // For debugging purposes
     void displaylastparsedquery();
 
-    // Returns last parsed query
-    const std::vector<JSONType>& getparsedquery(); 
+    // Returns last parsed query and metadata
+    const ParsedQuery& getparsedquery();
 }

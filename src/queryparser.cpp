@@ -22,10 +22,12 @@ const std::vector<JSONType>& JSONType::asvector() const {
 
 // Private
 namespace{
-    std::vector<JSONType> parsedquery;
+    // Stores query parts and filter metadata.
+    ParsedQuery parsedquery;
+
     std::stack<char> curlybraces;
 
-    // Private recursive display helper function for displaylastparsedquery
+    // Recursive display helper.
     void display(const std::vector<JSONType> queryStruct) {
         std::cout << "[ ";
 
@@ -34,8 +36,8 @@ namespace{
                 case 0:
                     std::cout << std::get<std::string>(query.structure) << " ";
                     break;
+
                 case 1:
-                    // Recursively print the nested structure.
                     display(std::get<std::vector<JSONType>>(query.structure));
                     std::cout << " ";
                     break;
@@ -69,10 +71,12 @@ namespace{
                     }
 
                     break;
+
                 case '{':
                     curlybraces.push('{');
                     parsenested(start, query, substructure);
                     break;
+
                 case '}':
                     validatecurlybraces();
                     
@@ -84,6 +88,7 @@ namespace{
                     parsed.push_back(substructure);
                     substructure.clear();
                     return;
+
                 default:
                     append += c;
                     break;
@@ -94,7 +99,9 @@ namespace{
 
 namespace queryparser {
     void parsequery(const std::string& query){
-        parsedquery.clear();
+        // Reset previous query data.
+        parsedquery.parts.clear();
+        parsedquery.isRegexFilter = false;
         
         if(!curlybraces.empty()){
             curlybraces = std::stack<char>();
@@ -108,19 +115,21 @@ namespace queryparser {
             switch(c){
                 case ' ':
                     if(!append.empty()){
-                        parsedquery.push_back(append);
+                        parsedquery.parts.push_back(append);
                         append.clear();
                     }
 
                     break;
+
                 case '{':
                     curlybraces.push('{');
-
-                    parsenested(i, query, parsedquery);
+                    parsenested(i, query, parsedquery.parts);
                     break;
+
                 case '}':
                     validatecurlybraces();
                     break;
+
                 default:
                     append += c;
                     break;
@@ -132,19 +141,29 @@ namespace queryparser {
         }
 
         if(append != ""){
-            parsedquery.push_back(append);
+            parsedquery.parts.push_back(append);
             append.clear();
+        }
+
+        // One FILTER parameter means regex.
+        if(!parsedquery.parts.empty()
+            && parsedquery.parts[0].isstring()
+            && parsedquery.parts[0].asstring() == "FILTER") {
+
+            if(parsedquery.parts.size() == 3){
+                parsedquery.isRegexFilter = true;
+            }
         }
     }
 
     // For debugging purposes
-
     void displaylastparsedquery(){
-        display(parsedquery);
+        display(parsedquery.parts);
         std::cout << std::endl;
     }
 
-    const std::vector<JSONType>& getparsedquery() {
+    // Return query parts and metadata.
+    const ParsedQuery& getparsedquery() {
         return parsedquery;
     }
 }
