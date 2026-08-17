@@ -392,12 +392,126 @@ TEST(JsonParser, RejectsUnsupportedCommand) {
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
-    queryparser::parsequery(R"(DISPLAY {"employees" {"0" {"name"}}})");
+    queryparser::parsequery(R"(ALLOF {"employees" {"name"}})");
 
     EXPECT_THROW(
         json_parser::parsejson(jsonText, queryparser::getparsedquery()),
         std::runtime_error);
 }
+
+// ====================
+// DISPLAY queries
+// ====================
+
+struct DisplayCase {
+    const char* name;
+    const char* filename;
+    const char* query;
+    const char* expected;
+};
+
+class JsonDisplayTest : public ::testing::TestWithParam<DisplayCase> {};
+
+// Each case parses a real DISPLAY query and checks the text it returns.
+// A query that names nothing that exists returns an empty result.
+TEST_P(JsonDisplayTest, ReturnsNamedValues) {
+    const auto& test = GetParam();
+    std::ifstream file(test.filename);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(test.query);
+
+    const std::string result =
+        json_parser::parsejson(jsonText, queryparser::getparsedquery());
+
+    EXPECT_EQ(result, test.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    DisplayQueries,
+    JsonDisplayTest,
+    ::testing::Values(
+        // The keys along the way are waypoints, so only the leaf is shown.
+        DisplayCase{
+            "ShowsValueAtNestedPath",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"name"}}})",
+            "\"Laura\""
+        },
+        // The README's second DISPLAY example.
+        DisplayCase{
+            "ShowsDepartmentOfSecondEmployee",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"1" {"department"}}})",
+            "\"IT Support\""
+        },
+        // A descent through plain objects rather than an array.
+        DisplayCase{
+            "ShowsValueInNestedObject",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"company_info" {"company_name"}})",
+            "\"UC Riverside\""
+        },
+        // A descent that ends in an array index.
+        DisplayCase{
+            "ShowsValueAtArrayIndex",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"skills" {"1"}}}})",
+            "\"Git\""
+        },
+        // Two leaves under the same waypoint come back as a list.
+        DisplayCase{
+            "ShowsSiblingLeavesAsList",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"name" "salary"}}})",
+            "[\"Laura\", 90000]"
+        },
+        // Siblings at the root need no descent at all.
+        DisplayCase{
+            "ShowsRootSiblingsAsList",
+            LITERAL_TYPES_FILE,
+            R"(DISPLAY {"bool_true" "null_literal"})",
+            "[true, null]"
+        },
+        // A leading group is evaluated where it sits, so this reads the same way.
+        DisplayCase{
+            "ShowsLeadingGroupAtCurrentLevel",
+            LITERAL_TYPES_FILE,
+            R"(DISPLAY {{"bool_true" "negative_num"}})",
+            "[true, -273.15]"
+        },
+        // The key and the value are both spelled with escapes in the document.
+        DisplayCase{
+            "ShowsUnicodeValue",
+            UNICODE_FILE,
+            R"(DISPLAY {"日本"})",
+            "\"東京\""
+        },
+        // Every target has to resolve, so one missing leaf empties the result.
+        DisplayCase{
+            "ReturnsEmptyWhenOneLeafIsMissing",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"name" "age"}}})",
+            ""
+        },
+        // A key that is not in the document at all.
+        DisplayCase{
+            "ReturnsEmptyForMissingKey",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"budget"})",
+            ""
+        },
+        // Index 0 of an empty array names no value to show.
+        DisplayCase{
+            "ReturnsEmptyForIndexIntoEmptyArray",
+            EMPTY_STRUCTURES_FILE,
+            R"(DISPLAY {"empty_array" {"0"}})",
+            ""
+        }
+    ),
+    caseName<DisplayCase>
+);
 
 // ====================
 // Unicode and escaped-key fixtures

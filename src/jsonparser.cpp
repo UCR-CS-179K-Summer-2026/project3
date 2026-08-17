@@ -323,6 +323,61 @@ namespace json_parser {
             return true;
         }
 
+        // Recurisvely
+        bool displayGroup(const char* container, const char* end, const std::vector<JSONType>& group, std::vector<std::string>& out, size_t from = 0) {
+            const char* previous = container;
+
+            for (size_t i = from; i < group.size(); ++i) {
+                if (group[i].isvector()) {
+                    if (!displayGroup(previous, end, group[i].asvector(), out)) {
+                        return false;
+                    }
+
+                    continue;
+                }
+
+                const char* p = container;
+                if (!seekComponent(p, end, group[i].asstring()) || !hasValue(p, end)) {
+                    return false;
+                }
+
+                previous = p;
+
+                // A group follows, so this key only names the way down.
+                if (i + 1 < group.size() && group[i + 1].isvector()) {
+                    continue;
+                }
+
+                const char* start = p;
+                if (!skipValue(p, end)) {
+                    return false;
+                }
+
+                out.push_back(convertUnicode(std::string_view(start, static_cast<size_t>(p - start))));
+            }
+
+            return true;
+        }
+
+        // One value reads as itself; several read as a list, the way the README
+        // prints a result holding more than one value.
+        std::string joinValues(const std::vector<std::string>& values) {
+            if (values.size() == 1) {
+                return values[0];
+            }
+
+            std::string out = "[";
+            for (size_t i = 0; i < values.size(); ++i) {
+                if (i > 0) {
+                    out += ", ";
+                }
+                out += values[i];
+            }
+            out += "]";
+
+            return out;
+        }
+
     }
 
     std::string jsonToString(std::ifstream& json) {
@@ -363,7 +418,15 @@ namespace json_parser {
             }
 
             case Query::DISPLAY: {
-                
+                const char* p = json.data();
+                const char* end = p + json.size();
+
+                std::vector<std::string> values;
+                if (!displayGroup(p, end, query.parts, values, 1) || values.empty()) {
+                    return {};  // a missing target means nothing was found
+                }
+
+                return joinValues(values);
             }
 
             case Query::FILTER: {
@@ -371,7 +434,7 @@ namespace json_parser {
             }
 
             case Query::ALLOF: {
-                //ToDO: Laura?
+                //TODO: Laura?
             }
             
 

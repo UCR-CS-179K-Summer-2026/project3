@@ -125,10 +125,13 @@ The numeric range is inclusive.
 
 Returns the value stored at a specific path.
 
+Keys listed side by side each name a value to show, and all of them must exist. A key followed by a nested group only names the way down, so its own value is not shown.
+
 Syntax:
 
 ```text
 DISPLAY {"key"}
+DISPLAY {"key" "other key"}
 DISPLAY {"key" { "subkey" { "sub-subkey" }}}
 ```
 
@@ -150,6 +153,16 @@ DISPLAY {"employees" { "1" { "department" }}}
 
 Result:
 "IT Support"
+```
+
+Several values at once:
+
+```text
+Query:
+DISPLAY {"employees" { "0" { "name" "salary" }}}
+
+Result:
+["Laura", 90000]
 ```
 
 #### ALLOF

@@ -7,7 +7,6 @@
 // Header Files
 #include "jsonparser.h"
 #include "queryparser.h"
-#include "queryreader.h"
 
 void printWelcomeUI(std::string& fileName) {
 

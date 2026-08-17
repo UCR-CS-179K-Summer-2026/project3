@@ -42,7 +42,7 @@ enum class Query {
 struct ParsedQuery {
     std::vector<JSONType> parts;
     Query command = Query::FIND;
-    bool isRegexFilter = false;
+    bool isRegexFilter = false;  // if FALSE, its a numeric filter with lower and upper bound.
 
     bool operator==(const ParsedQuery& other) const = default;
 };
