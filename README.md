@@ -100,7 +100,13 @@ Query:
 FILTER {"employees" { "name" }} "^L"
 
 Result:
-["Laura"]
+[
+    {
+      "name": "Laura",
+      "department": "Product",
+      "salary": 90000
+    }
+]
 ```
 
 Numeric range syntax:
