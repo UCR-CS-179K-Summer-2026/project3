@@ -220,9 +220,7 @@ namespace json_parser {
         }
 
         // Moves p from the start of an object or array to the value the component
-        // names. Returns false when this container does not hold it. Components are
-        // compared exactly as the query spells them; the query parser has already
-        // stripped the quotes.
+        // names. Returns false when this container does not hold it.
         bool seekComponent(const char*& p, const char* end, const std::string& want) {
             skipWs(p, end);
             if (p >= end) {
@@ -323,7 +321,7 @@ namespace json_parser {
             return true;
         }
 
-        // Recurisvely
+        // Recurisvely find every key and append its value/return object to out vector.
         bool displayGroup(const char* container, const char* end, const std::vector<JSONType>& group, std::vector<std::string>& out, size_t from = 0) {
             const char* previous = container;
 
@@ -359,8 +357,8 @@ namespace json_parser {
             return true;
         }
 
-        // One value reads as itself; several read as a list, the way the README
-        // prints a result holding more than one value.
+        // If just one, print "x", if many, print as array
+        // like ["x", "y", "z"].
         std::string joinValues(const std::vector<std::string>& values) {
             if (values.size() == 1) {
                 return values[0];
