@@ -16,4 +16,5 @@ json
 JSONQL*
 compile_commands*
 .DS_Store
+benchmark
 benchmark.cache/

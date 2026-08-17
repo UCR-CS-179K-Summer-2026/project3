@@ -154,13 +154,43 @@ INSTANTIATE_TEST_SUITE_P(
             }
         },
 
-        // Quotation marks around field names are preserved by the current parser behavior.
+        // Quotation marks are dropped so the token is ready to compare with a JSON key.
         QueryParseCase{
-            "PreservesQuotationMarks",
+            "StripsQuotationMarks",
             R"(FIND {"employees" "name"})",
             std::vector<JSONType>{
                 "FIND",
-                {"\"employees\"", "\"name\""}
+                {"employees", "name"}
+            }
+        },
+
+        // A space inside quotes belongs to the key, so it must not split the token.
+        QueryParseCase{
+            "KeepsSpacesInsideQuotedKey",
+            R"(FIND {"first name"})",
+            std::vector<JSONType>{
+                "FIND",
+                {"first name"}
+            }
+        },
+
+        // "" is a legal JSON key, so it must survive as an empty token.
+        QueryParseCase{
+            "KeepsEmptyQuotedKey",
+            R"(FIND {""})",
+            std::vector<JSONType>{
+                "FIND",
+                {""}
+            }
+        },
+
+        // A backslash escape is kept as written, matching how the document spells the key.
+        QueryParseCase{
+            "KeepsEscapeInsideQuotedKey",
+            R"(FIND {"\"a"})",
+            std::vector<JSONType>{
+                "FIND",
+                {"\\\"a"}
             }
         }
     ),
@@ -236,6 +266,18 @@ INSTANTIATE_TEST_SUITE_P(
         InvalidQueryCase{
             "ParseInvalidQuery1",
             "FIND }"
+        },
+
+        // A command the reader has no case for is rejected at parse time.
+        InvalidQueryCase{
+            "RejectsUnknownCommand",
+            "FETCH {employees}"
+        },
+
+        // A quoted token with no closing quote is incomplete.
+        InvalidQueryCase{
+            "RejectsUnterminatedQuote",
+            R"(FIND {"employees})"
         }
     ),
     [](const ::testing::TestParamInfo<InvalidQueryCase>& info) {
@@ -259,6 +301,21 @@ TEST(QueryParser, ReplacesPreviousParsedQuery) {
     EXPECT_EQ(queryparser::getparsedquery().parts, expected);
 }
 
+// The command is recorded so the JSON parser does not have to infer it.
+TEST(QueryParser, RecordsCommand) {
+    queryparser::parsequery("FIND {employees}");
+    EXPECT_EQ(queryparser::getparsedquery().command, Query::FIND);
+
+    queryparser::parsequery(R"(FILTER {"employees" {"name"}} "^L")");
+    EXPECT_EQ(queryparser::getparsedquery().command, Query::FILTER);
+
+    queryparser::parsequery("DISPLAY {employees}");
+    EXPECT_EQ(queryparser::getparsedquery().command, Query::DISPLAY);
+
+    queryparser::parsequery("ALLOF {employees name}");
+    EXPECT_EQ(queryparser::getparsedquery().command, Query::ALLOF);
+}
+
 // One FILTER argument after the path means regex.
 TEST(QueryParser, IdentifiesRegexFilter) {
     queryparser::parsequery(
@@ -271,7 +328,7 @@ TEST(QueryParser, IdentifiesRegexFilter) {
 // Two FILTER arguments after the path mean numeric range.
 TEST(QueryParser, IdentifiesNumericFilter) {
     queryparser::parsequery(
-        R"(FILTER {"employees" "salary"} 80000 100000)"
+        R"(FILTER {"employees" {"salary"}} 80000 100000)"
     );
 
     EXPECT_FALSE(queryparser::getparsedquery().isRegexFilter);

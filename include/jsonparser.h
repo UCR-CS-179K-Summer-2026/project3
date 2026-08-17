@@ -6,6 +6,8 @@
 #include <fstream>
 #include <vector>
 
+#include "queryparser.h"
+
 namespace json_parser {
 
     int test(std::ifstream& json);
@@ -14,6 +16,11 @@ namespace json_parser {
 
     int isFileOpen(std::ifstream& json);
 
-    std::string parsejson(std::string_view json, const std::vector<std::string>& query);
+    // Returns the JSON text of the value the path names, or an empty string
+    // when the path does not exist.
+    std::string parsejson(std::string_view json, const std::vector<std::string>& path);
+
+    // Runs a parsed query against the document.
+    std::string parsejson(std::string_view json, const ParsedQuery& query);
 
 }

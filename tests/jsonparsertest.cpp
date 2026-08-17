@@ -1,4 +1,5 @@
 #include <fstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -224,6 +225,293 @@ TEST(JsonParser, ReturnsEmptyForMissingKey) {
     const std::string result = json_parser::parsejson(jsonText, path);
     EXPECT_TRUE(result.empty());
 }
+
+// ====================
+// FIND queries
+// ====================
+
+struct FindCase {
+    const char* name;
+    const char* filename;
+    const char* query;
+    const char* expected;
+};
+
+class JsonFindTest : public ::testing::TestWithParam<FindCase> {};
+
+// Each case parses a real FIND query and checks the reported answer.
+// FIND reports whether the targets exist, so the result is "true" or "false"
+// rather than the value stored there.
+TEST_P(JsonFindTest, ReportsWhetherTargetsExist) {
+    const auto& test = GetParam();
+    std::ifstream file(test.filename);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(test.query);
+
+    const std::string result =
+        json_parser::parsejson(jsonText, queryparser::getparsedquery());
+
+    EXPECT_EQ(result, test.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    FindQueries,
+    JsonFindTest,
+    ::testing::Values(
+        // Nesting descends, so this walks employees -> 0 -> name.
+        FindCase{
+            "FindsNestedPath",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" {"0" {"name"}}})",
+            "true"
+        },
+        // The same names written side by side are three targets at the root
+        // instead of a descent, and only "employees" is a root key.
+        FindCase{
+            "SiblingsAreNotAPath",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" "0" "name"})",
+            "false"
+        },
+        // Both siblings are root keys, so the group holds.
+        FindCase{
+            "FindsSiblingsAtSameLevel",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" "company_info"})",
+            "true"
+        },
+        // Every target has to exist, so one missing sibling fails the group.
+        FindCase{
+            "RejectsGroupWithMissingSibling",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" "budget"})",
+            "false"
+        },
+        // A nested group descends from the sibling right before it.
+        FindCase{
+            "NestedGroupDescendsFromPrecedingSibling",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" "company_info" {"remote_work"}})",
+            "true"
+        },
+        // Swapping those siblings points the group at "employees" instead, and an
+        // array holds no key by that name.
+        FindCase{
+            "NestedGroupIgnoresEarlierSiblings",
+            EMPLOYEE_FILE,
+            R"(FIND {"company_info" "employees" {"remote_work"}})",
+            "false"
+        },
+        // With no sibling to descend from, a leading group stays at this level.
+        FindCase{
+            "LeadingGroupStaysAtCurrentLevel",
+            EMPLOYEE_FILE,
+            R"(FIND {{"employees" "company_info"}})",
+            "true"
+        },
+        // Siblings work the same way once a descent has happened.
+        FindCase{
+            "FindsSiblingsInsideDescent",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" {"0" {"name" "salary"}}})",
+            "true"
+        },
+        // One missing target deep inside a descent still fails the whole query.
+        FindCase{
+            "RejectsMissingSiblingInsideDescent",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" {"0" {"name" "age"}}})",
+            "false"
+        },
+        // A single top-level key.
+        FindCase{
+            "FindsTopLevelKey",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees"})",
+            "true"
+        },
+        // A key that is not in the object.
+        FindCase{
+            "RejectsMissingKey",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" {"0" {"age"}}})",
+            "false"
+        },
+        // An index past the end of the array.
+        FindCase{
+            "RejectsIndexPastEndOfArray",
+            EMPLOYEE_FILE,
+            R"(FIND {"employees" {"10" {"name"}}})",
+            "false"
+        },
+        // Index 0 of an empty array names no value.
+        FindCase{
+            "RejectsIndexIntoEmptyArray",
+            EMPTY_STRUCTURES_FILE,
+            R"(FIND {"empty_array" {"0"}})",
+            "false"
+        },
+        // A key inside an empty object names no value.
+        FindCase{
+            "RejectsKeyIntoEmptyObject",
+            EMPTY_STRUCTURES_FILE,
+            R"(FIND {"empty_object" {"anything"}})",
+            "false"
+        },
+        // "" is a legal key, so the empty quoted token must reach its value.
+        FindCase{
+            "FindsEmptyKey",
+            EMPTY_STRUCTURES_FILE,
+            R"(FIND {""})",
+            "true"
+        },
+        // A value spelled with \uXXXX escapes is still found by its decoded key.
+        FindCase{
+            "FindsUnicodeKey",
+            UNICODE_FILE,
+            R"(FIND {"日本"})",
+            "true"
+        },
+        // A key holding the literal null exists, even though it stores no data.
+        FindCase{
+            "FindsNullValuedKey",
+            LITERAL_TYPES_FILE,
+            R"(FIND {"null_literal"})",
+            "true"
+        }
+    ),
+    caseName<FindCase>
+);
+
+// A command the JSON parser does not run yet should say so rather than
+// quietly reporting a wrong answer.
+TEST(JsonParser, RejectsUnsupportedCommand) {
+    std::ifstream file(EMPLOYEE_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(R"(ALLOF {"employees" {"name"}})");
+
+    EXPECT_THROW(
+        json_parser::parsejson(jsonText, queryparser::getparsedquery()),
+        std::runtime_error);
+}
+
+// ====================
+// DISPLAY queries
+// ====================
+
+struct DisplayCase {
+    const char* name;
+    const char* filename;
+    const char* query;
+    const char* expected;
+};
+
+class JsonDisplayTest : public ::testing::TestWithParam<DisplayCase> {};
+
+// Each case parses a real DISPLAY query and checks the text it returns.
+// A query that names nothing that exists returns an empty result.
+TEST_P(JsonDisplayTest, ReturnsNamedValues) {
+    const auto& test = GetParam();
+    std::ifstream file(test.filename);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(test.query);
+
+    const std::string result =
+        json_parser::parsejson(jsonText, queryparser::getparsedquery());
+
+    EXPECT_EQ(result, test.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    DisplayQueries,
+    JsonDisplayTest,
+    ::testing::Values(
+        // The keys along the way are waypoints, so only the leaf is shown.
+        DisplayCase{
+            "ShowsValueAtNestedPath",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"name"}}})",
+            "\"Laura\""
+        },
+        // The README's second DISPLAY example.
+        DisplayCase{
+            "ShowsDepartmentOfSecondEmployee",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"1" {"department"}}})",
+            "\"IT Support\""
+        },
+        // A descent through plain objects rather than an array.
+        DisplayCase{
+            "ShowsValueInNestedObject",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"company_info" {"company_name"}})",
+            "\"UC Riverside\""
+        },
+        // A descent that ends in an array index.
+        DisplayCase{
+            "ShowsValueAtArrayIndex",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"skills" {"1"}}}})",
+            "\"Git\""
+        },
+        // Two leaves under the same waypoint come back as a list.
+        DisplayCase{
+            "ShowsSiblingLeavesAsList",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"name" "salary"}}})",
+            "[\"Laura\", 90000]"
+        },
+        // Siblings at the root need no descent at all.
+        DisplayCase{
+            "ShowsRootSiblingsAsList",
+            LITERAL_TYPES_FILE,
+            R"(DISPLAY {"bool_true" "null_literal"})",
+            "[true, null]"
+        },
+        // A leading group is evaluated where it sits, so this reads the same way.
+        DisplayCase{
+            "ShowsLeadingGroupAtCurrentLevel",
+            LITERAL_TYPES_FILE,
+            R"(DISPLAY {{"bool_true" "negative_num"}})",
+            "[true, -273.15]"
+        },
+        // The key and the value are both spelled with escapes in the document.
+        DisplayCase{
+            "ShowsUnicodeValue",
+            UNICODE_FILE,
+            R"(DISPLAY {"日本"})",
+            "\"東京\""
+        },
+        // Every target has to resolve, so one missing leaf empties the result.
+        DisplayCase{
+            "ReturnsEmptyWhenOneLeafIsMissing",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"employees" {"0" {"name" "age"}}})",
+            ""
+        },
+        // A key that is not in the document at all.
+        DisplayCase{
+            "ReturnsEmptyForMissingKey",
+            EMPLOYEE_FILE,
+            R"(DISPLAY {"budget"})",
+            ""
+        },
+        // Index 0 of an empty array names no value to show.
+        DisplayCase{
+            "ReturnsEmptyForIndexIntoEmptyArray",
+            EMPTY_STRUCTURES_FILE,
+            R"(DISPLAY {"empty_array" {"0"}})",
+            ""
+        }
+    ),
+    caseName<DisplayCase>
+);
 
 // ====================
 // Unicode and escaped-key fixtures

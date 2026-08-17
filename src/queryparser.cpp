@@ -55,6 +55,43 @@ namespace{
         curlybraces.pop();
     }
 
+    // Reads a quoted token. start sits on the opening quote and lands on the
+    // closing one. The quotes are dropped and inner spaces kept, so what is pushed
+    // is ready to compare against a JSON key. A backslash escape is copied through
+    // as written, because that is how the document spells the key too.
+    void parsequoted(int& start, const std::string& query, std::vector<JSONType>& parsed) {
+        std::string token = "";
+        start++; // Skip opening quote
+
+        for(; start < query.length(); start++){
+            char c = query[start];
+
+            if(c == '\\' && start + 1 < query.length()){
+                token += c;
+                token += query[++start];
+                continue;
+            }
+
+            if(c == '"'){
+                parsed.push_back(token); // Pushed here so "" stays an empty key
+                return;
+            }
+
+            token += c;
+        }
+
+        throw std::runtime_error("Parsing Error: Unterminated quoted string.");
+    }
+
+    Query readcommand(const std::string& command) {
+        if(command == "FIND")    return Query::FIND;
+        if(command == "FILTER")  return Query::FILTER;
+        if(command == "DISPLAY") return Query::DISPLAY;
+        if(command == "ALLOF")   return Query::ALLOF;
+
+        throw std::runtime_error("Parsing Error: Unknown command '" + command + "'.");
+    }
+
     void parsenested(int& start, const std::string& query, std::vector<JSONType>& parsed) {
         start++; // Skip left curly brace
         std::string append = "";
@@ -75,6 +112,15 @@ namespace{
                 case '{':
                     curlybraces.push('{');
                     parsenested(start, query, substructure);
+                    break;
+
+                case '"':
+                    if(!append.empty()){
+                        substructure.push_back(append);
+                        append.clear();
+                    }
+
+                    parsequoted(start, query, substructure);
                     break;
 
                 case '}':
@@ -101,6 +147,7 @@ namespace queryparser {
     void parsequery(const std::string& query){
         // Reset previous query data.
         parsedquery.parts.clear();
+        parsedquery.command = Query::FIND;
         parsedquery.isRegexFilter = false;
         
         if(!curlybraces.empty()){
@@ -126,6 +173,15 @@ namespace queryparser {
                     parsenested(i, query, parsedquery.parts);
                     break;
 
+                case '"':
+                    if(!append.empty()){
+                        parsedquery.parts.push_back(append);
+                        append.clear();
+                    }
+
+                    parsequoted(i, query, parsedquery.parts);
+                    break;
+
                 case '}':
                     validatecurlybraces();
                     break;
@@ -145,12 +201,15 @@ namespace queryparser {
             append.clear();
         }
 
-        // One FILTER parameter means regex.
-        if(!parsedquery.parts.empty()
-            && parsedquery.parts[0].isstring()
-            && parsedquery.parts[0].asstring() == "FILTER") {
+        if(!parsedquery.parts.empty()){
+            if(!parsedquery.parts[0].isstring()){
+                throw std::runtime_error("Parsing Error: Query must begin with a command.");
+            }
 
-            if(parsedquery.parts.size() == 3){
+            parsedquery.command = readcommand(parsedquery.parts[0].asstring());
+
+            // One FILTER parameter means regex.
+            if(parsedquery.command == Query::FILTER && parsedquery.parts.size() == 3){
                 parsedquery.isRegexFilter = true;
             }
         }
