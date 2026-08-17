@@ -222,11 +222,18 @@ The query system should handle cases such as:
 * Invalid query syntax
 
 Example:
+```json
+{
+    "": "Empty key",
+    "empty_array": [],
+    "empty_object": {}
+}
+```
 
 ```text
 Query:
-FIND {"employees" { "10" { "name" }}}
+DISPLAY {""}
 
 Result:
-false
+"Empty key"
 ```
