@@ -1,5 +1,6 @@
 #include <stdexcept>
 
+#include "queryparser.h"
 #include "jsonparser.h"
 
 namespace json_parser {
@@ -357,6 +358,15 @@ namespace json_parser {
             return true;
         }
 
+        bool filterGroup(const char* container, 
+            const char* end, 
+            const std::vector<JSONType>& group, 
+            std::vector<std::string>& output,
+            size_t from)
+        {
+            return false;
+        }
+
         // If just one, print "x", if many, print as array
         // like ["x", "y", "z"].
         std::string joinValues(const std::vector<std::string>& values) {
@@ -428,11 +438,13 @@ namespace json_parser {
             }
 
             case Query::FILTER: {
-                // TODO: Moustafa?
+                const char* p = json.data();
+                const char* end = p + json.size();
             }
 
             case Query::ALLOF: {
                 //TODO: Laura?
+                break;
             }
             
 
