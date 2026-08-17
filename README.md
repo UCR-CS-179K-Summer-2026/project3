@@ -116,7 +116,18 @@ Query:
 FILTER {"employees" { "salary" }} 80000 100000
 
 Result:
-["Laura", "James"]
+[
+    {
+      "name": "Laura",
+      "department": "Product",
+      "salary": 90000
+    },
+    {
+      "name": "James",
+      "department": "Engineering",
+      "salary": 90000
+    }
+]
 ```
 
 The numeric range is inclusive.
