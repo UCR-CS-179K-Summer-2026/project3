@@ -61,10 +61,28 @@
 
 
 ## Sprint 3:
-Error handling
 
-Examples: Invalid data, empty keys, etc
+### Laura — Query Parser, Testing, and Documentation
 
+- Added the `ParsedQuery` structure for parsed query data.
+- Added command and FILTER type identification.
+- Added tests for FILTER metadata and parser state.
+- Created and updated architecture and algorithm diagrams.
+- Updated GitHub Pages to match the current implementation.
+
+### James — FIND/DISPLAY and JSON Integration
+
+- Connected parsed queries to JSON execution.
+- Implemented `FIND` and `DISPLAY`.
+- Added `findGroup()`, `displayGroup()`, and `seekComponent()`.
+- Updated `parsejson()` to handle parsed commands.
+- Added tests for FIND, DISPLAY, nested data, arrays, missing values, and Unicode cases.
+
+### Moustafa — Query Parser Cleanup
+
+- Cleaned up the query parser to make integration easier.
+- Simplified parser output and organization.
+- Helped prepare the parser for the new FIND and DISPLAY execution flow.
 
 ## Sprint 4:
 Optimization.
