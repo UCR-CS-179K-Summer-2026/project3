@@ -22,5 +22,4 @@ namespace json_parser {
 
     // Runs a parsed query against the document.
     std::string parsejson(std::string_view json, const ParsedQuery& query);
-
 }
