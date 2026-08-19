@@ -18,3 +18,4 @@ compile_commands*
 .DS_Store
 benchmark
 benchmark.cache/
+jsonFiles/data_1gb.json
