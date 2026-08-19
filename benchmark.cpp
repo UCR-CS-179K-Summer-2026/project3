@@ -171,16 +171,15 @@ int hugeFile() {
 
         queryparser::parsequery("DISPLAY {\"logs\" {\"591518\"}}");
         queryparser::displaylastparsedquery();
-        auto queryTime = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> queryTime = std::chrono::steady_clock::now() - start;
 
         std::ifstream hugeFile(huge);
         std::string hugeJson = json_parser::jsonToString(hugeFile);
         std::string hugeValue = json_parser::parsejson(hugeJson, queryparser::getparsedquery());
 
         std::chrono::duration<double, std::milli> time = std::chrono::steady_clock::now() - start;
-        std::chrono::duration<double, std::milli> query = std::chrono::steady_clock::now() - start;
         total += time.count();
-        totalQueryTime += query.count();
+        totalQueryTime += queryTime.count();
         std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
         outputFile << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
     }
