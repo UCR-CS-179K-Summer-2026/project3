@@ -21,17 +21,17 @@ const std::vector<JSONType>& JSONType::asvector() const {
 }
 
 // Private
-namespace{
+namespace {
     // Stores query parts and filter metadata.
     ParsedQuery parsedquery;
 
     std::stack<char> curlybraces;
 
     // Recursive display helper.
-    void display(const std::vector<JSONType> queryStruct) {
+    void display(const std::vector<JSONType>& queryStruct) {
         std::cout << "[ ";
 
-        for(const JSONType& query : queryStruct){
+        for(const JSONType& query : queryStruct) {
             switch(query.structure.index()){
                 case 0:
                     std::cout << std::get<std::string>(query.structure) << " ";
