@@ -1,6 +1,3 @@
-// Times reading the small Bookings file, 
-// then reading entry 1800 out of the large one.
-
 #include <chrono>
 #include <fstream>
 #include <format>
@@ -135,7 +132,10 @@ int bigFile() {
     return 0;
 }
 
-
+// Reads the large 1 GB json files jsonFiles/data_1gb.json which is not
+// uploaded to github because it is 1 GB, and I havent search into how
+// to do it. It reads to the very last line of the json and returns how
+// long it took to do so. Then, writes its findings to benchmark.txt.
 int hugeFile() {
 
     std::ofstream outputFile("benchmarks.txt",std::ios::app);
