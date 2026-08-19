@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <fstream>
+#include <format>
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -136,6 +137,18 @@ int bigFile() {
 
 
 int hugeFile() {
+
+    std::ofstream outputFile("benchmarks.txt",std::ios::app);
+
+    if (!outputFile) {
+        std::cerr << "Error: Could not create or open the file benchmarks.txt" << std::endl;
+        return 1;
+    }
+    outputFile << "Running benchmark." << std::endl;
+    auto const now = std::chrono::system_clock::now();
+    outputFile << std::format("{:%Y-%m-%d %H:%M:%S}\n", now);
+
+
     // starts at line 148,919
     std::cout << "jsonFiles/data_1gb.json : 1073741771 (1 GB)\n";
     std::cout << "How many times to run test? :: " << std::flush;
@@ -169,15 +182,22 @@ int hugeFile() {
         total += time.count();
         totalQueryTime += query.count();
         std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
+        outputFile << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
     }
 
-    if (repeat > 1) {
-        std::cout << "\naverage of " << repeat << " runs\n"
-                  << "---------------------------------------------\n"
-                  << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                  << "1 GB?, entry 591,518:           " << total / repeat << " ms\n"
-                  << "1073741771 bytes in " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << "GB/s" << std::endl;
-    }
+    std::cout << "\naverage of " << repeat << " runs\n"
+                << "---------------------------------------------\n"
+                << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
+                << "1 GB?, entry 591,518:           " << total / repeat << " ms\n"
+                << "1073741771 bytes in " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
+    outputFile << "average of " << repeat << " runs\n"
+                << "---------------------------------------------\n"
+                << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
+                << "1 GB?, entry 591,518:           " << total / repeat << " ms\n"
+                << "1073741771 bytes in " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
+
+    outputFile << "End Benchmark.\n---------------------------------------------\n" << std::endl;
+    outputFile.close();
 
     return 0;
 }
