@@ -135,9 +135,56 @@ int bigFile() {
 }
 
 
+int hugeFile() {
+    // starts at line 148,919
+    std::cout << "jsonFiles/data_1gb.json : 1073741771 (1 GB)\n";
+    std::cout << "How many times to run test? :: " << std::flush;
+    unsigned repeat = 0;
+    std::cin >> repeat;
+
+    if (!std::cin || repeat <= 0) {
+        std::cerr << "Error: please enter a run count of at least 1.\n";
+        return 1;
+    }
+
+    const std::string huge = std::string(JSON_DATA_DIR) + "/data_1gb.json";
+
+    double total = 0.0;
+    double totalQueryTime = 0.0;
+
+    for (unsigned run = 0; run < repeat; ++run) {
+
+        auto start = std::chrono::steady_clock::now();
+
+        queryparser::parsequery("DISPLAY {\"logs\" {\"591518\"}}");
+        queryparser::displaylastparsedquery();
+        auto queryTime = std::chrono::steady_clock::now();
+
+        std::ifstream hugeFile(huge);
+        std::string hugeJson = json_parser::jsonToString(hugeFile);
+        std::string hugeValue = json_parser::parsejson(hugeJson, queryparser::getparsedquery());
+
+        std::chrono::duration<double, std::milli> time = std::chrono::steady_clock::now() - start;
+        std::chrono::duration<double, std::milli> query = std::chrono::steady_clock::now() - start;
+        total += time.count();
+        totalQueryTime += query.count();
+        std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
+    }
+
+    if (repeat > 1) {
+        std::cout << "\naverage of " << repeat << " runs\n"
+                  << "---------------------------------------------\n"
+                  << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
+                  << "1 GB?, entry 591,518:           " << total / repeat << " ms\n"
+                  << "1073741771 bytes in " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << "GB/s" << std::endl;
+    }
+
+    return 0;
+}
+
 int main() {
 
-    std::cout << "Which test?\n1 : Single Query\n2 : Many Queries\n3 : Big File\n:: " << std::flush;
+    std::cout << "Which test?\n1 : Single Query\n2 : Many Queries\n3 : Big File\n4 : Huge File\n:: " << std::flush;
     int queryType;
     std::cin >> queryType;
     if(!std::cin || queryType < 1) {
@@ -154,6 +201,9 @@ int main() {
             break;
         case 3:
             bigFile();
+            break;
+        case 4:
+            hugeFile();
             break;
         default:
             return 1;
