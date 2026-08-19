@@ -361,7 +361,7 @@ namespace json_parser {
         bool filterGroup(const char* container, 
             const char* end, 
             const std::vector<JSONType>& group, 
-            const std::vector<std::string>& output,
+            std::vector<std::string>& output,
             size_t from)
         {
             for(const JSONType& elem : group) {
@@ -449,12 +449,6 @@ namespace json_parser {
                 filterGroup(p, end, query.parts, values, 1);
                 break;
             }
-
-            case Query::ALLOF: {
-                //TODO: Laura?
-                break;
-            }
-            
 
             default:
                 throw std::runtime_error("Unsupported query type.");
