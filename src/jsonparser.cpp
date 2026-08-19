@@ -361,10 +361,15 @@ namespace json_parser {
         bool filterGroup(const char* container, 
             const char* end, 
             const std::vector<JSONType>& group, 
-            std::vector<std::string>& output,
+            const std::vector<std::string>& output,
             size_t from)
         {
-            return false;
+            for(const JSONType& elem : group) {
+                std::cout << elem << " ";
+            }
+
+            std::cout << std::endl;
+            return true;
         }
 
         // If just one, print "x", if many, print as array
@@ -415,6 +420,7 @@ namespace json_parser {
     }
 
     std::string parsejson(std::string_view json, const ParsedQuery& query) {
+        std::vector<std::string> values;
 
         switch (query.command) {
             case Query::FIND: {
@@ -429,7 +435,6 @@ namespace json_parser {
                 const char* p = json.data();
                 const char* end = p + json.size();
 
-                std::vector<std::string> values;
                 if (!displayGroup(p, end, query.parts, values, 1) || values.empty()) {
                     return {};  // a missing target means nothing was found
                 }
@@ -440,6 +445,9 @@ namespace json_parser {
             case Query::FILTER: {
                 const char* p = json.data();
                 const char* end = p + json.size();
+
+                filterGroup(p, end, query.parts, values, 1);
+                break;
             }
 
             case Query::ALLOF: {

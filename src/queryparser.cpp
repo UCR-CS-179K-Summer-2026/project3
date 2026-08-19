@@ -20,6 +20,23 @@ const std::vector<JSONType>& JSONType::asvector() const {
     return std::get<std::vector<JSONType>>(structure);
 }
 
+std::ostream& operator<<(std::ostream& os, const JSONType& jsontype){
+    os << "{ ";
+    if(jsontype.isvector()){
+        for(const JSONType& elem : jsontype.asvector()){
+            os << elem << " ";
+        }
+    }
+
+    if(jsontype.isstring()){
+        os << jsontype.asstring() << " ";
+    }
+
+    os << "}";
+
+    return os;
+}
+
 // Private
 namespace {
     // Stores query parts and filter metadata.
