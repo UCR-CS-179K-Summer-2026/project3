@@ -28,6 +28,7 @@ struct JSONType {
     const std::vector<JSONType>& asvector() const;
 
     bool operator==(const JSONType& other) const = default;
+    friend std::ostream& operator<<(std::ostream& os, const JSONType& jsontype);
 };
 
 enum class Query {
