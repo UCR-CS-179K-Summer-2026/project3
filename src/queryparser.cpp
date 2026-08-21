@@ -21,7 +21,6 @@ const std::vector<JSONType>& JSONType::asvector() const {
 }
 
 std::ostream& operator<<(std::ostream& os, const JSONType& jsontype){
-    os << "{ ";
     if(jsontype.isvector()){
         for(const JSONType& elem : jsontype.asvector()){
             os << elem << " ";
@@ -31,8 +30,6 @@ std::ostream& operator<<(std::ostream& os, const JSONType& jsontype){
     if(jsontype.isstring()){
         os << jsontype.asstring() << " ";
     }
-
-    os << "}";
 
     return os;
 }
