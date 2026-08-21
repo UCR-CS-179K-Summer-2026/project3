@@ -5,6 +5,9 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <regex>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 #include "queryparser.h"
 #include "jsonparser.h"
