@@ -189,13 +189,13 @@ int hugeFile() {
     std::cout << "\naverage of " << repeat << " runs\n"
                 << "---------------------------------------------\n"
                 << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                << "convert JSON to string time: " << jsonToStringTime.count() << " ms\n"
+                << "MMAP json time:              " << jsonToStringTime.count() << " ms\n"
                 << "1 GB?, entry 591,518:        " << total / repeat << " ms\n"
                 << "1073741771 bytes in          " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
     outputFile << "average of " << repeat << " runs\n"
                 << "---------------------------------------------\n"
                 << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                << "convert JSON to string time: " << jsonToStringTime.count() << " ms\n"
+                << "MMAP json time:              " << jsonToStringTime.count() << " ms\n"
                 << "1 GB?, entry 591,518:        " << total / repeat << " ms\n"
                 << "1073741771 bytes in          " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
 
