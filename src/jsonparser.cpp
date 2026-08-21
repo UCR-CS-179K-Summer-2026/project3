@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <regex>
 
 #include "queryparser.h"
 #include "jsonparser.h"
@@ -358,7 +359,42 @@ namespace json_parser {
             return true;
         }
 
-        std::vector<std::string> searchArray(const char*& p, const char* end, const std::string& want) {
+        std::vector<std::string> searchArray(const char*& p, const char* end, 
+            std::string& want, int leftbound, int rightbound) {
+
+            std::vector<std::string> found = {};
+
+            skipWs(p, end);
+            if (p >= end || *p != '[') return found;
+            ++p;
+            skipWs(p, end);
+            if (p < end && *p == ']') { ++p; return found; }
+
+            while (p < end) {
+                const char* element = p;
+
+                const char* q = element;              // search off a copy
+                if (seekComponent(q, end, want) && hasValue(q, end)) {
+                    const char* start = q;
+                    if (!skipValue(q, end)) return found;
+                    found.push_back(convertUnicode(std::string_view(start, static_cast<size_t>(q - start))));
+                }
+
+                p = element; // go back to beginning of object and skip the whole thing.
+                // not that smart but really only way to work with skipvalue func
+                if (!skipValue(p, end)) return found; // step over the whole element
+                skipWs(p, end);
+                if (p >= end || *p != ',') break;     // ']' or malformed
+                ++p; // was at ',', now at '{'
+            }
+
+            return found;
+        }
+
+        std::vector<std::string> searchArray(const char*& p, const char* end, 
+            std::string& want, 
+            const std::string& regex) {
+            
             std::vector<std::string> found = {};
 
             skipWs(p, end);
@@ -399,7 +435,7 @@ namespace json_parser {
             }
         }
 
-        bool filterGroup(const char* container, 
+        void filterGroup(const char* container, 
             const char* end, 
             const std::vector<JSONType>& group, 
             std::vector<std::string>& output,
@@ -413,9 +449,14 @@ namespace json_parser {
                 throw std::runtime_error("Second parameter has to be a vector.");
             }
 
-            std::cout << want << std::endl;
-
-            return true;
+            if(query.isRegexFilter){
+                if(group[2].isstring())
+                    output = searchArray(container, end, want, group[2].asstring());
+                else
+                    throw std::runtime_error("Invalid regex.");
+            } else {
+                output = searchArray(container, end, want, std::stoi(group[2]), std::stoi(group[3]));
+            }
         }
 
         // If just one, print "x", if many, print as array
