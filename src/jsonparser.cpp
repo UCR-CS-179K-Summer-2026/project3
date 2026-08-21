@@ -358,17 +358,63 @@ namespace json_parser {
             return true;
         }
 
+        std::vector<std::string> searchArray(const char*& p, const char* end, const std::string& want) {
+            std::vector<std::string> found = {};
+
+            skipWs(p, end);
+            if (p >= end || *p != '[') return found;
+            ++p;
+            skipWs(p, end);
+            if (p < end && *p == ']') { ++p; return found; }
+
+            while (p < end) {
+                const char* element = p;
+
+                const char* q = element;              // search off a copy
+                if (seekComponent(q, end, want) && hasValue(q, end)) {
+                    const char* start = q;
+                    if (!skipValue(q, end)) return found;
+                    found.push_back(convertUnicode(std::string_view(start, static_cast<size_t>(q - start))));
+                }
+
+                p = element; // go back to beginning of object and skip the whole thing.
+                // not that smart but really only way to work with skipvalue func
+                if (!skipValue(p, end)) return found; // step over the whole element
+                skipWs(p, end);
+                if (p >= end || *p != ',') break;     // ']' or malformed
+                ++p; // was at ',', now at '{'
+            }
+
+            return found;
+        }
+
+        // Filter Helper Function
+        void getWantedKey(const std::vector<JSONType>& group, std::string& want) {
+            for(const JSONType& elem : group){
+                if(elem.isstring()){
+                    want = elem.asstring();
+                }else if(elem.isvector()){
+                    getWantedKey(elem.asvector(), want);
+                }
+            }
+        }
+
         bool filterGroup(const char* container, 
             const char* end, 
             const std::vector<JSONType>& group, 
             std::vector<std::string>& output,
             size_t from)
         {
-            for(const JSONType& elem : group) {
-                std::cout << elem << " ";
+            std::string want;
+
+            if(group[1].isvector()){
+                getWantedKey(group[1].asvector(), want);
+            }else{
+                throw std::runtime_error("Second parameter has to be a vector.");
             }
 
-            std::cout << std::endl;
+            std::cout << want << std::endl;
+
             return true;
         }
 
@@ -453,6 +499,8 @@ namespace json_parser {
             default:
                 throw std::runtime_error("Unsupported query type.");
         }
+
+        return "Reached EOF";
     }
 
     int isFileOpen(std::ifstream& json){
