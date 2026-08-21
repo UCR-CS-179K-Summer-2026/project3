@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <string>
 #include <regex>
 
 #include "queryparser.h"
@@ -439,7 +440,9 @@ namespace json_parser {
             const char* end, 
             const std::vector<JSONType>& group, 
             std::vector<std::string>& output,
-            size_t from)
+            size_t from,
+            bool isRegexFilter
+        )
         {
             std::string want;
 
@@ -449,13 +452,13 @@ namespace json_parser {
                 throw std::runtime_error("Second parameter has to be a vector.");
             }
 
-            if(query.isRegexFilter){
+            if(isRegexFilter){
                 if(group[2].isstring())
                     output = searchArray(container, end, want, group[2].asstring());
                 else
                     throw std::runtime_error("Invalid regex.");
             } else {
-                output = searchArray(container, end, want, std::stoi(group[2]), std::stoi(group[3]));
+                output = searchArray(container, end, want, std::stoi(group[2].asstring()), std::stoi(group[3].asstring()));
             }
         }
 
@@ -533,7 +536,7 @@ namespace json_parser {
                 const char* p = json.data();
                 const char* end = p + json.size();
 
-                filterGroup(p, end, query.parts, values, 1);
+                filterGroup(p, end, query.parts, values, 1, query.isRegexFilter);
                 break;
             }
 
