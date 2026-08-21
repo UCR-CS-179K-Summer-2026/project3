@@ -16,6 +16,9 @@ namespace json_parser {
 
     int isFileOpen(std::ifstream& json);
 
+    // Use MMAP to open the file instead of copying it to a string
+    std::string_view mapFile(const std::string& path);
+
     // Returns the JSON text of the value the path names, or an empty string
     // when the path does not exist.
     std::string parsejson(std::string_view json, const std::vector<std::string>& path);
