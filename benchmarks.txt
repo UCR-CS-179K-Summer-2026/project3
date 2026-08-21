@@ -18,3 +18,54 @@ queryTime:                   0.0120126 ms
 End Benchmark.
 ---------------------------------------------
 
+Running benchmark.
+2026-08-21 02:54:44.246260
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  4450.31 ms
+average of 1 runs
+---------------------------------------------
+queryTime:                   0.030334 ms
+convert JSON to string time: 3781.95 ms
+1 GB?, entry 591,518:        4450.31 ms
+1073741771 bytes in          4450.31 ms = 0.241273 GB/s
+End Benchmark.
+---------------------------------------------
+
+Running benchmark.
+2026-08-21 05:18:02.245770
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  2126.61 ms
+average of 1 runs
+---------------------------------------------
+queryTime:                   0.036833 ms
+convert JSON to string time: 1.31658 ms
+1 GB?, entry 591,518:        2126.61 ms
+1073741771 bytes in          2126.61 ms = 0.504909 GB/s
+End Benchmark.
+---------------------------------------------
+
+Running benchmark.
+2026-08-21 05:18:52.238599
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  1025.6 ms
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  610.628 ms
+average of 2 runs
+---------------------------------------------
+queryTime:                   0.0246665 ms
+convert JSON to string time: 5.89794 ms
+1 GB?, entry 591,518:        818.112 ms
+1073741771 bytes in          818.112 ms = 1.31246 GB/s
+End Benchmark.
+---------------------------------------------
+
+Running benchmark.
+2026-08-21 05:25:22.323168
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  2043.38 ms
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  588.927 ms
+1 GB, entry 591,518:    {"context":{"correlation_id":"6a350957-5126-4a55-bb37-b510a9a1e044","request_id":"c4c6d265-b07f-4f79-9415-1ea3aed64add","session_id":null,"user_id":"607aed48-83bc-482d-9d52-6f5489e51e12"},"http":{"duration_ms":3964,"ip":"36.39.73.86","method":"GET","path":"/on/this","status_code":503,"user_agent":"Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X; en-US) AppleWebKit/532.1.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B118 Safari/6532.1.6"},"instance_id":"cb3a2080-83a5-4885-aead-914672e41eb8","level":"INFO","message":"Request processed successfully","metadata":{"cpu_percent":79.91832227590115,"environment":"staging","hostname":"seniorefficient.io","memory_mb":1454,"pid":59564,"region":"us-west-2","thread_id":75,"version":"2.3.27"},"service":"user-service","span_id":"0xd93aba7dc3dc71c1","stack_trace":null,"tags":["interactive","collaboration","foreground","Networked","secondary","open system"],"timestamp":"2025-11-24T15:11:21.924112319Z","trace_id":"00912719-d35b-438b-82f5-d5997b0ad022"}  568.856 ms
+average of 3 runs
+---------------------------------------------
+queryTime:                   0.0136947 ms
+convert JSON to string time: 0.248292 ms
+1 GB?, entry 591,518:        1067.05 ms
+1073741771 bytes in          1067.05 ms = 1.00627 GB/s
+End Benchmark.
+---------------------------------------------
+

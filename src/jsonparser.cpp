@@ -1,6 +1,10 @@
 #include <stdexcept>
 #include <string>
 #include <regex>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <regex>
 
 #include "queryparser.h"
 #include "jsonparser.h"
@@ -513,6 +517,7 @@ namespace json_parser {
         std::vector<std::string> values;
 
         switch (query.command) {
+
             case Query::FIND: {
                 const char* p = json.data();
                 const char* end = p + json.size();
@@ -545,6 +550,20 @@ namespace json_parser {
         }
 
         return "Reached EOF";
+    }
+
+    std::string_view mapFile(const std::string& path) {
+        int fd = ::open(path.c_str(), O_RDONLY);
+        if(fd < 0) return {};
+
+        off_t size = ::lseek(fd, 0, SEEK_END);
+
+        const char* data = static_cast<const char*>(::mmap(nullptr, size, PROT_READ, MAP_PRIVATE, fd, 0));
+        
+        ::close(fd);
+
+        if(data == MAP_FAILED) return {};
+        return std::string_view(data, size);
     }
 
     int isFileOpen(std::ifstream& json){

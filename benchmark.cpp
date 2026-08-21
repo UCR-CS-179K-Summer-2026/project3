@@ -164,20 +164,22 @@ int hugeFile() {
 
     double total = 0.0;
     double totalQueryTime = 0.0;
+    double totalJsonToStringTime = 0.0;
+    auto start = std::chrono::steady_clock::now();
+    std::string_view hugeJson = json_parser::mapFile(huge);
+    std::chrono::duration<double, std::milli> jsonToStringTime = std::chrono::steady_clock::now() - start;
 
     for (unsigned run = 0; run < repeat; ++run) {
 
-        auto start = std::chrono::steady_clock::now();
+        start = std::chrono::steady_clock::now();
 
         queryparser::parsequery("DISPLAY {\"logs\" {\"591518\"}}");
         queryparser::displaylastparsedquery();
         std::chrono::duration<double, std::milli> queryTime = std::chrono::steady_clock::now() - start;
 
-        std::ifstream hugeFile(huge);
-        std::string hugeJson = json_parser::jsonToString(hugeFile);
         std::string hugeValue = json_parser::parsejson(hugeJson, queryparser::getparsedquery());
-
         std::chrono::duration<double, std::milli> time = std::chrono::steady_clock::now() - start;
+
         total += time.count();
         totalQueryTime += queryTime.count();
         std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
@@ -187,13 +189,15 @@ int hugeFile() {
     std::cout << "\naverage of " << repeat << " runs\n"
                 << "---------------------------------------------\n"
                 << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                << "1 GB?, entry 591,518:           " << total / repeat << " ms\n"
-                << "1073741771 bytes in " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
+                << "convert JSON to string time: " << jsonToStringTime.count() << " ms\n"
+                << "1 GB?, entry 591,518:        " << total / repeat << " ms\n"
+                << "1073741771 bytes in          " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
     outputFile << "average of " << repeat << " runs\n"
                 << "---------------------------------------------\n"
                 << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                << "1 GB?, entry 591,518:           " << total / repeat << " ms\n"
-                << "1073741771 bytes in " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
+                << "convert JSON to string time: " << jsonToStringTime.count() << " ms\n"
+                << "1 GB?, entry 591,518:        " << total / repeat << " ms\n"
+                << "1073741771 bytes in          " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
 
     outputFile << "End Benchmark.\n---------------------------------------------\n" << std::endl;
     outputFile.close();
