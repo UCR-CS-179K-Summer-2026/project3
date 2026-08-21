@@ -38,7 +38,7 @@ void openJSONUI() {
     std::cout << "+-----------------------------------------------+\n\n";
 }
 
-void query(std::string json_string) {
+void query(std::string_view json) {
     std::cout << "> " << std::flush;
     std::string line = "";
     std::getline(std::cin, line);
@@ -46,7 +46,7 @@ void query(std::string json_string) {
     std::string value;
     try {
         queryparser::parsequery(line);
-        value = json_parser::parsejson(json_string, queryparser::getparsedquery());
+        value = json_parser::parsejson(json, queryparser::getparsedquery());
     } catch (const std::exception& e) {
         std::cout << "\n" << e.what() << "\n";
         std::cout << "\n> " << std::flush;
@@ -98,16 +98,8 @@ int main() {
     fileName = "jsonFiles/" + fileName + ".json";
     
     std::cout << std::endl;
-    std::ifstream json(fileName);
-
-    // verify file opened correctly
-    if (json_parser::isFileOpen(json) != 0) {
-        std::cerr << "Error: Could not open the file " << fileName << std::endl;
-        return 1;
-    }
-
-    // json_string owns the bytes; the view returned below points into it.
-    const std::string json_string = json_parser::jsonToString(json);
+    
+    std::string_view json = json_parser::mapFile(fileName);
 
     openJSONUI();
     bool looped = false;
@@ -122,7 +114,7 @@ int main() {
         }
         looped = true;
         
-        query(json_string);
+        query(json);
 
         // getline, not >>, so the newline does not survive into the next getQuery
         std::string userWantRepeat;
@@ -140,6 +132,5 @@ int main() {
     std::cout << "|                                               |\n";
     std::cout << "+-----------------------------------------------+\n";
 
-    json.close();
     return 0;
 }
