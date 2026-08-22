@@ -433,7 +433,7 @@ namespace json_parser {
                 if (!skipValue(p, end)) return found; // step over the whole element
                                     
                 if(matches){
-                    found.push_back(convertUnicode(std::string_view(q, static_cast<size_t>(q - element))));
+                    found.push_back(convertUnicode(std::string_view(element, p - element)));
                 }
 
                 skipWs(p, end);
