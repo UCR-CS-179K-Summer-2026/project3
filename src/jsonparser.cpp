@@ -389,9 +389,52 @@ namespace json_parser {
         }
 
         std::vector<std::string> searchArray(const char*& p, const char* end, 
-            std::string& want, int leftbound, int rightbound) {
+            std::string& want, double leftbound, double rightbound) {
 
             std::vector<std::string> found = {};
+
+            skipWs(p, end);
+            if (p >= end || *p != '[') return found;
+            
+            ++p;
+            skipWs(p, end);
+
+            if(p < end && *p == ']'){
+                ++p;
+                return found;
+            }
+
+            while (p < end && *p != ']') {
+                const char* element = p;
+
+                const char* q = element;              // search off a copy
+                bool matches = false;
+                if (seekComponent(q, end, want) && hasValue(q, end)) {
+                    const char* start = q;
+                    if (!skipValue(q, end)) return found;
+                    std::regex pattern("^L");
+                    std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
+
+                    // wait may not need this because the numbers dont have quotes
+                    // value = value.substr(1, value.size() - 2); // Ignore quotation marks.
+                    double doubleValue = std::stod(value);
+                    if(doubleValue >= leftbound && doubleValue <= rightbound) {
+                        matches = true;
+                    }
+                }
+
+                p = element; // go back to beginning of object and skip the whole thing.
+                // not that smart but really only way to work with skipvalue func
+                if (!skipValue(p, end)) return found; // step over the whole element
+                                    
+                if(matches){
+                    found.push_back(convertUnicode(std::string_view(element, p - element)));
+                }
+
+                skipWs(p, end);
+                if (p >= end || *p != ',') break;     // ']' or malformed
+                ++p; // was at ',', now at '{'
+            }
 
             return found;
         }
@@ -467,7 +510,7 @@ namespace json_parser {
                     throw std::runtime_error("Invalid regex.");
                 }
             } else {
-                output = searchArray(container, end, want, std::stoi(group[2].asstring()), std::stoi(group[3].asstring()));
+                output = searchArray(container, end, want, std::stod(group[2].asstring()), std::stod(group[3].asstring()));
             }
         }
 
