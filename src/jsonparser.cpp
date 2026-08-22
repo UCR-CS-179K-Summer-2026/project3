@@ -4,7 +4,6 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <regex>
 
 #include "queryparser.h"
 #include "jsonparser.h"
@@ -364,71 +363,6 @@ namespace json_parser {
             return true;
         }
 
-        std::vector<std::string> searchArray(const char*& p, const char* end, 
-            std::string& want, int leftbound, int rightbound) {
-
-            std::vector<std::string> found = {};
-
-            skipWs(p, end);
-            if (p >= end || *p != '[') return found;
-            ++p;
-            skipWs(p, end);
-            if (p < end && *p == ']') { ++p; return found; }
-
-            while (p < end) {
-                const char* element = p;
-
-                const char* q = element;              // search off a copy
-                if (seekComponent(q, end, want) && hasValue(q, end)) {
-                    const char* start = q;
-                    if (!skipValue(q, end)) return found;
-                    found.push_back(convertUnicode(std::string_view(start, static_cast<size_t>(q - start))));
-                }
-
-                p = element; // go back to beginning of object and skip the whole thing.
-                // not that smart but really only way to work with skipvalue func
-                if (!skipValue(p, end)) return found; // step over the whole element
-                skipWs(p, end);
-                if (p >= end || *p != ',') break;     // ']' or malformed
-                ++p; // was at ',', now at '{'
-            }
-
-            return found;
-        }
-
-        std::vector<std::string> searchArray(const char*& p, const char* end, 
-            std::string& want, 
-            const std::string& regex) {
-            
-            std::vector<std::string> found = {};
-
-            skipWs(p, end);
-            if (p >= end || *p != '[') return found;
-            ++p;
-            skipWs(p, end);
-            if (p < end && *p == ']') { ++p; return found; }
-
-            while (p < end) {
-                const char* element = p;
-
-                const char* q = element;              // search off a copy
-                if (seekComponent(q, end, want) && hasValue(q, end)) {
-                    const char* start = q;
-                    if (!skipValue(q, end)) return found;
-                    found.push_back(convertUnicode(std::string_view(start, static_cast<size_t>(q - start))));
-                }
-
-                p = element; // go back to beginning of object and skip the whole thing.
-                // not that smart but really only way to work with skipvalue func
-                if (!skipValue(p, end)) return found; // step over the whole element
-                skipWs(p, end);
-                if (p >= end || *p != ',') break;     // ']' or malformed
-                ++p; // was at ',', now at '{'
-            }
-
-            return found;
-        }
-
         // Filter Helper Function
         void getWantedKey(const std::vector<JSONType>& group, std::string& want) {
             for(const JSONType& elem : group){
@@ -440,27 +374,98 @@ namespace json_parser {
             }
         }
 
+        // Reaches presumed array
+        void reachArray(const char*& p, const char* end, const std::string& want,
+            const std::vector<JSONType>& group){
+            for(const JSONType& elem : group){
+                if(elem.isstring()){
+                    if(elem.asstring() != want){
+                        seekComponent(p, end, elem.asstring());
+                    }
+                }else if(elem.isvector()){
+                    reachArray(p, end, want, elem.asvector());
+                }
+            }
+        }
+
+        std::vector<std::string> searchArray(const char*& p, const char* end, 
+            std::string& want, int leftbound, int rightbound) {
+
+            std::vector<std::string> found = {};
+
+            return found;
+        }
+
+        std::vector<std::string> searchArray(const char*& p, const char* end, 
+            const std::string& want, 
+            const std::string& regex) {
+            
+            std::vector<std::string> found = {};
+
+            skipWs(p, end);
+            if (p >= end || *p != '[') return found;
+            
+            ++p;
+            skipWs(p, end);
+
+            if(p < end && *p == ']'){
+                ++p;
+                return found;
+            }
+
+            while (p < end && *p != ']') {
+                const char* element = p;
+
+                const char* q = element;              // search off a copy
+                bool matches = false;
+                if (seekComponent(q, end, want) && hasValue(q, end)) {
+                    const char* start = q;
+                    if (!skipValue(q, end)) return found;
+                    std::regex pattern("^L");
+                    std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
+
+                    value = value.substr(1, value.size() - 2); // Ignore quotation marks.
+                    matches = std::regex_search(value, pattern);
+                }
+
+                p = element; // go back to beginning of object and skip the whole thing.
+                // not that smart but really only way to work with skipvalue func
+                if (!skipValue(p, end)) return found; // step over the whole element
+                                    
+                if(matches){
+                    found.push_back(convertUnicode(std::string_view(q, static_cast<size_t>(q - element))));
+                }
+
+                skipWs(p, end);
+                if (p >= end || *p != ',') break;     // ']' or malformed
+                ++p; // was at ',', now at '{'
+            }
+
+            return found;
+        }
+
         void filterGroup(const char* container, 
             const char* end, 
             const std::vector<JSONType>& group, 
             std::vector<std::string>& output,
             size_t from,
             bool isRegexFilter
-        )
-        {
+        ){
             std::string want;
 
             if(group[1].isvector()){
                 getWantedKey(group[1].asvector(), want);
+                reachArray(container, end, want, group[1].asvector());
             }else{
                 throw std::runtime_error("Second parameter has to be a vector.");
             }
 
             if(isRegexFilter){
-                if(group[2].isstring())
+                if(group[2].isstring()){
                     output = searchArray(container, end, want, group[2].asstring());
-                else
+                }else{
                     throw std::runtime_error("Invalid regex.");
+                }
             } else {
                 output = searchArray(container, end, want, std::stoi(group[2].asstring()), std::stoi(group[3].asstring()));
             }
@@ -534,7 +539,7 @@ namespace json_parser {
                     return {};  // a missing target means nothing was found
                 }
 
-                return joinValues(values);
+                break;
             }
 
             case Query::FILTER: {
@@ -542,6 +547,7 @@ namespace json_parser {
                 const char* end = p + json.size();
 
                 filterGroup(p, end, query.parts, values, 1, query.isRegexFilter);
+                
                 break;
             }
 
@@ -549,7 +555,7 @@ namespace json_parser {
                 throw std::runtime_error("Unsupported query type.");
         }
 
-        return "Reached EOF";
+        return joinValues(values);
     }
 
     std::string_view mapFile(const std::string& path) {
