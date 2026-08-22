@@ -415,8 +415,6 @@ namespace json_parser {
                     std::regex pattern("^L");
                     std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
 
-                    // wait may not need this because the numbers dont have quotes
-                    // value = value.substr(1, value.size() - 2); // Ignore quotation marks.
                     double doubleValue = std::stod(value);
                     if(doubleValue >= leftbound && doubleValue <= rightbound) {
                         matches = true;
