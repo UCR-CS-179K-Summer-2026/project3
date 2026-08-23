@@ -23,7 +23,7 @@ void printWelcomeUI(std::string& fileName) {
     cout << "|                    -------                    |\n";
     cout << "|                                               |\n";
     cout << "| Please enter filename you would like to query |\n";
-    cout << "| For example : big                             |\n";
+    cout << "| For example : big.json                        |\n";
     cout << "|                                               |\n";
     cout << "+-----------------------------------------------+\n\n";
 }
@@ -38,15 +38,21 @@ void openJSONUI() {
     std::cout << "+-----------------------------------------------+\n\n";
 }
 
-void query(std::string_view json) {
+void query(std::string_view json, bool jsonl) {
     std::cout << "> " << std::flush;
     std::string line = "";
     std::getline(std::cin, line);
 
-    std::string value;
+    std::vector<std::string> value;
+
     try {
         queryparser::parsequery(line);
-        value = json_parser::parsejson(json, queryparser::getparsedquery());
+        if(jsonl) { 
+            value = json_parser::repeatSearch(json, queryparser::getparsedquery());
+        } else {
+            std::string found = json_parser::parsejson(json, queryparser::getparsedquery());
+            if(!found.empty()) value.push_back(std::move(found));
+        }
     } catch (const std::exception& e) {
         std::cout << "\n" << e.what() << "\n";
         std::cout << "\n> " << std::flush;
@@ -55,7 +61,7 @@ void query(std::string_view json) {
 
     std::cout << "\n";
 
-    if (value.empty()) {
+        if (value.empty()) {
         std::cout << "+-----------------------------------------------+\n";
         std::cout << "|                                               |\n";
         std::cout << "|               Value not found.                |\n";
@@ -73,7 +79,9 @@ void query(std::string_view json) {
         std::cout << "|                Printing below.                |\n";
         std::cout << "|                                               |\n";
         std::cout << "+-----------------------------------------------+\n";
-        std::cout << "\n" << value << "\n\n";
+        for(const std::string& v : value) {
+            std::cout << v << "\n";
+        }
         std::cout << "+-----------------------------------------------+\n";
         std::cout << "|                                               |\n";
         std::cout << "|                 Query again?                  |\n";
@@ -81,7 +89,8 @@ void query(std::string_view json) {
         std::cout << "|                    (y/n)                      |\n";
         std::cout << "|                                               |\n";
         std::cout << "+-----------------------------------------------+\n";
-    }
+    }   
+    
     std::cout << "\n> " << std::flush;
 }
 
@@ -96,7 +105,6 @@ int main() {
     std::cout << "> " << std::flush;
     std::getline(std::cin, fileName);
     fileName = "jsonFiles/" + fileName;
-    
     std::cout << std::endl;
     
     std::string_view json = json_parser::mapFile(fileName);
@@ -104,6 +112,7 @@ int main() {
         std::cout << "Error opening file..." <<std::endl;
         return 1;
     }
+    const bool jsonl = fileName.ends_with(".jsonl");
 
     openJSONUI();
     bool looped = false;
@@ -118,7 +127,7 @@ int main() {
         }
         looped = true;
         
-        query(json);
+        query(json, jsonl);
 
         // getline, not >>, so the newline does not survive into the next getQuery
         std::string userWantRepeat;

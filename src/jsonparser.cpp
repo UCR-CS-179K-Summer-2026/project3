@@ -599,6 +599,33 @@ namespace json_parser {
         return joinValues(values);
     }
 
+    // JSONL
+    std::vector<std::string> repeatSearch(std::string_view json, const ParsedQuery& query)
+    {
+        std::vector<std::string> values;
+        const char* p = json.data();
+        const char* end = p + json.size();
+
+        while (p < end) {
+            const char* rec = p;
+            if (!skipValue(p, end)) break;
+
+            std::string value = parsejson(std::string_view(rec, static_cast<size_t>(p - rec)), query);
+
+            if (query.command == Query::FIND) {
+                if (value == "true") return {"true"};
+            } else if (!value.empty()) {
+                values.push_back(std::move(value));
+            }
+
+            skipWs(p, end);
+        }
+
+        if (query.command == Query::FIND) return {"false"};
+
+        return values;
+    }
+
     std::string_view mapFile(const std::string& path) {
         int fd = ::open(path.c_str(), O_RDONLY);
         if(fd < 0) return {};
