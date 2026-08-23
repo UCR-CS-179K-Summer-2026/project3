@@ -95,11 +95,15 @@ int main() {
 
     std::cout << "> " << std::flush;
     std::getline(std::cin, fileName);
-    fileName = "jsonFiles/" + fileName + ".json";
+    fileName = "jsonFiles/" + fileName;
     
     std::cout << std::endl;
     
     std::string_view json = json_parser::mapFile(fileName);
+    if(json == "") {
+        std::cout << "Error opening file..." <<std::endl;
+        return 1;
+    }
 
     openJSONUI();
     bool looped = false;
