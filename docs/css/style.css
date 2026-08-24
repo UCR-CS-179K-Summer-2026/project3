@@ -441,6 +441,14 @@ pre code {
     overflow-x: auto;
 }
 
+.terminal-block {
+    width: fit-content;
+    max-width: 100%;
+    margin: 20px 0;
+    padding: 18px;
+    overflow-x: auto;
+}
+
 
 /* =========================
    Lists

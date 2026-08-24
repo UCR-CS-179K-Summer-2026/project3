@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,20 +15,40 @@
 
 <nav class="navbar">
     <div class="nav-container">
-        <a href="index.html" class="nav-brand">JSON Query Engine</a>
 
-        <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu">
+        <a href="index.html" class="nav-brand">
+            JSON Query Engine
+        </a>
+
+        <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open navigation menu"
+        >
             ☰
         </button>
 
         <div class="nav-links" id="navLinks">
+
             <a href="index.html">Home</a>
-            <a href="gettingstarted.html" class="active">Getting Started</a>
+
+            <a
+                href="gettingstarted.html"
+                class="active"
+            >
+                Getting Started
+            </a>
+
             <a href="features.html">Features</a>
+
             <a href="architecture.html">Architecture</a>
+
             <a href="algorithms.html">Algorithms</a>
+
             <a href="testing.html">Testing</a>
+
             <a href="performance.html">Performance</a>
+
             <a href="limitations.html">Limitations</a>
 
             <a
@@ -38,142 +59,653 @@
             >
                 GitHub ↗
             </a>
+
         </div>
     </div>
 </nav>
 
+
 <main class="page-container">
 
+
+    <!-- =========================
+         Hero
+    ========================== -->
+
     <header class="hero">
+
         <h1>Getting Started</h1>
 
         <p>
-            Build the JSON Query Engine, load a JSON document, and run your first query.
+            Build the JSON Query Engine, load a JSON document,
+            and run your first FIND, DISPLAY, or FILTER query.
         </p>
+
+        <div class="hero-actions">
+
+            <a
+                href="#requirements"
+                class="button button-primary"
+            >
+                Start Setup
+            </a>
+
+            <a
+                href="features.html"
+                class="button button-secondary"
+            >
+                View Query Guide
+            </a>
+
+        </div>
+
     </header>
 
-    <section>
+
+    <!-- =========================
+         Requirements
+    ========================== -->
+
+    <section id="requirements">
+
         <h2>Requirements</h2>
 
         <p>
-            The JSON Query Engine is written in C++20 and uses CMake for project configuration.
-            GoogleTest is used for the automated test suite.
+            The JSON Query Engine is written in C++20 and uses CMake
+            to configure and compile the project.
+        </p>
+
+        <p>
+            Before building the project, make sure the following tools
+            are installed:
         </p>
 
         <ul>
             <li>A compiler with C++20 support</li>
             <li>CMake</li>
             <li>Git</li>
-            <li>GoogleTest for running the automated tests</li>
         </ul>
+
+        <div class="note">
+
+            <strong>GoogleTest:</strong>
+
+            GoogleTest is downloaded automatically through the project's
+            CMake configuration, so users do not need to install it manually.
+
+        </div>
+
     </section>
 
+
+    <!-- =========================
+         Clone Repository
+    ========================== -->
+
     <section>
+
         <h2>1. Clone the Repository</h2>
+
+        <p>
+            Start by cloning the project repository and moving into the
+            project directory.
+        </p>
 
         <pre><code>git clone https://github.com/UCR-CS-179K-Summer-2026/project3.git
 cd project3</code></pre>
+
     </section>
 
+
+    <!-- =========================
+         Configure
+    ========================== -->
+
     <section>
-        <h2>2. Configure the Build</h2>
+
+        <h2>2. Configure the Project</h2>
 
         <p>
-            Create a separate build directory so generated build files remain separate
-            from the source code.
+            Use CMake to configure the project and create a separate
+            build directory.
         </p>
 
-        <pre><code>mkdir build
-cd build
-cmake ..</code></pre>
+        <pre><code>cmake -S . -B build</code></pre>
+
+        <p>
+            This command reads the project's
+            <code>CMakeLists.txt</code>, configures the build system,
+            and places generated build files inside the
+            <code>build</code> directory.
+        </p>
+
+        <div class="note">
+
+            CMake may display developer or compiler warnings during
+            configuration. A warning does not necessarily mean the
+            configuration failed.
+
+            Look for messages such as:
+
+            <pre><code>Configuring done
+Generating done</code></pre>
+
+            to confirm that configuration completed successfully.
+
+        </div>
+
     </section>
 
+
+    <!-- =========================
+         Build
+    ========================== -->
+
     <section>
+
         <h2>3. Build the Project</h2>
 
-        <pre><code>cmake --build .</code></pre>
+        <p>
+            Compile the JSON Query Engine and its supporting executables:
+        </p>
+
+        <pre><code>cmake --build build</code></pre>
 
         <p>
-            After the build completes, the project executable can be run from the build output.
+            A successful build creates several targets.
         </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3><code>build/json</code></h3>
+
+                <p>
+                    The main command-line JSON Query Engine used to load
+                    JSON files and execute queries.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>build/JSONQL</code></h3>
+
+                <p>
+                    The automated GoogleTest executable used to run the
+                    project's correctness tests.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>build/benchmark</code></h3>
+
+                <p>
+                    The standalone performance benchmark executable.
+                </p>
+
+            </div>
+
+        </div>
+
     </section>
 
+
+    <!-- =========================
+         Run Program
+    ========================== -->
+
     <section>
-        <h2>4. Load a JSON Document</h2>
+
+        <h2>4. Run the JSON Query Engine</h2>
 
         <p>
-            The program reads a JSON document and then accepts query commands from the user.
-            The repository includes example JSON files under the project’s JSON fixture directories.
+            From the root of the repository, start the command-line
+            application with:
         </p>
 
+        <pre><code>./build/json</code></pre>
+
         <p>
-            Example data includes employee, product, university, Unicode, edge-case,
-            and benchmark JSON files.
+            The program begins by asking which JSON file you would like
+            to query.
         </p>
+
+        <pre><code>
++-----------------------------------------------+
+|                                               |
+|    Welcome to the JSON analytical Engine      |
+|                                               |
+|    Made by:                                   |
+|   Laura Canon, Moustafa Soliman, James Mace   |
+|                                               |
+|                    -------                    |
+|                                               |
+| Please enter filename you would like to query |
+| For example : big                             |
+|                                               |
++-----------------------------------------------+
+>    
+</code></pre>
+
     </section>
 
+
+    <!-- =========================
+         Select File
+    ========================== -->
+
     <section>
-        <h2>5. Run a Query</h2>
+
+        <h2>5. Select a JSON File</h2>
 
         <p>
-            Once the JSON document is loaded, enter one of the supported query commands:
+            At the filename prompt, enter the name of the JSON dataset
+            you want to query.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre><code>big</code></pre>
+
+        <p>
+            If the JSON file is opened successfully, the application
+            displays the query prompt:
+        </p>
+
+        <pre><code>JSON opened successfully.
+
+Please enter Query
+
+&gt;</code></pre>
+
+        <p>
+            You can now submit FIND, DISPLAY, or FILTER commands against
+            the loaded JSON document.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         First Query
+    ========================== -->
+
+    <section>
+
+        <h2>6. Run Your First Query</h2>
+
+        <p>
+            A <code>DISPLAY</code> query retrieves a value from a
+            requested path in the JSON document.
+        </p>
+
+        <h3>Example: Display a User Name</h3>
+
+        <p>
+            Suppose the JSON document contains a
+            <code>users</code> array whose first user has the name
+            <code>Laura Chen</code>.
+        </p>
+
+        <div class="example-grid">
+
+
+            <div class="example-card">
+
+                <h3>JSON Structure</h3>
+
+                <pre><code>{
+  "users": [
+    {
+      "name": "Laura Chen",
+      "score": 91.5
+    }
+  ]
+}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Query</h3>
+
+                <pre><code>DISPLAY {"users" { "0" { "name" }}}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Result</h3>
+
+                <pre><code>"Laura Chen"</code></pre>
+
+            </div>
+
+
+        </div>
+
+        <p>
+            This query begins at the <code>users</code> array,
+            selects array element <code>0</code>, and then retrieves
+            the value associated with the <code>name</code> key.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         DISPLAY
+    ========================== -->
+
+    <section>
+
+        <h2>7. Retrieve Values with DISPLAY</h2>
+
+        <p>
+            <code>DISPLAY</code> follows a path through the JSON
+            document and returns the requested value.
+        </p>
+
+        <h3>Example: Display a Numeric Value</h3>
+
+        <p><strong>Query</strong></p>
+
+        <pre><code>DISPLAY {"users" { "0" { "score" }}}</code></pre>
+
+        <p><strong>Result</strong></p>
+
+        <pre><code>91.5</code></pre>
+
+        <p>
+            The query navigates to the first element of the
+            <code>users</code> array and returns its
+            <code>score</code> value.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         FIND
+    ========================== -->
+
+    <section>
+
+        <h2>8. Check a Path with FIND</h2>
+
+        <p>
+            <code>FIND</code> checks whether a requested path or
+            component exists in the JSON document.
+        </p>
+
+        <p><strong>Query</strong></p>
+
+        <pre><code>FIND {"users" { "0" { "name" }}}</code></pre>
+
+        <p><strong>Result</strong></p>
+
+        <pre><code>true</code></pre>
+
+        <p>
+            The result is <code>true</code> because the first object
+            in the <code>users</code> array contains the requested
+            <code>name</code> field.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         FILTER
+    ========================== -->
+
+    <section>
+
+        <h2>9. Filter JSON Data</h2>
+
+        <p>
+            <code>FILTER</code> searches entries using a supported
+            filter condition.
+        </p>
+
+        <p>
+            The following example applies the regular expression
+            <code>^L</code> to user names. In a regular expression,
+            <code>^L</code> means that the value must begin with the
+            letter <strong>L</strong>.
+        </p>
+
+        <p><strong>Query</strong></p>
+
+        <pre><code>FILTER {"users" { "name" }} "^L"</code></pre>
+
+        <p><strong>Matching Result</strong></p>
+
+        <pre><code>{
+  "id": 1001,
+  "name": "Laura Chen",
+  "email": "laura@example.com",
+  "active": true,
+  "score": 91.5,
+  "roles": [
+    "admin",
+    "reviewer"
+  ],
+  "profile": {
+    ...
+  },
+  "history": [
+    ...
+  ]
+}</code></pre>
+
+        <p>
+            The engine searches the <code>name</code> field of entries
+            in the <code>users</code> collection. Because
+            <code>Laura Chen</code> begins with <code>L</code>, the
+            matching user object is returned.
+        </p>
+
+        <div class="note">
+
+            FILTER returns the matching JSON entry rather than returning
+            only the value of the field used for the filter.
+
+        </div>
+
+        <p>
+            <a href="features.html">
+                See more FILTER examples →
+            </a>
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Query Again
+    ========================== -->
+
+    <section>
+
+        <h2>10. Run Another Query</h2>
+
+        <p>
+            After displaying a result, the application asks whether
+            you want to submit another query.
+        </p>
+
+        <pre><code>Query again?
+
+(y/n)
+
+&gt;</code></pre>
+
+        <ul>
+            <li>
+                Enter <code>y</code> to run another query against
+                the currently loaded JSON document.
+            </li>
+
+            <li>
+                Enter <code>n</code> to stop querying.
+            </li>
+        </ul>
+
+    </section>
+
+
+    <!-- =========================
+         Command Summary
+    ========================== -->
+
+    <section>
+
+        <h2>Supported Commands</h2>
+
+        <p>
+            The current JSON Query Engine supports three main query commands.
         </p>
 
         <div class="feature-grid">
 
+
             <div class="card implemented">
+
                 <h3>FIND</h3>
-                <p>Check whether requested JSON components exist.</p>
+
+                <p>
+                    Checks whether requested JSON components or paths exist.
+                </p>
+
+                <strong>Status: Implemented</strong>
+
             </div>
 
+
             <div class="card implemented">
+
                 <h3>DISPLAY</h3>
-                <p>Retrieve values from requested JSON components.</p>
+
+                <p>
+                    Traverses a JSON path and returns the requested value.
+                </p>
+
+                <strong>Status: Implemented</strong>
+
             </div>
 
+
             <div class="card implemented">
+
                 <h3>FILTER</h3>
-                <p>Filter JSON values using supported matching conditions.</p>
+
+                <p>
+                    Selects matching JSON entries using supported filter
+                    conditions.
+                </p>
+
+                <strong>Status: Implemented</strong>
+
             </div>
+
 
         </div>
 
-        <p style="margin-top: 20px;">
-            <a href="features.html">See full command syntax and examples →</a>
-        </p>
     </section>
+
+
+    <!-- =========================
+         Next Steps
+    ========================== -->
 
     <section>
+
         <h2>Next Steps</h2>
 
-        <div class="card-grid">
+        <p>
+            Now that you can build and run the engine, continue through
+            the documentation to learn the query syntax and internal
+            implementation.
+        </p>
 
-            <a href="features.html" class="doc-card">
-                <h3>Learn the Query Language</h3>
+        <div class="docs-grid">
+
+
+            <a
+                href="features.html"
+                class="doc-card"
+            >
+
+                <h3>Features</h3>
+
                 <p>
-                    See FIND, DISPLAY, and FILTER examples with JSON input,
-                    queries, and expected results.
+                    Learn the syntax and behavior of FIND, DISPLAY,
+                    and FILTER with representative examples.
                 </p>
-                <span>View features →</span>
+
+                <span>Explore features →</span>
+
             </a>
 
-            <a href="architecture.html" class="doc-card">
-                <h3>Understand the Internals</h3>
+
+            <a
+                href="architecture.html"
+                class="doc-card"
+            >
+
+                <h3>Architecture</h3>
+
                 <p>
-                    Learn how the query parser, execution layer, and JSON traversal
-                    engine work together.
+                    Understand how query parsing, execution, and JSON
+                    traversal work together.
                 </p>
+
                 <span>View architecture →</span>
+
             </a>
+
+
+            <a
+                href="algorithms.html"
+                class="doc-card"
+            >
+
+                <h3>Algorithms</h3>
+
+                <p>
+                    Follow the parser, traversal, FIND, DISPLAY,
+                    FILTER, and helper algorithms step by step.
+                </p>
+
+                <span>View algorithms →</span>
+
+            </a>
+
 
         </div>
+
     </section>
+
 
 </main>
 
+
 <footer>
+
     <p>
         JSON Query Engine · CS179K Project ·
+
         <a
             href="https://github.com/UCR-CS-179K-Summer-2026/project3"
             target="_blank"
@@ -182,9 +714,13 @@ cmake ..</code></pre>
             GitHub Repository
         </a>
     </p>
+
 </footer>
+
 
 <script src="js/navigation.js"></script>
 
 </body>
+
 </html>
+```

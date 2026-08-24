@@ -1,0 +1,570 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Features — JSON Query Engine</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+
+        <a href="index.html" class="nav-brand">
+            JSON Query Engine
+        </a>
+
+        <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open navigation menu"
+        >
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="gettingstarted.html">Getting Started</a>
+            <a href="features.html" class="active">Features</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="algorithms.html">Algorithms</a>
+            <a href="testing.html">Testing</a>
+            <a href="performance.html">Performance</a>
+            <a href="limitations.html">Limitations</a>
+
+            <a
+                href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+                class="github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub ↗
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+
+<main class="page-container">
+
+
+    <!-- Hero -->
+
+    <header class="hero">
+
+        <h1>Features</h1>
+
+        <p>
+            The JSON Query Engine currently supports FIND, DISPLAY, and FILTER.
+            Each command operates on a structured path through the loaded JSON document.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#display" class="button button-primary">
+                View Examples
+            </a>
+
+            <a href="gettingstarted.html" class="button button-secondary">
+                Getting Started
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- Command Overview -->
+
+    <section>
+
+        <h2>Supported Commands</h2>
+
+        <div class="feature-grid">
+
+            <div class="card implemented">
+                <h3>FIND</h3>
+
+                <p>
+                    Checks whether a requested path exists in the JSON document.
+                </p>
+
+                <strong>Status: Implemented</strong>
+            </div>
+
+
+            <div class="card implemented">
+                <h3>DISPLAY</h3>
+
+                <p>
+                    Traverses a requested JSON path and returns its value.
+                </p>
+
+                <strong>Status: Implemented</strong>
+            </div>
+
+
+            <div class="card implemented">
+                <h3>FILTER</h3>
+
+                <p>
+                    Searches entries using a supported filtering condition.
+                </p>
+
+                <strong>Status: Implemented</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Query Structure -->
+
+    <section>
+
+        <h2>Understanding Query Paths</h2>
+
+        <p>
+            Query paths are written using nested braces. Each nested component
+            describes another level of navigation through the JSON document.
+        </p>
+
+        <p>
+            For example:
+        </p>
+
+        <pre><code>DISPLAY {"users" { "0" { "name" }}}</code></pre>
+
+        <p>
+            This path means:
+        </p>
+
+        <ol>
+            <li>Locate the <code>users</code> array.</li>
+            <li>Select array element <code>0</code>.</li>
+            <li>Locate the <code>name</code> field.</li>
+            <li>Return its value.</li>
+        </ol>
+
+        <div class="note">
+            Object keys and array positions are represented as path components
+            inside the nested query structure.
+        </div>
+
+    </section>
+
+
+    <!-- DISPLAY -->
+
+    <section id="display">
+
+        <h2>DISPLAY</h2>
+
+        <p>
+            <code>DISPLAY</code> navigates through the JSON document and returns
+            the value located at the requested path.
+        </p>
+
+        <h3>Example 1: Display a String</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+
+                <h3>JSON Input</h3>
+
+                <pre><code>{
+  "users": [
+    {
+      "name": "Laura Chen",
+      "score": 91.5
+    }
+  ]
+}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Query</h3>
+
+                <pre><code>DISPLAY {"users" { "0" { "name" }}}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Result</h3>
+
+                <pre><code>"Laura Chen"</code></pre>
+
+            </div>
+
+        </div>
+
+        <p>
+            The engine locates the <code>users</code> array, selects the first
+            element, and returns the value stored under <code>name</code>.
+        </p>
+
+
+        <h3>Example 2: Display a Number</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+
+                <h3>JSON Input</h3>
+
+                <pre><code>{
+  "users": [
+    {
+      "name": "Laura Chen",
+      "score": 91.5
+    }
+  ]
+}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Query</h3>
+
+                <pre><code>DISPLAY {"users" { "0" { "score" }}}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Result</h3>
+
+                <pre><code>91.5</code></pre>
+
+            </div>
+
+        </div>
+
+        <p>
+            DISPLAY can return non-string JSON values as well, including numeric values.
+        </p>
+
+
+        <h3>Example 3: Display Metadata</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+
+                <h3>JSON Input</h3>
+
+                <pre><code>{
+  "meta": {
+    "name": "big"
+  }
+}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Query</h3>
+
+                <pre><code>DISPLAY {"meta" { "name" }}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Result</h3>
+
+                <pre><code>"big"</code></pre>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FIND -->
+
+    <section id="find">
+
+        <h2>FIND</h2>
+
+        <p>
+            <code>FIND</code> checks whether the requested JSON path exists.
+            The command returns a Boolean result.
+        </p>
+
+        <h3>Example: Existing Path</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+
+                <h3>JSON Input</h3>
+
+                <pre><code>{
+  "users": [
+    {
+      "name": "Laura Chen"
+    }
+  ]
+}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Query</h3>
+
+                <pre><code>FIND {"users" { "0" { "name" }}}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Result</h3>
+
+                <pre><code>true</code></pre>
+
+            </div>
+
+        </div>
+
+        <p>
+            The result is <code>true</code> because the first element
+            of the <code>users</code> array contains a
+            <code>name</code> field.
+        </p>
+
+    </section>
+
+
+    <!-- FILTER -->
+
+    <section id="filter">
+
+        <h2>FILTER</h2>
+
+        <p>
+            <code>FILTER</code> searches entries using a condition applied
+            to a selected field.
+        </p>
+
+        <h3>Regular Expression Filtering</h3>
+
+        <p>
+            This example searches the <code>name</code> field of users
+            using the regular expression <code>^L</code>.
+        </p>
+
+        <p>
+            In a regular expression, <code>^L</code> means that the value
+            must begin with the letter <strong>L</strong>.
+        </p>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+
+                <h3>JSON Input</h3>
+
+                <pre><code>{
+  "users": [
+    {
+      "id": 1001,
+      "name": "Laura Chen",
+      "score": 91.5
+    },
+    {
+      "id": 1002,
+      "name": "James Smith",
+      "score": 87.2
+    }
+  ]
+}</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Query</h3>
+
+                <pre><code>FILTER {"users" { "name" }} "^L"</code></pre>
+
+            </div>
+
+
+            <div class="example-card">
+
+                <h3>Result</h3>
+
+                <pre><code>{
+  "id": 1001,
+  "name": "Laura Chen",
+  "score": 91.5,
+  ...
+}</code></pre>
+
+            </div>
+
+        </div>
+
+        <p>
+            The engine checks the requested field and returns the JSON entry
+            whose value satisfies the filter.
+        </p>
+
+        <div class="note">
+            FILTER returns the matching JSON object rather than only
+            the field used in the filtering condition.
+        </div>
+
+    </section>
+
+
+    <!-- Comparison -->
+
+    <section>
+
+        <h2>Command Comparison</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Purpose</th>
+                        <th>Typical Result</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td><code>FIND</code></td>
+                        <td>Check whether a requested path exists.</td>
+                        <td><code>true</code> or <code>false</code></td>
+                    </tr>
+
+                    <tr>
+                        <td><code>DISPLAY</code></td>
+                        <td>Retrieve a value from a requested path.</td>
+                        <td>JSON value</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>FILTER</code></td>
+                        <td>Return entries matching a condition.</td>
+                        <td>Matching JSON object</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- Next Steps -->
+
+    <section>
+
+        <h2>Next Steps</h2>
+
+        <div class="docs-grid">
+
+            <a href="architecture.html" class="doc-card">
+
+                <h3>Architecture</h3>
+
+                <p>
+                    See how parsed queries flow into command execution
+                    and JSON traversal.
+                </p>
+
+                <span>View architecture →</span>
+
+            </a>
+
+
+            <a href="algorithms.html" class="doc-card">
+
+                <h3>Algorithms</h3>
+
+                <p>
+                    Follow the parsing, traversal, FIND, DISPLAY,
+                    FILTER, and value-skipping algorithms.
+                </p>
+
+                <span>View algorithms →</span>
+
+            </a>
+
+
+            <a href="testing.html" class="doc-card">
+
+                <h3>Testing</h3>
+
+                <p>
+                    Review the correctness tests and edge cases used
+                    to validate the engine.
+                </p>
+
+                <span>View testing →</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        JSON Query Engine · CS179K Project ·
+
+        <a
+            href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub Repository
+        </a>
+    </p>
+
+</footer>
+
+
+<script src="js/navigation.js"></script>
+
+</body>
+
+</html>
+```

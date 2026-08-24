@@ -159,23 +159,19 @@
         <h2>Quick Example</h2>
     
         <p>
-            The engine takes a structured query, traverses the JSON document,
-            and returns the requested value.
+            Query a value from the first user in the loaded JSON document.
         </p>
     
         <div class="example-grid">
     
             <div class="example-card">
-                <h3>JSON Input</h3>
+                <h3>JSON Structure</h3>
+    
                 <pre><code>{
-      "employees": [
+      "users": [
         {
-          "name": "Alice",
-          "department": "Engineering"
-        },
-        {
-          "name": "Bob",
-          "department": "Finance"
+          "name": "Laura Chen",
+          "score": 91.5
         }
       ]
     }</code></pre>
@@ -183,12 +179,14 @@
     
             <div class="example-card">
                 <h3>Query</h3>
-                <pre><code>DISPLAY {"employees" 0 "name"}</code></pre>
+    
+                <pre><code>DISPLAY {"users" { "0" { "name" }}}</code></pre>
             </div>
     
             <div class="example-card">
                 <h3>Result</h3>
-                <pre><code>Alice</code></pre>
+    
+                <pre><code>"Laura Chen"</code></pre>
             </div>
     
         </div>
