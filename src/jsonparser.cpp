@@ -462,7 +462,7 @@ namespace json_parser {
                 if (seekComponent(q, end, want) && hasValue(q, end)) {
                     const char* start = q;
                     if (!skipValue(q, end)) return found;
-                    std::regex pattern("^L");
+                    std::regex pattern(regex);
                     std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
 
                     value = value.substr(1, value.size() - 2); // Ignore quotation marks.
