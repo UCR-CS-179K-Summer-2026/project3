@@ -531,6 +531,29 @@ namespace json_parser {
             return out;
         }
 
+        // Returns the text of the indexed object
+        // or {} if that index does not exist
+        std::string_view recordAt(std::string_view json, size_t index) {
+            const char* p = json.data();
+            const char* end = p + json.size();
+
+            for (size_t i = 0; ; ++i) {
+                skipWs(p, end);
+                if (p >= end) {
+                    return {};
+                }
+
+                const char* rec = p;
+                if (!skipValue(p, end)) {
+                    return {};
+                }
+
+                if (i == index) {
+                    return std::string_view(rec, static_cast<size_t>(p - rec));
+                }
+            }
+        }
+
     }
 
     std::string jsonToString(std::ifstream& json) {
@@ -597,6 +620,53 @@ namespace json_parser {
         }
 
         return joinValues(values);
+    }
+
+    // JSONL
+    std::vector<std::string> repeatSearch(std::string_view json, const ParsedQuery& query)
+    {
+        std::vector<std::string> values;
+
+        // A leading number names one record, so only that record is queried.
+        size_t index = 0;
+        if (query.parts.size() > 1 && query.parts[1].isstring() &&
+            toIndex(query.parts[1].asstring(), index)) {
+
+            std::string_view record = recordAt(json, index);
+            if (record.empty()) return {};
+
+            if (query.parts.size() == 2) return { convertUnicode(record) };
+
+            ParsedQuery rest = query;
+            rest.parts.erase(rest.parts.begin() + 1);   // the remainder reads as an ordinary query
+
+            std::string value = parsejson(record, rest);
+            if (value.empty()) return {};
+
+            return { std::move(value) };
+        }
+
+        const char* p = json.data();
+        const char* end = p + json.size();
+
+        while (p < end) {
+            const char* rec = p;
+            if (!skipValue(p, end)) break;
+
+            std::string value = parsejson(std::string_view(rec, static_cast<size_t>(p - rec)), query);
+
+            if (query.command == Query::FIND) {
+                if (value == "true") return {"true"};
+            } else if (!value.empty()) {
+                values.push_back(std::move(value));
+            }
+
+            skipWs(p, end);
+        }
+
+        if (query.command == Query::FIND) return {"false"};
+
+        return values;
     }
 
     std::string_view mapFile(const std::string& path) {

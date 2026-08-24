@@ -37,6 +37,12 @@ C++
   ]
 }
 ```
+### Example JSONL
+```jsonl
+{"id": 1, "name": "Alice", "role": "Admin"}
+{"id": 2, "name": "Bob", "role": "User"}
+{"id": 3, "name": "Charlie", "role": "Moderator"}
+```
 
 ### Query Formatting Rules
 
@@ -46,6 +52,7 @@ C++
 * Numeric bounds do not require quotes.
 * Spaces after commas are optional.
 * Spaces and commas inside quoted strings are preserved.
+* For JSONL, the same rules apply, except that if you run a FIND or DISPLAY command, it will execute that command on every single entry of the JSONL. If you want to run that command on a specific entry of the JSONL, then you must index it, as seen in the examples below.
 
 ### Query Features
 
@@ -63,7 +70,7 @@ FIND {"key" "other key"}
 FIND {"key" { "subkey" { "sub-subkey" }}}
 ```
 
-Example:
+Example (JSON) :
 
 ```text
 Query:
@@ -81,6 +88,37 @@ FIND {"employees" { "0" { "age" }}}
 
 Result:
 false
+```
+
+Example (JSONL) :
+
+To be clear, these examples are running on the JSONL file, not the JSON file.
+```text
+Query:
+FIND {"name}
+
+Result:
+true
+```
+
+If the path does not exist:
+
+```text
+Query:
+FIND {"age"}
+
+Result:
+false
+```
+
+To Query a specific index in the JSONL:
+
+```text
+Query:
+FIND {0 {"name"}}
+
+Result:
+true
 ```
 
 #### FILTER
@@ -138,6 +176,10 @@ Result:
 
 The numeric range is inclusive.
 
+Example (JSONL) :
+
+TODO !!!
+
 #### DISPLAY
 
 Returns the value stored at a specific path.
@@ -182,33 +224,38 @@ Result:
 ["Laura", 90000]
 ```
 
-#### ALLOF
-
-Returns all values for a specified key within an array.
-
-Syntax:
-
-```text
-ALLOF {"key" { "subkey" }}
-```
-
-Example:
+Example (JSONL) :
 
 ```text
 Query:
-ALLOF {"employees" { "name" }}
+DISPLAY {"name"}
 
 Result:
-["Laura", "Moustafa", "James"]
+[Alice] 
+[Bob]
+[Charlie]
 ```
 
-Another example:
+Several values at once:
 
 ```text
 Query:
-ALLOF {"employees" { "salary" }}
+DISPLAY {"id" "name"}
+
 Result:
-[90000, 120000, 90000]
+[1, "Alice"]
+[2, "Bob"]
+[3, "Charlie"]
+```
+
+To Query a specific index in the JSONL:
+
+```text
+Query:
+DISPLAY {0 {"name"}}
+
+Result:
+[Alice]
 ```
 
 ### Unicode Support
@@ -223,7 +270,7 @@ Unicode (UTF-16) is fully supported. Unicode is read in as \uXXXX, and converted
     }
 }
 ``` 
-Returns "a" if the query "b", "d" is given. This will change as we implement the real query language, and not the simple testing language. 
+Returns "a" if the query DISPLAY {"b" {"d"}} is given. 
 
 ### Edge Cases
 
