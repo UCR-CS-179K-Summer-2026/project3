@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Architecture — JSON Query Engine</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     Navigation
+========================== -->
+
+<nav class="navbar">
+    <div class="nav-container">
+
+        <a href="index.html" class="nav-brand">
+            JSON Query Engine
+        </a>
+
+        <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open navigation menu"
+        >
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+            <a href="gettingstarted.html">Getting Started</a>
+            <a href="features.html">Features</a>
+            <a href="architecture.html" class="active">Architecture</a>
+            <a href="algorithms.html">Algorithms</a>
+            <a href="testing.html">Testing</a>
+            <a href="performance.html">Performance</a>
+            <a href="limitations.html">Limitations</a>
+
+            <a
+                href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+                class="github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub ↗
+            </a>
+
+        </div>
+    </div>
+</nav>
+
+
+<main class="page-container">
+
+    <!-- =========================
+         Hero
+    ========================== -->
+
+    <header class="hero">
+
+        <h1>System Architecture</h1>
+
+        <p>
+            The JSON Query Engine is organized into separate layers for
+            command-line interaction, query parsing, command execution,
+            and direct JSON traversal. The query parser describes what the
+            user wants, while the JSON parser locates and processes that
+            data in the loaded document.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#overview" class="button button-primary">
+                View Architecture
+            </a>
+
+            <a href="algorithms.html" class="button button-secondary">
+                View Algorithms
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         High-Level Architecture
+    ========================== -->
+
+    <section id="overview">
+
+        <h2>High-Level Architecture</h2>
+
+        <p>
+            The program follows a pipeline in which the JSON document and
+            the user's query are prepared separately and then passed together
+            to the execution layer.
+        </p>
+
+        <img
+            src="images/SystemArchi.png"
+            alt="High-level architecture showing JSON input and query input flowing through the JSON Query Engine"
+            class="diagram-image"
+        >
+
+        <p>
+            The <strong>query parser</strong> converts textual query syntax
+            into a recursive data structure. The <strong>JSON parser</strong>
+            receives that parsed structure together with the JSON document
+            and executes the selected operation.
+        </p>
+
+        <div class="note">
+            Architecture diagrams on this page show component relationships
+            and data flow. Function-level control flow and pseudocode are
+            documented separately on the Algorithms page.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Major Components
+    ========================== -->
+
+    <section>
+
+        <h2>Major Components</h2>
+
+        <p>
+            The implementation is primarily divided among the application
+            controller, query parser, and JSON processing subsystem.
+        </p>
+
+        <div class="docs-grid">
+
+            <div class="doc-card">
+
+                <h3><code>main.cpp</code></h3>
+
+                <p>
+                    Provides the command-line interface, accepts a JSON
+                    filename, loads the document, accepts repeated queries,
+                    and coordinates parsing and execution.
+                </p>
+
+                <span>Application Controller</span>
+
+            </div>
+
+
+            <div class="doc-card">
+
+                <h3>Query Parser</h3>
+
+                <p>
+                    <code>queryparser.h</code> and
+                    <code>queryparser.cpp</code> define the query
+                    representation and convert raw command text into a
+                    recursive <code>ParsedQuery</code>.
+                </p>
+
+                <span>Query Representation</span>
+
+            </div>
+
+
+            <div class="doc-card">
+
+                <h3>JSON Parser</h3>
+
+                <p>
+                    <code>jsonparser.h</code> and
+                    <code>jsonparser.cpp</code> load JSON data, dispatch
+                    commands, traverse objects and arrays, and format
+                    returned values.
+                </p>
+
+                <span>Execution &amp; Traversal</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Application Controller
+    ========================== -->
+
+    <section>
+
+        <h2>Application Controller</h2>
+
+        <p>
+            <code>main.cpp</code> owns the top-level program loop. It does
+            not contain the query parsing or JSON traversal algorithms itself.
+            Instead, it connects those subsystems together.
+        </p>
+
+        <h3>Responsibilities</h3>
+
+        <ul>
+            <li>Display the command-line interface.</li>
+
+            <li>
+                Read the user's selected JSON filename.
+            </li>
+
+            <li>
+                Construct the path
+                <code>jsonFiles/&lt;filename&gt;.json</code>.
+            </li>
+
+            <li>
+                Load the document using
+                <code>json_parser::mapFile()</code>.
+            </li>
+
+            <li>
+                Read complete query lines from standard input.
+            </li>
+
+            <li>
+                Send query text to
+                <code>queryparser::parsequery()</code>.
+            </li>
+
+            <li>
+                Retrieve the resulting
+                <code>ParsedQuery</code>.
+            </li>
+
+            <li>
+                Send both the JSON document and parsed query to
+                <code>json_parser::parsejson()</code>.
+            </li>
+
+            <li>
+                Display returned values or error messages.
+            </li>
+
+            <li>
+                Allow additional queries to run against the same mapped
+                JSON file until the user exits.
+            </li>
+        </ul>
+
+        <div class="note">
+            <code>main.cpp</code> acts as the coordinator. Parsing and JSON
+            traversal remain delegated to their own modules.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         JSON Document Loading
+    ========================== -->
+
+    <section>
+
+        <h2>JSON Document Loading</h2>
+
+        <p>
+            The main application loads JSON through:
+        </p>
+
+        <pre><code>std::string_view mapFile(const std::string&amp; path);</code></pre>
+
+        <p>
+            <code>mapFile()</code> opens the selected file and maps it into
+            the process address space using a read-only private
+            <code>mmap</code> mapping. The JSON processing code then accesses
+            the mapped bytes through a <code>std::string_view</code>.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Input</h3>
+
+                <p>
+                    A path such as:
+                </p>
+
+                <pre><code>jsonFiles/big.json</code></pre>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Representation</h3>
+
+                <p>
+                    The mapped file is exposed to the rest of the engine as:
+                </p>
+
+                <pre><code>std::string_view</code></pre>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Purpose</h3>
+
+                <p>
+                    Query execution can scan the original JSON text without
+                    first constructing a complete in-memory JSON object tree.
+                </p>
+
+            </div>
+
+        </div>
+
+        <p>
+            The JSON subsystem also provides:
+        </p>
+
+        <pre><code>std::string jsonToString(std::ifstream&amp; json);</code></pre>
+
+        <p>
+            This provides an owning string representation when one is
+            needed, including in parts of the testing code.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Query Parser
+    ========================== -->
+
+    <section>
+
+        <h2>Query Parser</h2>
+
+        <p>
+            The query parser is responsible for converting a raw string such
+            as:
+        </p>
+
+        <pre><code>DISPLAY {"users" {1 {"profile" {"location" {"city"}}}}}</code></pre>
+
+        <p>
+            into structured data that the JSON execution layer can interpret.
+        </p>
+
+        <p>
+            The public parsing interface is:
+        </p>
+
+        <pre><code>void queryparser::parsequery(const std::string&amp; query);</code></pre>
+
+        <p>
+            The parser recognizes the command, quoted tokens, nested brace
+            groups, array index tokens, and FILTER arguments.
+        </p>
+
+
+        <h3>Why Preserve the Nested Structure?</h3>
+
+        <p>
+            A query is not stored as a flat path because the language supports
+            both nested traversal and multiple sibling targets.
+        </p>
+
+        <pre><code>DISPLAY {"users" {1 {"name" "email" "score"}}}</code></pre>
+
+        <p>
+            In this example, <code>users</code> and <code>1</code> describe
+            descent through the document, while <code>name</code>,
+            <code>email</code>, and <code>score</code> are sibling requests
+            inside the same object.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Core Query Data Structure
+    ========================== -->
+
+    <section>
+
+        <h2>Core Query Data Structure</h2>
+
+        <p>
+            Recursive query syntax is represented by
+            <code>JSONType</code>.
+        </p>
+
+        <pre><code>struct JSONType {
+    std::variant&lt;
+        std::string,
+        std::vector&lt;JSONType&gt;
+    &gt; structure;
+};</code></pre>
+
+        <p>
+            Each <code>JSONType</code> therefore contains one of two things:
+        </p>
+
+        <div class="two-column">
+
+            <div class="info-card">
+
+                <h3>String Component</h3>
+
+                <p>
+                    Represents one textual query component, such as:
+                </p>
+
+                <pre><code>users
+1
+profile
+city</code></pre>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Nested Group</h3>
+
+                <p>
+                    Stores another
+                    <code>std::vector&lt;JSONType&gt;</code>, allowing query
+                    nesting to continue recursively.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="note">
+            A <strong>query component</strong> means an element of this parsed
+            query representation. JSON traversal is a separate operation that
+            uses those components to locate values in the document.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ParsedQuery
+    ========================== -->
+
+    <section>
+
+        <h2>ParsedQuery</h2>
+
+        <p>
+            The parser stores the complete parsed command in
+            <code>ParsedQuery</code>.
+        </p>
+
+        <pre><code>struct ParsedQuery {
+    std::vector&lt;JSONType&gt; parts;
+    Query command = Query::FIND;
+    bool isRegexFilter = false;
+};</code></pre>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3><code>parts</code></h3>
+
+                <p>
+                    Stores the recursive query components produced from
+                    the original input.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>command</code></h3>
+
+                <p>
+                    Identifies which operation the execution layer should
+                    perform.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>isRegexFilter</code></h3>
+
+                <p>
+                    Records whether a FILTER query uses regex matching rather
+                    than numeric bounds.
+                </p>
+
+            </div>
+
+        </div>
+
+        <p>
+            Other modules access the most recently parsed query through:
+        </p>
+
+        <pre><code>const ParsedQuery&amp; queryparser::getparsedquery();</code></pre>
+
+    </section>
+
+
+    <!-- =========================
+         Parser-to-Executor Boundary
+    ========================== -->
+
+    <section>
+
+        <h2>Parser-to-Executor Boundary</h2>
+
+        <p>
+            A major architectural boundary exists between
+            <code>queryparser</code> and <code>json_parser</code>.
+        </p>
+
+        <img
+            src="images/QueryRepresentation.png"
+            alt="Diagram showing raw query text being converted into a ParsedQuery and passed to the JSON execution layer"
+            class="diagram-image"
+        >
+
+        <p>
+            The query parser accepts the raw command text and creates a
+            <code>ParsedQuery</code> containing the command type, recursive
+            query structure, and FILTER metadata.
+        </p>
+
+        <p>
+            The JSON subsystem therefore does not need to tokenize the
+            original command string. It receives a structured query that
+            has already been interpreted by the query parser.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         JSON Execution Layer
+    ========================== -->
+
+    <section>
+
+        <h2>JSON Execution Layer</h2>
+
+        <p>
+            Parsed commands are executed through:
+        </p>
+
+        <pre><code>std::string json_parser::parsejson(
+    std::string_view json,
+    const ParsedQuery&amp; query
+);</code></pre>
+
+        <p>
+            This function forms the main entry point from parsed query data
+            into JSON processing.
+        </p>
+
+        <div class="feature-grid">
+
+            <div class="card implemented">
+
+                <h3>FIND</h3>
+
+                <p>
+                    Checks whether the requested recursive structure exists
+                    and produces a Boolean result.
+                </p>
+
+            </div>
+
+
+            <div class="card implemented">
+
+                <h3>DISPLAY</h3>
+
+                <p>
+                    Locates requested values and collects them for output.
+                </p>
+
+            </div>
+
+
+            <div class="card implemented">
+
+                <h3>FILTER</h3>
+
+                <p>
+                    Locates a target array, evaluates a selected field, and
+                    collects complete matching elements.
+                </p>
+
+            </div>
+
+        </div>
+
+        <p>
+            After command-specific processing completes, collected values are
+            formatted into the output returned to <code>main.cpp</code>.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         JSON Processing Subsystem
+    ========================== -->
+
+    <section>
+
+        <h2>JSON Processing Subsystem</h2>
+
+        <p>
+            The JSON parser works directly with character positions inside
+            the mapped JSON document rather than building a separate tree of
+            C++ objects.
+        </p>
+
+        <p>
+            Internally, the subsystem contains reusable helpers for several
+            responsibilities.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Whitespace &amp; Strings</h3>
+
+                <p>
+                    Helpers move over JSON whitespace and recognize quoted
+                    string boundaries, including escaped characters.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Object Lookup</h3>
+
+                <p>
+                    Object keys are scanned and compared with requested query
+                    components.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Array Navigation</h3>
+
+                <p>
+                    Numeric query components are interpreted as array
+                    positions.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Value Boundaries</h3>
+
+                <p>
+                    Complete JSON values can be located or skipped without
+                    constructing an object representation.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Unicode Handling</h3>
+
+                <p>
+                    Unicode escape sequences can be converted to UTF-8 for
+                    comparison and returned output.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Command Operations</h3>
+
+                <p>
+                    FIND, DISPLAY, and FILTER build on these lower-level
+                    traversal helpers.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Result Representation
+    ========================== -->
+
+    <section>
+
+        <h2>Result Representation</h2>
+
+        <p>
+            Query execution ultimately returns a
+            <code>std::string</code> to the application layer.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>FIND</h3>
+
+                <p>
+                    Produces:
+                </p>
+
+                <pre><code>true</code></pre>
+
+                <p>or</p>
+
+                <pre><code>false</code></pre>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Single DISPLAY Result</h3>
+
+                <p>
+                    A single value is returned directly.
+                </p>
+
+                <pre><code>"Marco Ruiz"</code></pre>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Multiple Results</h3>
+
+                <p>
+                    Multiple collected values are formatted as a JSON-style
+                    array.
+                </p>
+
+                <pre><code>["Austin", "TX", "78701"]</code></pre>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>FILTER</h3>
+
+                <p>
+                    Matching array elements are returned as their complete
+                    JSON representations.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Public JSON Parser Interfaces
+    ========================== -->
+
+    <section>
+
+        <h2>Public JSON Parser Interfaces</h2>
+
+        <p>
+            <code>include/jsonparser.h</code> exposes the primary functions
+            used by the rest of the project.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Interface</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <code>mapFile(path)</code>
+                        </td>
+
+                        <td>
+                            Maps a JSON file and returns a
+                            <code>std::string_view</code> over its bytes.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>jsonToString(stream)</code>
+                        </td>
+
+                        <td>
+                            Copies an input stream into an owning
+                            <code>std::string</code>.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>parsejson(json, path)</code>
+                        </td>
+
+                        <td>
+                            Performs path-based lookup using a
+                            <code>std::vector&lt;std::string&gt;</code>.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>parsejson(json, ParsedQuery)</code>
+                        </td>
+
+                        <td>
+                            Executes a parsed FIND, DISPLAY, or FILTER command.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>isFileOpen(stream)</code>
+                        </td>
+
+                        <td>
+                            Reports whether an input file stream is open.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Internal System Design
+    ========================== -->
+
+    <section>
+
+        <h2>Internal System Design</h2>
+
+        <p>
+            This diagram focuses on the relationships among the application's
+            internal modules: the command-line layer, query data structures,
+            execution entry points, and JSON processing subsystem.
+        </p>
+
+        <img
+            src="images/InternalSystem.png"
+            alt="Internal system design diagram for the JSON Query Engine"
+            class="diagram-image"
+        >
+    </section>
+
+
+    <!-- =========================
+         Module Boundaries
+    ========================== -->
+
+    <section>
+
+        <h2>Important Module Boundaries</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Boundary</th>
+                        <th>Data Passed</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <code>main.cpp → mapFile()</code>
+                        </td>
+
+                        <td>
+                            JSON file path
+                        </td>
+
+                        <td>
+                            Load the selected document.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>main.cpp → parsequery()</code>
+                        </td>
+
+                        <td>
+                            Raw query string
+                        </td>
+
+                        <td>
+                            Convert user syntax into structured query data.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>queryparser → json_parser</code>
+                        </td>
+
+                        <td>
+                            <code>ParsedQuery</code>
+                        </td>
+
+                        <td>
+                            Transfer command type, recursive query structure,
+                            and FILTER metadata.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>main.cpp → parsejson()</code>
+                        </td>
+
+                        <td>
+                            JSON view + parsed query
+                        </td>
+
+                        <td>
+                            Execute the requested operation.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>parsejson() → main.cpp</code>
+                        </td>
+
+                        <td>
+                            Result string
+                        </td>
+
+                        <td>
+                            Return the final query result for display.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Repository Code Map
+    ========================== -->
+
+    <section>
+
+        <h2>Repository Code Map</h2>
+
+        <p>
+            New contributors can use this table to find the implementation
+            associated with each part of the architecture.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Responsibility</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <code>main.cpp</code>
+                        </td>
+
+                        <td>
+                            Command-line interface and top-level application
+                            control flow.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>include/queryparser.h</code>
+                        </td>
+
+                        <td>
+                            Defines <code>JSONType</code>,
+                            <code>ParsedQuery</code>, command metadata, and the
+                            public query-parser interface.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>src/queryparser.cpp</code>
+                        </td>
+
+                        <td>
+                            Implements command recognition, recursive query
+                            parsing, quoted-token handling, validation, and
+                            FILTER metadata detection.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>include/jsonparser.h</code>
+                        </td>
+
+                        <td>
+                            Declares JSON loading, path lookup, and parsed-query
+                            execution interfaces.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+
+                        <td>
+                            Implements memory-mapped file access, JSON scanning,
+                            object and array traversal, FIND, DISPLAY, FILTER,
+                            result collection, and Unicode handling.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>tests/queryparsertest.cpp</code>
+                        </td>
+
+                        <td>
+                            Tests query parsing and recursive query
+                            representation.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>tests/jsonparsertest.cpp</code>
+                        </td>
+
+                        <td>
+                            Tests JSON lookup, traversal, values, edge cases,
+                            and supported query operations.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>benchmark.cpp</code>
+                        </td>
+
+                        <td>
+                            Contains standalone performance benchmark code.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>benchmarks.txt</code>
+                        </td>
+
+                        <td>
+                            Stores benchmark output from project performance
+                            measurements.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Design Decisions
+    ========================== -->
+
+    <section>
+
+        <h2>Architectural Design Decisions</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Separate Query Parsing</h3>
+
+                <p>
+                    The JSON executor receives a structured query rather than
+                    interpreting the original command string itself.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Recursive Query Representation</h3>
+
+                <p>
+                    <code>JSONType</code> preserves nested groups and sibling
+                    targets instead of flattening every query into one path.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Direct Text Traversal</h3>
+
+                <p>
+                    JSON operations scan the original document text rather than
+                    constructing a complete object tree before querying.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Memory-Mapped Input</h3>
+
+                <p>
+                    The command-line application accesses the selected JSON
+                    file through a memory-mapped <code>std::string_view</code>.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Shared Traversal Infrastructure</h3>
+
+                <p>
+                    FIND, DISPLAY, and FILTER reuse common JSON scanning
+                    functionality rather than implementing unrelated parsers.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Reusable Loaded Document</h3>
+
+                <p>
+                    A JSON file is loaded once and can be queried repeatedly
+                    during the same command-line session.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         Continue Exploring
+    ========================== -->
+
+    <section>
+
+        <h2>Continue Exploring</h2>
+
+        <p>
+            The architecture page explains which pieces exist and how they
+            communicate. The Algorithms page explains how the major operations
+            work internally.
+        </p>
+
+        <div class="docs-grid">
+
+            <a href="algorithms.html" class="doc-card">
+
+                <h3>Algorithms</h3>
+
+                <p>
+                    Follow query parsing, component lookup, FIND, DISPLAY,
+                    FILTER, value skipping, and Unicode handling step by step.
+                </p>
+
+                <span>View algorithms →</span>
+
+            </a>
+
+
+            <a href="testing.html" class="doc-card">
+
+                <h3>Testing</h3>
+
+                <p>
+                    Review parser tests, JSON fixtures, traversal tests,
+                    edge cases, and command validation.
+                </p>
+
+                <span>View testing →</span>
+
+            </a>
+
+
+            <a href="performance.html" class="doc-card">
+
+                <h3>Performance</h3>
+
+                <p>
+                    Review benchmark results and the performance impact of
+                    direct JSON traversal and memory-mapped input.
+                </p>
+
+                <span>View performance →</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     Footer
+========================== -->
+
+<footer>
+
+    <p>
+        JSON Query Engine · CS179K Project ·
+
+        <a
+            href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub Repository
+        </a>
+    </p>
+
+</footer>
+
+
+<script src="js/navigation.js"></script>
+
+</body>
+
+</html>

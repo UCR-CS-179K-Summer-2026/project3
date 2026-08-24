@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Algorithms — JSON Query Engine</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     Navigation
+========================== -->
+
+<nav class="navbar">
+    <div class="nav-container">
+
+        <a href="index.html" class="nav-brand">
+            JSON Query Engine
+        </a>
+
+        <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open navigation menu"
+        >
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+            <a href="gettingstarted.html">Getting Started</a>
+            <a href="features.html">Features</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="algorithms.html" class="active">Algorithms</a>
+            <a href="testing.html">Testing</a>
+            <a href="performance.html">Performance</a>
+            <a href="limitations.html">Limitations</a>
+
+            <a
+                href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+                class="github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub ↗
+            </a>
+
+        </div>
+    </div>
+</nav>
+
+
+<main class="page-container">
+
+    <!-- =========================
+         Hero
+    ========================== -->
+
+    <header class="hero">
+
+        <h1>Algorithms</h1>
+
+        <p>
+            The JSON Query Engine uses recursive query parsing and direct
+            character-level JSON traversal. This page explains how raw query
+            text becomes a structured command and how FIND, DISPLAY, and
+            FILTER execute against the JSON document.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#terminology" class="button button-primary">
+                Start with Terminology
+            </a>
+
+            <a href="architecture.html" class="button button-secondary">
+                View Architecture
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         Terminology
+    ========================== -->
+
+    <section id="terminology">
+
+        <h2>Terminology Used on This Page</h2>
+
+        <p>
+            Two different structures are involved during execution:
+            the <strong>parsed query</strong> and the
+            <strong>JSON document</strong>. They should not be confused.
+        </p>
+
+        <div class="two-column">
+
+            <div class="info-card">
+
+                <h3>Query Component</h3>
+
+                <p>
+                    A query component is one element of the parsed query
+                    representation.
+                </p>
+
+                <p>
+                    It may be:
+                </p>
+
+                <ul>
+                    <li>A string such as <code>users</code>.</li>
+                    <li>An array index token such as <code>1</code>.</li>
+                    <li>A nested group of more query components.</li>
+                </ul>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>JSON Value</h3>
+
+                <p>
+                    A JSON value is part of the document being searched.
+                    It may be:
+                </p>
+
+                <ul>
+                    <li>An object.</li>
+                    <li>An array.</li>
+                    <li>A string.</li>
+                    <li>A number.</li>
+                    <li>A Boolean.</li>
+                    <li><code>null</code>.</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="note">
+            When an algorithm says it is iterating through a
+            <strong>query component</strong>, it is reading the parsed query.
+            When it says it is scanning or skipping a
+            <strong>JSON value</strong>, it is moving through the JSON document.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Algorithm Overview
+    ========================== -->
+
+    <section>
+
+        <h2>Algorithm Overview</h2>
+
+        <p>
+            Query execution can be divided into several reusable algorithms.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>1. Query Parsing</h3>
+
+                <p>
+                    Convert raw text into nested
+                    <code>JSONType</code> components and command metadata.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>2. Component Lookup</h3>
+
+                <p>
+                    Locate an object key or array index within the current
+                    JSON container.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>3. Value Skipping</h3>
+
+                <p>
+                    Move past an entire JSON value without fully decoding it.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>4. FIND</h3>
+
+                <p>
+                    Recursively verify that every requested target exists.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>5. DISPLAY</h3>
+
+                <p>
+                    Recursively navigate to requested values and collect them.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>6. FILTER</h3>
+
+                <p>
+                    Navigate to an array and retain elements whose selected
+                    field satisfies a regex or numeric condition.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Query Parsing
+    ========================== -->
+
+    <section id="query-parsing">
+
+        <h2>Query Parsing</h2>
+
+        <p>
+            Query parsing begins in:
+        </p>
+
+        <pre><code>queryparser::parsequery()</code></pre>
+
+        <p>
+            The goal is to turn a raw string such as:
+        </p>
+
+        <pre><code>DISPLAY {"users" {1 {"name" "email"}}}</code></pre>
+
+        <p>
+            into a recursive <code>ParsedQuery</code>.
+        </p>
+
+
+        <h3>Main Parsing Rules</h3>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Input Character</th>
+                        <th>Parser Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Space</td>
+                        <td>
+                            Finish the current unquoted token if one is being
+                            accumulated.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>{</code></td>
+                        <td>
+                            Start a recursive nested query group.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>"</code></td>
+                        <td>
+                            Read a quoted token while preserving spaces and
+                            escape sequences.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>}</code></td>
+                        <td>
+                            Close the current nested group.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Other characters</td>
+                        <td>
+                            Append them to the current token.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <h3>Pseudocode</h3>
+
+        <pre><code>function parseQuery(query):
+
+    clear previous parsed query
+    reset command and filter metadata
+    currentToken = ""
+
+    for each character in query:
+
+        if character is a space:
+            if currentToken is not empty:
+                append currentToken
+                clear currentToken
+
+        else if character is "{":
+            recursively parse nested group
+
+        else if character is a quote:
+            parse a quoted token
+
+        else if character is "}":
+            validate matching opening brace
+
+        else:
+            append character to currentToken
+
+    append final token if needed
+
+    validate that all braces were closed
+
+    read first parsed token as command
+
+    if command is FILTER:
+        determine whether the filter is regex or numeric</code></pre>
+
+
+        <h3>Recursive Nested Groups</h3>
+
+        <p>
+            The helper <code>parsenested()</code> performs essentially the
+            same scan inside a pair of braces. When another
+            <code>{</code> appears, it calls itself recursively.
+        </p>
+
+        <p>
+            This is what allows a query such as:
+        </p>
+
+        <pre><code>DISPLAY {"users" {1 {"profile" {"location" {"city"}}}}}</code></pre>
+
+        <p>
+            to retain its hierarchy instead of being flattened.
+        </p>
+
+
+        <h3>Quoted Tokens</h3>
+
+        <p>
+            <code>parsequoted()</code> reads from one double quotation mark
+            to its matching closing quotation mark.
+        </p>
+
+        <p>
+            This is necessary because JSON keys can contain spaces:
+        </p>
+
+        <pre><code>DISPLAY {"employee records" {"full name"}}</code></pre>
+
+        <p>
+            The spaces inside the quotation marks belong to the key and
+            therefore must not split the token.
+        </p>
+
+        <div class="note">
+            Escape sequences inside a quoted query token are copied through so
+            they can later be compared with the way the key is represented in
+            the JSON document.
+        </div>
+
+        <!-- Optional new diagram -->
+        <img
+            src="images/QueryParsing.png"
+            alt="Flowchart showing the recursive query parsing algorithm"
+            class="diagram-image algorithm-diagram"
+        >
+
+    </section>
+
+
+    <!-- =========================
+         JSON Component Lookup
+    ========================== -->
+
+    <section id="seek-component">
+
+        <h2>JSON Component Lookup</h2>
+
+        <p>
+            The central JSON navigation helper is:
+        </p>
+
+        <pre><code>seekComponent()</code></pre>
+
+        <p>
+            It receives:
+        </p>
+
+        <ul>
+            <li>A pointer to the current JSON container.</li>
+            <li>A pointer to the end of the document.</li>
+            <li>
+                One requested query component such as
+                <code>users</code>, <code>profile</code>, or
+                <code>1</code>.
+            </li>
+        </ul>
+
+        <p>
+            Its job is to move the JSON pointer to the value named by that
+            component.
+        </p>
+
+
+        <img
+            src="images/JSONTraversal.png"
+            alt="Diagram showing object-key and array-index traversal in the JSON document"
+            class="diagram-image algorithm-diagram"
+        >
+
+
+        <h3>Object Case</h3>
+
+        <p>
+            If the current JSON value begins with <code>{</code>, the query
+            component is treated as an object key.
+        </p>
+
+        <pre><code>function seekComponent(object, wantedKey):
+
+    enter object
+
+    while another key can be read:
+
+        read next JSON key
+        move past ":"
+
+        if key equals wantedKey:
+            return success
+            // pointer now sits at the key's value
+
+        skip the entire unmatched value
+
+        if there is another member:
+            continue
+
+        otherwise:
+            return failure</code></pre>
+
+
+        <h3>Array Case</h3>
+
+        <p>
+            If the current JSON value begins with <code>[</code>, the query
+            component must be a numeric array index.
+        </p>
+
+        <pre><code>function seekComponent(array, wantedIndex):
+
+    convert query component to integer index
+
+    if conversion fails:
+        return failure
+
+    enter array
+
+    repeat wantedIndex times:
+
+        skip one complete JSON value
+
+        require a comma before the next element
+
+    return success
+    // pointer now sits at requested array element</code></pre>
+
+        <div class="note">
+            <code>seekComponent()</code> does not recursively process the
+            entire query. It performs exactly one level of navigation.
+            Higher-level algorithms repeatedly call it as needed.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         skipValue
+    ========================== -->
+
+    <section id="skip-value">
+
+        <h2>Skipping a Complete JSON Value</h2>
+
+        <p>
+            One of the most important low-level helpers is:
+        </p>
+
+        <pre><code>skipValue()</code></pre>
+
+        <p>
+            It moves a pointer from the beginning of a JSON value to the first
+            character after that value.
+        </p>
+
+        <img
+            src="images/valueskip.png"
+            alt="Flowchart showing how skipValue moves over JSON strings, containers, and literals"
+            class="diagram-image algorithm-diagram"
+        >
+
+
+        <h3>Why It Is Needed</h3>
+
+        <p>
+            Suppose the engine is searching this object:
+        </p>
+
+        <pre><code>{
+  "profile": {
+    "bio": "...",
+    "preferences": { ... }
+  },
+  "score": 78.25
+}</code></pre>
+
+        <p>
+            If the query wants <code>score</code>, the engine does not need
+            to fully interpret <code>profile</code>. It can skip the complete
+            profile object and continue scanning.
+        </p>
+
+
+        <h3>Pseudocode</h3>
+
+        <pre><code>function skipValue(pointer):
+
+    skip whitespace
+
+    if value starts with quote:
+        skip one JSON string
+        return
+
+    if value starts with "{" or "[":
+        depth = 0
+
+        repeat:
+            if next item is a string:
+                skip the string
+                continue
+
+            if next character opens object or array:
+                depth++
+
+            else if next character closes object or array:
+                depth--
+
+            advance pointer
+
+        until depth == 0
+
+        return
+
+    otherwise:
+        // number, true, false, or null
+        advance until whitespace or JSON delimiter</code></pre>
+
+
+        <h3>Strings Inside Containers</h3>
+
+        <p>
+            Strings receive special handling while container depth is being
+            counted because braces and brackets inside quoted strings are data,
+            not JSON structure.
+        </p>
+
+        <pre><code>{
+  "message": "This text contains { brackets }"
+}</code></pre>
+
+        <p>
+            Without skipping quoted strings correctly, those characters could
+            incorrectly change the nesting depth.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         FIND
+    ========================== -->
+
+    <section id="find">
+
+        <h2>FIND Algorithm</h2>
+
+        <p>
+            FIND executes through:
+        </p>
+
+        <pre><code>findGroup()</code></pre>
+
+        <p>
+            The algorithm recursively processes the
+            <strong>parsed query group</strong>. It does not iterate over the
+            JSON document as if each query element were a JSON item.
+        </p>
+
+        <img
+            src="images/findgroup.png"
+            alt="Flowchart showing the recursive FIND findGroup algorithm"
+            class="diagram-image algorithm-diagram"
+        >
+
+
+        <h3>Key Idea</h3>
+
+        <p>
+            Every sibling string in a group is searched from the same JSON
+            container.
+        </p>
+
+        <p>
+            A nested query group descends from the JSON value found by the
+            string immediately before that nested group.
+        </p>
+
+
+        <h3>Example</h3>
+
+        <pre><code>FIND {"users" {1 {"profile" {"location" {"city"}}}}}</code></pre>
+
+        <p>
+            The recursive execution is:
+        </p>
+
+        <ol>
+            <li>
+                Search the root object for <code>users</code>.
+            </li>
+            <li>
+                Descend into the value of <code>users</code>.
+            </li>
+            <li>
+                Search that array for index <code>1</code>.
+            </li>
+            <li>
+                Descend into user 1.
+            </li>
+            <li>
+                Search for <code>profile</code>.
+            </li>
+            <li>
+                Continue recursively through
+                <code>location</code> and <code>city</code>.
+            </li>
+            <li>
+                Return <code>true</code> only if every requested component is
+                found.
+            </li>
+        </ol>
+
+
+        <h3>Pseudocode</h3>
+
+        <pre><code>function findGroup(container, queryGroup):
+
+    previousValue = container
+
+    for each queryComponent in queryGroup:
+
+        if queryComponent is a string:
+
+            search from container for that component
+
+            if component does not exist:
+                return false
+
+            previousValue = located JSON value
+
+        else if queryComponent is a nested group:
+
+            if findGroup(previousValue, nestedGroup) is false:
+                return false
+
+    return true</code></pre>
+
+
+        <h3>Sibling Behavior</h3>
+
+        <p>
+            Consider:
+        </p>
+
+        <pre><code>FIND {"meta" "users"}</code></pre>
+
+        <p>
+            Both <code>meta</code> and <code>users</code> are searched from
+            the root object. The second string does not descend from the first.
+        </p>
+
+        <div class="note">
+            FIND follows an all-or-nothing rule. If any requested target is
+            missing, the group returns <code>false</code>.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DISPLAY
+    ========================== -->
+
+    <section id="display">
+
+        <h2>DISPLAY Algorithm</h2>
+
+        <p>
+            DISPLAY is implemented by:
+        </p>
+
+        <pre><code>displayGroup()</code></pre>
+
+        <p>
+            Its traversal behavior resembles FIND, but instead of only checking
+            existence it collects the JSON text of requested leaf values.
+        </p>
+
+        <img
+            src="images/displaygroup.png"
+            alt="Flowchart showing the recursive DISPLAY displayGroup algorithm"
+            class="diagram-image algorithm-diagram"
+        >
+
+
+        <h3>Navigation Values vs. Output Values</h3>
+
+        <p>
+            A string query component can play one of two roles.
+        </p>
+
+        <div class="two-column">
+
+            <div class="info-card">
+
+                <h3>Navigation Component</h3>
+
+                <p>
+                    If a nested query group immediately follows the string,
+                    the string identifies where recursion should continue.
+                </p>
+
+                <pre><code>"profile" { ... }</code></pre>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Output Component</h3>
+
+                <p>
+                    If no nested group immediately follows the string, its
+                    JSON value is copied into the result list.
+                </p>
+
+                <pre><code>"name" "email"</code></pre>
+
+            </div>
+
+        </div>
+
+
+        <h3>Pseudocode</h3>
+
+        <pre><code>function displayGroup(container, queryGroup, results):
+
+    previousValue = container
+
+    for each queryComponent:
+
+        if component is a nested group:
+
+            recursively display from previousValue
+
+            if recursion fails:
+                return false
+
+            continue
+
+        search from container for the string component
+
+        if component is missing:
+            return false
+
+        previousValue = located JSON value
+
+        if next query component is a nested group:
+            // this value is navigation only
+            continue
+
+        start = current JSON pointer
+
+        skip the complete JSON value
+
+        copy JSON text from start to pointer
+        convert Unicode escapes if needed
+        append value to results
+
+    return true</code></pre>
+
+
+        <h3>Example</h3>
+
+        <pre><code>DISPLAY {"users" {1 {"name" "email" "score" "active"}}}</code></pre>
+
+        <p>
+            The engine navigates through <code>users</code> and array index
+            <code>1</code>. Then each of the four sibling leaf keys is located
+            from the same user object and copied into the result vector.
+        </p>
+
+        <pre><code>["Marco Ruiz", "marco@example.com", 78.25, true]</code></pre>
+
+    </section>
+
+
+    <!-- =========================
+         FILTER
+    ========================== -->
+
+    <section id="filter">
+
+        <h2>FILTER Algorithm</h2>
+
+        <p>
+            FILTER combines navigation with repeated evaluation of array
+            elements.
+        </p>
+
+        <p>
+            The main helpers are:
+        </p>
+
+        <pre><code>filterGroup()
+getWantedKey()
+reachArray()
+searchArray()</code></pre>
+
+        <img
+            src="images/FilterFlow.png"
+            alt="Flowchart showing FILTER navigation and array searching"
+            class="diagram-image algorithm-diagram"
+        >
+
+
+        <h3>Stage 1: Determine the Field to Test</h3>
+
+        <p>
+            <code>getWantedKey()</code> recursively walks the parsed FILTER
+            query group and determines the final field that will be tested.
+        </p>
+
+        <p>
+            For:
+        </p>
+
+        <pre><code>FILTER {"users" {"score"}} 70 80</code></pre>
+
+        <p>
+            the target field is:
+        </p>
+
+        <pre><code>score</code></pre>
+
+
+        <h3>Stage 2: Reach the Array</h3>
+
+        <p>
+            <code>reachArray()</code> follows the earlier components of the
+            query until the JSON pointer reaches the array containing the
+            objects to filter.
+        </p>
+
+        <p>
+            In this example:
+        </p>
+
+        <pre><code>FILTER {"users" {"score"}} 70 80</code></pre>
+
+        <p>
+            the array being searched is <code>users</code>.
+        </p>
+
+
+        <h3>Stage 3: Search Each Array Element</h3>
+
+        <p>
+            <code>searchArray()</code> examines each array element independently.
+        </p>
+
+        <pre><code>function searchArray(array, wantedField, condition):
+
+    enter array
+
+    for each element:
+
+        remember start of entire element
+
+        search a temporary pointer for wantedField
+
+        if field exists:
+            read field value
+
+            if value satisfies condition:
+                mark element as matching
+
+        return to beginning of element
+        skip entire element
+
+        if matching:
+            copy complete element into results
+
+    return results</code></pre>
+
+        <div class="note">
+            FILTER evaluates one field but returns the entire matching JSON
+            element.
+        </div>
+
+
+        <!-- Numeric FILTER -->
+
+        <h3>Numeric Range FILTER</h3>
+
+        <p>
+            Numeric FILTER receives a lower and upper bound.
+        </p>
+
+        <pre><code>FILTER {"users" {"score"}} 70 80</code></pre>
+
+        <p>
+            The field value is converted to a number and tested with:
+        </p>
+
+        <pre><code>lowerBound &lt;= value &amp;&amp; value &lt;= upperBound</code></pre>
+
+        <p>
+            Therefore the range is inclusive.
+        </p>
+
+
+        <!-- Regex FILTER -->
+
+        <h3>Regular Expression FILTER</h3>
+
+        <p>
+            Regex FILTER receives the user-provided expression after the
+            query group.
+        </p>
+
+        <pre><code>FILTER {"users" {"name"}} "^M"</code></pre>
+
+        <p>
+            For each user object:
+        </p>
+
+        <ol>
+            <li>Locate the <code>name</code> value.</li>
+            <li>Read the string value.</li>
+            <li>Remove the surrounding JSON quotation marks.</li>
+            <li>
+                Apply the regular expression supplied by the query.
+            </li>
+            <li>
+                If it matches, copy the complete user object into the result.
+            </li>
+        </ol>
+
+        <pre><code>regex_search(fieldValue, userPattern)</code></pre>
+
+        <p>
+            With <code>^M</code>, the user named
+            <code>Marco Ruiz</code> matches because the string begins with M.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Unicode
+    ========================== -->
+
+    <section id="unicode">
+
+        <h2>Unicode and Escaped String Handling</h2>
+
+        <p>
+            JSON strings can contain escaped Unicode values such as:
+        </p>
+
+        <pre><code>\u0041</code></pre>
+
+        <p>
+            The JSON parser uses several helpers to normalize these values:
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3><code>scanStringSpan()</code></h3>
+
+                <p>
+                    Finds the complete contents of a quoted JSON string and
+                    identifies whether escape sequences are present.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>readHex4()</code></h3>
+
+                <p>
+                    Reads four hexadecimal digits from a
+                    <code>\uXXXX</code> sequence.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>appendUtf8()</code></h3>
+
+                <p>
+                    Encodes a Unicode code point into one or more UTF-8 bytes.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3><code>convertUnicode()</code></h3>
+
+                <p>
+                    Scans returned JSON text and converts Unicode escapes into
+                    UTF-8 output.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <h3>Surrogate Pairs</h3>
+
+        <p>
+            UTF-16 surrogate pairs require two
+            <code>\uXXXX</code> sequences to represent one Unicode code point.
+        </p>
+
+        <p>
+            When a leading surrogate is detected, the next escape is read and
+            validated as the matching trailing surrogate. The pair is then
+            combined before UTF-8 encoding.
+        </p>
+
+        <pre><code>high surrogate + low surrogate
+              ↓
+      Unicode code point
+              ↓
+            UTF-8</code></pre>
+
+    </section>
+
+
+    <!-- =========================
+         Result Formatting
+    ========================== -->
+
+    <section>
+
+        <h2>Result Formatting</h2>
+
+        <p>
+            DISPLAY and FILTER store successful results in a
+            <code>std::vector&lt;std::string&gt;</code>. The helper:
+        </p>
+
+        <pre><code>joinValues()</code></pre>
+
+        <p>
+            converts that vector into the final result string.
+        </p>
+
+        <div class="two-column">
+
+            <div class="info-card">
+
+                <h3>One Value</h3>
+
+                <pre><code>"Marco Ruiz"</code></pre>
+
+                <p>
+                    A single result is returned directly.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Multiple Values</h3>
+
+                <pre><code>["Austin", "TX", "78701"]</code></pre>
+
+                <p>
+                    Multiple results are joined into a JSON-style array.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <h3>Pseudocode</h3>
+
+        <pre><code>function joinValues(values):
+
+    if values contains exactly one item:
+        return that item
+
+    output = "["
+
+    for each value:
+        append comma when needed
+        append value
+
+    append "]"
+
+    return output</code></pre>
+
+    </section>
+
+
+    <!-- =========================
+         Execution Dispatch
+    ========================== -->
+
+    <section>
+
+        <h2>Command Dispatch</h2>
+
+        <p>
+            After query parsing, the public
+            <code>parsejson(json, ParsedQuery)</code> function dispatches
+            execution based on the parsed command.
+        </p>
+
+        <pre><code>switch command:
+
+    FIND:
+        run findGroup()
+        return "true" or "false"
+
+    DISPLAY:
+        run displayGroup()
+        return joined collected values
+
+    FILTER:
+        run filterGroup()
+        return joined matching elements
+
+    otherwise:
+        report unsupported query</code></pre>
+
+        <p>
+            This keeps command selection separate from the detailed algorithms
+            used by each operation.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Complexity Discussion
+    ========================== -->
+
+    <section>
+
+        <h2>Algorithmic Characteristics</h2>
+
+        <p>
+            The engine performs direct scans of JSON text instead of creating
+            a searchable object tree first. As a result, lookup cost depends
+            on where the requested data appears in the current container.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Object Lookup</h3>
+
+                <p>
+                    Object members are scanned sequentially until the requested
+                    key is found.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Array Lookup</h3>
+
+                <p>
+                    Elements before a requested index are skipped sequentially.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>FILTER</h3>
+
+                <p>
+                    FILTER examines each element of the selected array and
+                    searches that element for the requested field.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Memory Usage</h3>
+
+                <p>
+                    Queries avoid building a complete parsed JSON object tree,
+                    although returned values and matched elements are copied
+                    into result strings.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="note">
+            Measured performance results and file-size benchmarks are documented
+            separately on the Performance page.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Algorithm Map
+    ========================== -->
+
+    <section>
+
+        <h2>Algorithm-to-Function Map</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Main Function(s)</th>
+                        <th>Source File</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Raw query parsing</td>
+                        <td>
+                            <code>parsequery()</code>,
+                            <code>parsenested()</code>,
+                            <code>parsequoted()</code>
+                        </td>
+                        <td>
+                            <code>src/queryparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>JSON component lookup</td>
+                        <td>
+                            <code>seekComponent()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Linear path lookup</td>
+                        <td>
+                            <code>seekValue()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Skip one JSON value</td>
+                        <td>
+                            <code>skipValue()</code>,
+                            <code>skipString()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>FIND</td>
+                        <td>
+                            <code>findGroup()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>DISPLAY</td>
+                        <td>
+                            <code>displayGroup()</code>,
+                            <code>joinValues()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>FILTER navigation</td>
+                        <td>
+                            <code>filterGroup()</code>,
+                            <code>getWantedKey()</code>,
+                            <code>reachArray()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>FILTER evaluation</td>
+                        <td>
+                            <code>searchArray()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Unicode conversion</td>
+                        <td>
+                            <code>convertUnicode()</code>,
+                            <code>readHex4()</code>,
+                            <code>appendUtf8()</code>
+                        </td>
+                        <td>
+                            <code>src/jsonparser.cpp</code>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Continue Exploring
+    ========================== -->
+
+    <section>
+
+        <h2>Continue Exploring</h2>
+
+        <p>
+            These algorithms describe how queries execute. The next pages show
+            how that behavior is tested and how the implementation performs on
+            larger JSON documents.
+        </p>
+
+        <div class="docs-grid">
+
+            <a href="testing.html" class="doc-card">
+
+                <h3>Testing</h3>
+
+                <p>
+                    See how parsing, traversal, Unicode, edge cases, and query
+                    behavior are verified.
+                </p>
+
+                <span>View testing →</span>
+
+            </a>
+
+
+            <a href="performance.html" class="doc-card">
+
+                <h3>Performance</h3>
+
+                <p>
+                    Review benchmark results and how the direct-scanning design
+                    behaves as JSON file size increases.
+                </p>
+
+                <span>View performance →</span>
+
+            </a>
+
+
+            <a href="limitations.html" class="doc-card">
+
+                <h3>Limitations</h3>
+
+                <p>
+                    Review the current boundaries and unsupported behaviors of
+                    the query engine.
+                </p>
+
+                <span>View limitations →</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     Footer
+========================== -->
+
+<footer>
+
+    <p>
+        JSON Query Engine · CS179K Project ·
+
+        <a
+            href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub Repository
+        </a>
+    </p>
+
+</footer>
+
+
+<script src="js/navigation.js"></script>
+
+</body>
+
+</html>
