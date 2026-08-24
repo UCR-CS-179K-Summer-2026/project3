@@ -12,10 +12,6 @@
 
 <body>
 
-<!-- =========================
-     Navigation
-========================== -->
-
 <nav class="navbar">
     <div class="nav-container">
 
@@ -58,10 +54,6 @@
 
 <main class="page-container">
 
-    <!-- =========================
-         Hero
-    ========================== -->
-
     <header class="hero">
 
         <h1>Testing</h1>
@@ -69,17 +61,18 @@
         <p>
             The JSON Query Engine uses GoogleTest to verify query parsing,
             JSON traversal, FIND and DISPLAY behavior, Unicode handling,
-            malformed inputs, file handling, and JSON edge cases.
+            edge cases, and file handling. Performance measurements are
+            handled separately by the benchmark executable.
         </p>
 
         <div class="hero-actions">
 
-            <a href="#running-tests" class="button button-primary">
-                Run the Tests
+            <a href="#strategy" class="button button-primary">
+                View Testing Strategy
             </a>
 
-            <a href="#coverage" class="button button-secondary">
-                View Coverage
+            <a href="#running-tests" class="button button-secondary">
+                Run the Tests
             </a>
 
         </div>
@@ -88,91 +81,179 @@
 
 
     <!-- =========================
-         Testing Overview
+         Current Test Status
     ========================== -->
 
     <section>
 
-        <h2>Testing Overview</h2>
+        <h2>Current Test Status</h2>
 
         <p>
-            Automated tests are split between two primary test files:
+            The latest automated test run executed
+            <strong>96 tests across 12 test suites</strong>.
+            All tests passed.
         </p>
 
-        <div class="two-column">
+        <div class="status-grid">
 
-            <div class="info-card">
-
-                <h3><code>tests/queryparsertest.cpp</code></h3>
-
-                <p>
-                    Tests the conversion from raw query strings into
-                    <code>ParsedQuery</code> and <code>JSONType</code>
-                    structures.
-                </p>
-
-                <strong>24 expanded test cases</strong>
-
+            <div class="status-card implemented">
+                <h3>96 Tests</h3>
+                <p>Total automated correctness tests executed.</p>
             </div>
 
+            <div class="status-card implemented">
+                <h3>12 Suites</h3>
+                <p>Grouped by parser, traversal, commands, Unicode, and edge cases.</p>
+            </div>
 
-            <div class="info-card">
+            <div class="status-card implemented">
+                <h3>96 Passed</h3>
+                <p>Every test completed successfully.</p>
+            </div>
 
-                <h3><code>tests/jsonparsertest.cpp</code></h3>
-
-                <p>
-                    Tests file behavior, path lookup, command execution,
-                    Unicode, literals, empty structures, and edge cases.
-                </p>
-
-                <strong>72 expanded test cases</strong>
-
+            <div class="status-card implemented">
+                <h3>0 Failed</h3>
+                <p>No correctness tests failed in the latest run.</p>
             </div>
 
         </div>
 
-        <div class="note">
-            The parameterized GoogleTest suites expand into multiple named
-            test cases. Across both test files, the current source defines
-            96 individual cases.
-        </div>
+        <pre><code>[==========] 96 tests from 12 test suites ran.
+[  PASSED  ] 96 tests.</code></pre>
 
     </section>
 
 
     <!-- =========================
-         Testing Stack
+         Testing Strategy
     ========================== -->
 
-    <section>
+    <section id="strategy">
 
-        <h2>Testing Framework</h2>
+        <h2>Testing Strategy</h2>
 
         <p>
-            The project uses <strong>GoogleTest 1.17.0</strong>, downloaded
-            automatically by CMake through <code>FetchContent</code>.
+            The project uses <strong>GoogleTest</strong> for correctness
+            testing and a separate <strong>benchmark executable</strong>
+            for performance experiments. Parameterized tests are used when
+            several inputs should follow the same behavior.
         </p>
 
-        <pre><code>FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
-)</code></pre>
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>What Is Verified</th>
+                        <th>Why It Matters</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>File handling</td>
+                        <td>
+                            Valid fixtures open correctly, invalid filenames
+                            fail, and files can be converted into strings.
+                        </td>
+                        <td>
+                            Confirms JSON processing begins from a valid input.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>JSON traversal</td>
+                        <td>
+                            Object keys, array indices, nested values,
+                            numbers, strings, and missing paths.
+                        </td>
+                        <td>
+                            Exercises the core lookup behavior.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>FIND</td>
+                        <td>
+                            Nested paths, siblings, missing values,
+                            array bounds, Unicode keys, and empty structures.
+                        </td>
+                        <td>
+                            Verifies existence-check semantics.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>DISPLAY</td>
+                        <td>
+                            Nested values, array values, sibling leaves,
+                            Unicode output, and missing paths.
+                        </td>
+                        <td>
+                            Confirms selected JSON values are returned correctly.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Unicode &amp; edge cases</td>
+                        <td>
+                            Unicode escapes, emoji, surrogate pairs,
+                            <code>null</code>, booleans, empty structures,
+                            embedded null bytes, and unusual keys.
+                        </td>
+                        <td>
+                            Protects behavior outside simple JSON examples.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Query parsing</td>
+                        <td>
+                            Nested groups, quoting, whitespace, malformed
+                            syntax, parser state, and FILTER classification.
+                        </td>
+                        <td>
+                            Verifies correct construction of
+                            <code>ParsedQuery</code>.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <h3>Representative Test Pattern</h3>
 
         <p>
-            The test executable is built as:
+            Many traversal checks use one parameterized test with different
+            fixture, path, and expected-value cases. This avoids repeating
+            the same setup for every input.
         </p>
 
-        <pre><code>JSONQL</code></pre>
+        <pre><code>TEST_P(JsonBasicParseTest, ReturnsExpectedValue) {
+    const auto&amp; test = GetParam();
+
+    std::ifstream file(test.filename);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText =
+        json_parser::jsonToString(file);
+
+    const std::string result =
+        json_parser::parsejson(jsonText, test.path);
+
+    EXPECT_EQ(result, test.expected);
+}</code></pre>
 
         <p>
-            CMake also enables test discovery with:
-        </p>
-
-        <pre><code>gtest_discover_tests(JSONQL)</code></pre>
-
-        <p>
-            This allows the individual GoogleTest cases to be registered
-            with CTest.
+            Each parameterized case receives a descriptive name, making
+            regressions easier to identify in the test output.
         </p>
 
     </section>
@@ -187,41 +268,35 @@
         <h2>Running the Test Suite</h2>
 
         <p>
-            From the project root, configure and build the project:
+            Configure and build the project from the repository root:
         </p>
 
         <pre><code>cmake -S . -B build
 cmake --build build</code></pre>
 
         <p>
-            The tests can then be run directly with the GoogleTest executable:
+            Run the GoogleTest executable directly:
         </p>
 
         <pre><code>./build/JSONQL</code></pre>
 
         <p>
-            They can also be run through CTest:
+            Or run the registered tests through CTest:
         </p>
 
         <pre><code>cd build
 ctest --output-on-failure</code></pre>
 
-        <div class="note">
-            The build defines <code>JSON_DATA_DIR</code> as an absolute path
-            to the repository's <code>jsonFiles</code> directory, so the tests
-            do not depend on which working directory they are launched from.
-        </div>
-
     </section>
 
 
     <!-- =========================
-         Coverage Summary
+         Test Suite Breakdown
     ========================== -->
 
-    <section id="coverage">
+    <section>
 
-        <h2>Current Coverage</h2>
+        <h2>Test Suite Breakdown</h2>
 
         <div class="table-wrap">
 
@@ -229,108 +304,109 @@ ctest --output-on-failure</code></pre>
 
                 <thead>
                     <tr>
-                        <th>Area</th>
-                        <th>Automated Coverage</th>
-                        <th>Test Location</th>
+                        <th>Test Suite</th>
+                        <th>Tests</th>
+                        <th>Purpose</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
                     <tr>
-                        <td>Query tokenization</td>
-                        <td>Yes</td>
-                        <td><code>queryparsertest.cpp</code></td>
+                        <td><code>JsonParser</code></td>
+                        <td>16</td>
+                        <td>
+                            File behavior, literals, missing keys,
+                            null handling, and parser helpers.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Nested query parsing</td>
-                        <td>Yes</td>
-                        <td><code>queryparsertest.cpp</code></td>
+                        <td><code>QueryParser</code></td>
+                        <td>5</td>
+                        <td>
+                            Command state and FILTER classification.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Quoted keys</td>
-                        <td>Yes</td>
-                        <td><code>queryparsertest.cpp</code></td>
+                        <td><code>JsonFileOpenTest</code></td>
+                        <td>3</td>
+                        <td>
+                            Opening the basic fixture files.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Malformed queries</td>
-                        <td>Yes</td>
-                        <td><code>queryparsertest.cpp</code></td>
+                        <td><code>JsonBasicParseTest</code></td>
+                        <td>6</td>
+                        <td>
+                            Representative path traversal.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Command recognition</td>
-                        <td>Yes</td>
-                        <td><code>queryparsertest.cpp</code></td>
+                        <td><code>JsonFindTest</code></td>
+                        <td>17</td>
+                        <td>
+                            FIND semantics and failure cases.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>FILTER type detection</td>
-                        <td>Yes</td>
-                        <td><code>queryparsertest.cpp</code></td>
+                        <td><code>JsonDisplayTest</code></td>
+                        <td>11</td>
+                        <td>
+                            DISPLAY retrieval and missing-value behavior.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Basic JSON path traversal</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
+                        <td><code>JsonOddKeyTest</code></td>
+                        <td>3</td>
+                        <td>
+                            Unusual and Unicode object keys.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>FIND execution</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
+                        <td><code>JsonUnicodeTest</code></td>
+                        <td>14</td>
+                        <td>
+                            UTF-8, Unicode escapes, emoji, and surrogates.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>DISPLAY execution</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
+                        <td><code>JsonEmptyStructureTest</code></td>
+                        <td>2</td>
+                        <td>
+                            Empty array and object lookup behavior.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>FILTER execution</td>
-                        <td>Not yet covered end-to-end</td>
-                        <td>Current automated gap</td>
+                        <td><code>QueryParserValidCaseTest</code></td>
+                        <td>13</td>
+                        <td>
+                            Valid recursive query structures.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Unicode / UTF-8</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
+                        <td><code>QueryParserEmptyCaseTest</code></td>
+                        <td>2</td>
+                        <td>
+                            Empty and whitespace-only queries.
+                        </td>
                     </tr>
 
                     <tr>
-                        <td>Unicode escapes</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
-                    </tr>
-
-                    <tr>
-                        <td>Embedded null values</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
-                    </tr>
-
-                    <tr>
-                        <td>Empty arrays / objects</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
-                    </tr>
-
-                    <tr>
-                        <td>JSON literal types</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
-                    </tr>
-
-                    <tr>
-                        <td>File handling</td>
-                        <td>Yes</td>
-                        <td><code>jsonparsertest.cpp</code></td>
+                        <td><code>QueryParserInvalidCaseTest</code></td>
+                        <td>4</td>
+                        <td>
+                            Invalid commands, braces, and quoted strings.
+                        </td>
                     </tr>
 
                 </tbody>
@@ -351,201 +427,50 @@ ctest --output-on-failure</code></pre>
         <h2>Query Parser Tests</h2>
 
         <p>
-            <code>tests/queryparsertest.cpp</code> verifies that raw query
-            strings produce the expected recursive representation.
-        </p>
-
-
-        <h3>Valid Query Parsing</h3>
-
-        <p>
-            The largest parameterized parser suite tests 13 valid query
-            structures.
+            Query parser tests verify that raw query text becomes the
+            expected recursive <code>ParsedQuery</code> structure.
         </p>
 
         <div class="card-grid">
 
             <div class="card">
-
                 <h3>Simple Queries</h3>
-
-                <p>
-                    Verifies basic commands and field tokens.
-                </p>
-
                 <pre><code>FIND {employees}</code></pre>
-
+                <p>Tests basic command and field parsing.</p>
             </div>
 
-
             <div class="card">
-
-                <h3>Multiple Fields</h3>
-
-                <p>
-                    Checks that sibling token order is preserved.
-                </p>
-
-                <pre><code>FIND {employees name}</code></pre>
-
+                <h3>Nested Queries</h3>
+                <pre><code>FIND {employees {0 {name}}}</code></pre>
+                <p>Verifies recursive brace groups.</p>
             </div>
 
-
             <div class="card">
-
-                <h3>Array Index Tokens</h3>
-
-                <p>
-                    Confirms numeric positions remain string tokens in the
-                    parsed representation.
-                </p>
-
-                <pre><code>FIND {employees 0 name}</code></pre>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Recursive Nesting</h3>
-
-                <p>
-                    Verifies multiple nested brace levels produce nested
-                    <code>JSONType</code> vectors.
-                </p>
-
-                <pre><code>FIND {a b {c d {e f {g h}}}}</code></pre>
-
-            </div>
-
-
-            <div class="card">
-
                 <h3>Quoted Keys</h3>
-
-                <p>
-                    Ensures spaces inside quoted keys remain part of the
-                    same key.
-                </p>
-
                 <pre><code>FIND {"first name"}</code></pre>
-
+                <p>Spaces inside quotation marks remain part of the key.</p>
             </div>
 
-
             <div class="card">
-
-                <h3>Empty Keys</h3>
-
-                <p>
-                    Confirms that <code>""</code> remains a valid empty JSON
-                    key rather than being discarded.
-                </p>
-
-                <pre><code>FIND {""}</code></pre>
-
+                <h3>Whitespace</h3>
+                <pre><code>FIND   {employees    name}</code></pre>
+                <p>Repeated spaces do not create empty tokens.</p>
             </div>
 
-        </div>
-
-
-        <h3>Whitespace Handling</h3>
-
-        <p>
-            Tests verify both repeated spaces and leading/trailing spaces:
-        </p>
-
-        <pre><code>FIND   {employees    name}
-
-   FIND {employees name}</code></pre>
-
-        <p>
-            Extra whitespace should not create empty query tokens.
-        </p>
-
-
-        <h3>Empty Input</h3>
-
-        <p>
-            Two cases verify that empty and whitespace-only input leave the
-            parsed result empty.
-        </p>
-
-        <pre><code>""
-
-
-"     "</code></pre>
-
-
-        <h3>Invalid Query Handling</h3>
-
-        <p>
-            Four malformed-query cases verify that the parser throws
-            <code>std::runtime_error</code> instead of returning partial data.
-        </p>
-
-        <ul>
-            <li>Unmatched closing brace.</li>
-            <li>Closing brace immediately after the command.</li>
-            <li>Unknown command such as <code>FETCH</code>.</li>
-            <li>Unterminated quoted string.</li>
-        </ul>
-
-
-        <h3>Parser State</h3>
-
-        <p>
-            Additional standalone tests check state between consecutive
-            queries.
-        </p>
-
-        <div class="card-grid">
-
             <div class="card">
-
-                <h3>Replace Previous Query</h3>
-
+                <h3>Malformed Input</h3>
                 <p>
-                    Parsing a second query must replace the previous result
-                    instead of appending to it.
+                    Invalid commands, unmatched braces, and unterminated
+                    quoted strings are rejected.
                 </p>
-
             </div>
 
-
             <div class="card">
-
-                <h3>Record Command</h3>
-
+                <h3>Parser State</h3>
                 <p>
-                    Verifies that FIND, DISPLAY, FILTER, and the parser's
-                    recognized command values are stored correctly.
+                    Consecutive queries replace previous parser state and
+                    FILTER metadata is reset correctly.
                 </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>FILTER Metadata</h3>
-
-                <p>
-                    Checks that one FILTER argument is classified as regex
-                    and two arguments are classified as numeric range.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Reset FILTER State</h3>
-
-                <p>
-                    Confirms regex metadata does not leak from one parsed
-                    query into the next.
-                </p>
-
             </div>
 
         </div>
@@ -554,7 +479,7 @@ ctest --output-on-failure</code></pre>
 
 
     <!-- =========================
-         Basic Traversal Tests
+         Basic Traversal
     ========================== -->
 
     <section>
@@ -562,9 +487,8 @@ ctest --output-on-failure</code></pre>
         <h2>Basic JSON Traversal Tests</h2>
 
         <p>
-            The lower-level path-based
-            <code>parsejson(json, path)</code> interface is tested against
-            multiple fixture files.
+            Small fixture files are used to verify representative paths
+            through objects and arrays.
         </p>
 
         <div class="table-wrap">
@@ -574,7 +498,7 @@ ctest --output-on-failure</code></pre>
                 <thead>
                     <tr>
                         <th>Fixture</th>
-                        <th>Example Path</th>
+                        <th>Path</th>
                         <th>Expected Result</th>
                     </tr>
                 </thead>
@@ -583,62 +507,32 @@ ctest --output-on-failure</code></pre>
 
                     <tr>
                         <td><code>employee.json</code></td>
-                        <td>
-                            <code>employees → 0 → name</code>
-                        </td>
-                        <td>
-                            <code>"Laura"</code>
-                        </td>
+                        <td><code>employees → 0 → name</code></td>
+                        <td><code>"Laura"</code></td>
                     </tr>
 
                     <tr>
                         <td><code>employee.json</code></td>
-                        <td>
-                            <code>employees → 2 → salary</code>
-                        </td>
-                        <td>
-                            <code>95000</code>
-                        </td>
+                        <td><code>employees → 2 → salary</code></td>
+                        <td><code>95000</code></td>
                     </tr>
 
                     <tr>
                         <td><code>employee.json</code></td>
-                        <td>
-                            <code>employees → 0 → skills → 1</code>
-                        </td>
-                        <td>
-                            <code>"Git"</code>
-                        </td>
+                        <td><code>employees → 0 → skills → 1</code></td>
+                        <td><code>"Git"</code></td>
                     </tr>
 
                     <tr>
                         <td><code>product.json</code></td>
-                        <td>
-                            <code>products → 0 → price</code>
-                        </td>
-                        <td>
-                            <code>89.99</code>
-                        </td>
+                        <td><code>products → 0 → price</code></td>
+                        <td><code>89.99</code></td>
                     </tr>
 
                     <tr>
                         <td><code>university.json</code></td>
-                        <td>
-                            <code>university → location → city</code>
-                        </td>
-                        <td>
-                            <code>"Riverside"</code>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td><code>university.json</code></td>
-                        <td>
-                            <code>university → departments → 0 → courses → 1</code>
-                        </td>
-                        <td>
-                            <code>"CS 179K"</code>
-                        </td>
+                        <td><code>university → location → city</code></td>
+                        <td><code>"Riverside"</code></td>
                     </tr>
 
                 </tbody>
@@ -648,8 +542,8 @@ ctest --output-on-failure</code></pre>
         </div>
 
         <p>
-            A separate missing-key test verifies that lookup failure returns
-            an empty result rather than an unrelated value.
+            Missing-key behavior is also tested to confirm that invalid paths
+            return an empty result.
         </p>
 
     </section>
@@ -664,21 +558,20 @@ ctest --output-on-failure</code></pre>
         <h2>FIND Tests</h2>
 
         <p>
-            FIND has 17 parameterized execution cases. These tests were
-            designed to verify not only whether paths exist, but also the
-            semantics of nested groups and sibling targets.
+            The suite contains <strong>17 FIND cases</strong> covering both
+            successful lookup and expected failure.
         </p>
 
         <div class="card-grid">
 
             <div class="card">
 
-                <h3>Nested Paths</h3>
+                <h3>Nested Path</h3>
 
                 <pre><code>FIND {"employees" {"0" {"name"}}}</code></pre>
 
                 <p>
-                    Expected result:
+                    Expected:
                     <code>true</code>
                 </p>
 
@@ -692,7 +585,7 @@ ctest --output-on-failure</code></pre>
                 <pre><code>FIND {"employees" "0" "name"}</code></pre>
 
                 <p>
-                    Expected result:
+                    Expected:
                     <code>false</code>
                 </p>
 
@@ -706,8 +599,7 @@ ctest --output-on-failure</code></pre>
                 <pre><code>FIND {"employees" "company_info"}</code></pre>
 
                 <p>
-                    Both root keys exist, so the result is
-                    <code>true</code>.
+                    Both root-level fields exist.
                 </p>
 
             </div>
@@ -715,13 +607,11 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Missing Sibling</h3>
-
-                <pre><code>FIND {"employees" "budget"}</code></pre>
+                <h3>Failure Cases</h3>
 
                 <p>
-                    One requested sibling is missing, so the result is
-                    <code>false</code>.
+                    Tests cover missing siblings, out-of-range indices,
+                    empty arrays, and empty objects.
                 </p>
 
             </div>
@@ -729,13 +619,10 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Out-of-Range Index</h3>
-
-                <pre><code>FIND {"employees" {"10" {"name"}}}</code></pre>
+                <h3>Special Keys</h3>
 
                 <p>
-                    An array index beyond the available values returns
-                    <code>false</code>.
+                    Empty keys and Unicode keys are tested explicitly.
                 </p>
 
             </div>
@@ -743,12 +630,11 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Special Values</h3>
+                <h3>Null-Valued Keys</h3>
 
                 <p>
-                    FIND is also tested with empty keys, Unicode keys,
-                    empty structures, and keys whose value is
-                    <code>null</code>.
+                    A key whose value is <code>null</code> still counts as
+                    existing.
                 </p>
 
             </div>
@@ -756,9 +642,8 @@ ctest --output-on-failure</code></pre>
         </div>
 
         <div class="note">
-            These cases directly test one of the most important query-language
-            rules: a nested group descends from the component immediately
-            preceding it, while siblings remain at the current JSON level.
+            These cases verify the distinction between sibling query
+            components and nested descent.
         </div>
 
     </section>
@@ -773,8 +658,8 @@ ctest --output-on-failure</code></pre>
         <h2>DISPLAY Tests</h2>
 
         <p>
-            DISPLAY has 11 parameterized execution cases covering successful
-            retrieval and failure behavior.
+            The suite contains <strong>11 DISPLAY cases</strong> covering
+            retrieval of nested and sibling values.
         </p>
 
         <div class="card-grid">
@@ -785,22 +670,19 @@ ctest --output-on-failure</code></pre>
 
                 <pre><code>DISPLAY {"employees" {"0" {"name"}}}</code></pre>
 
-                <p>
-                    Expected:
-                    <code>"Laura"</code>
-                </p>
+                <p>Returns the requested employee name.</p>
 
             </div>
 
 
             <div class="card">
 
-                <h3>Array Index</h3>
+                <h3>Array Value</h3>
 
                 <pre><code>DISPLAY {"employees" {"0" {"skills" {"1"}}}}</code></pre>
 
                 <p>
-                    Expected:
+                    Returns:
                     <code>"Git"</code>
                 </p>
 
@@ -809,13 +691,12 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Multiple Leaves</h3>
+                <h3>Sibling Leaves</h3>
 
                 <pre><code>DISPLAY {"employees" {"0" {"name" "salary"}}}</code></pre>
 
                 <p>
-                    Expected:
-                    <code>["Laura", 90000]</code>
+                    Multiple requested values are returned together.
                 </p>
 
             </div>
@@ -823,11 +704,10 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Unicode Result</h3>
+                <h3>Unicode Output</h3>
 
                 <p>
-                    DISPLAY is tested against escaped Unicode keys and
-                    Unicode values.
+                    Unicode values are verified through DISPLAY.
                 </p>
 
             </div>
@@ -835,12 +715,10 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Missing Leaf</h3>
-
-                <pre><code>DISPLAY {"employees" {"0" {"name" "age"}}}</code></pre>
+                <h3>Missing Values</h3>
 
                 <p>
-                    If one required leaf is missing, the result is empty.
+                    Missing keys and missing leaves return an empty result.
                 </p>
 
             </div>
@@ -848,11 +726,11 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Empty Array</h3>
+                <h3>Empty Arrays</h3>
 
                 <p>
-                    Attempting to DISPLAY element 0 of an empty array returns
-                    an empty result.
+                    Invalid lookup into an empty array also returns an
+                    empty result.
                 </p>
 
             </div>
@@ -863,29 +741,27 @@ ctest --output-on-failure</code></pre>
 
 
     <!-- =========================
-         FILTER Testing
+         FILTER Tests
     ========================== -->
 
     <section>
 
-        <h2>FILTER Testing</h2>
+        <h2>FILTER Tests</h2>
 
         <p>
-            The current query-parser tests verify both FILTER formats.
+            The current automated parser tests verify both FILTER formats.
         </p>
 
         <div class="two-column">
 
             <div class="info-card">
 
-                <h3>Regex FILTER Parsing</h3>
+                <h3>Regex FILTER</h3>
 
                 <pre><code>FILTER {"employees" {"name"}} "^L"</code></pre>
 
                 <p>
-                    The parser verifies that
-                    <code>isRegexFilter</code> is set to
-                    <code>true</code>.
+                    The parser marks this as a regex FILTER.
                 </p>
 
             </div>
@@ -893,14 +769,12 @@ ctest --output-on-failure</code></pre>
 
             <div class="info-card">
 
-                <h3>Numeric FILTER Parsing</h3>
+                <h3>Numeric FILTER</h3>
 
                 <pre><code>FILTER {"employees" {"salary"}} 80000 100000</code></pre>
 
                 <p>
-                    The parser verifies that
-                    <code>isRegexFilter</code> is
-                    <code>false</code>.
+                    The parser marks this as a numeric range FILTER.
                 </p>
 
             </div>
@@ -908,78 +782,52 @@ ctest --output-on-failure</code></pre>
         </div>
 
         <div class="warning">
-            <strong>Current automated-test gap:</strong>
-            the test files in the current project archive do not yet include
-            GoogleTest cases that execute FILTER end-to-end through
-            <code>json_parser::parsejson()</code>. FILTER behavior has been
-            exercised manually, but adding automated regex and numeric FILTER
-            execution cases would strengthen regression coverage.
+            <strong>Current automated testing gap:</strong>
+            FILTER parsing is covered, but end-to-end FILTER execution does
+            not yet have the same automated coverage as FIND and DISPLAY.
+            Regex and numeric FILTER execution tests are the main correctness
+            tests still worth adding.
         </div>
 
     </section>
 
 
     <!-- =========================
-         Unicode Tests
+         Unicode and Edge Cases
     ========================== -->
 
     <section>
 
-        <h2>Unicode and Escaped-Key Tests</h2>
+        <h2>Unicode and Edge-Case Tests</h2>
 
         <p>
-            Unicode handling receives dedicated fixture coverage because
-            keys and values may use different UTF-8 widths or JSON
-            <code>\uXXXX</code> escapes.
-        </p>
-
-        <p>
-            The Unicode parameterized suite contains 14 cases.
+            The test suite includes dedicated cases for values that are easy
+            to mishandle during direct JSON scanning.
         </p>
 
         <div class="card-grid">
 
             <div class="card">
 
-                <h3>Accented Latin</h3>
+                <h3>Unicode</h3>
 
-                <pre><code>"naïve" → "café"</code></pre>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Cyrillic</h3>
-
-                <pre><code>"привет" → "мир"</code></pre>
+                <p>
+                    Accented Latin, Cyrillic, Arabic, Greek, CJK, and emoji
+                    keys are tested.
+                </p>
 
             </div>
 
 
             <div class="card">
 
-                <h3>Arabic</h3>
+                <h3>Unicode Escapes</h3>
 
-                <pre><code>"مرحبا" → "العالم"</code></pre>
+                <pre><code>\u00e9  ↔  é</code></pre>
 
-            </div>
-
-
-            <div class="card">
-
-                <h3>CJK</h3>
-
-                <pre><code>"城市" → "東京"</code></pre>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Emoji</h3>
-
-                <pre><code>"emoji😀" → "🌍"</code></pre>
+                <p>
+                    Escaped and raw Unicode representations are compared.
+                </p>
 
             </div>
 
@@ -989,153 +837,8 @@ ctest --output-on-failure</code></pre>
                 <h3>Surrogate Pairs</h3>
 
                 <p>
-                    Tests verify decoding of a two-escape UTF-16 surrogate
-                    pair into a single four-byte UTF-8 character.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <h3>Raw vs. Escaped Forms</h3>
-
-        <p>
-            Tests also verify that equivalent escaped and raw representations
-            can match:
-        </p>
-
-        <pre><code>\u00e9  ↔  é</code></pre>
-
-
-        <h3>Unpaired Surrogates</h3>
-
-        <p>
-            Invalid standalone lead and trail surrogates are expected to
-            remain as literal escaped text rather than being incorrectly
-            converted.
-        </p>
-
-    </section>
-
-
-    <!-- =========================
-         Edge Cases
-    ========================== -->
-
-    <section>
-
-        <h2>JSON Edge Cases</h2>
-
-        <p>
-            Dedicated fixture files cover behaviors that are easy to miss
-            with ordinary JSON examples.
-        </p>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Fixture</th>
-                        <th>Behavior Tested</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>
-                            <code>edgecases/embeddednull.json</code>
-                        </td>
-
-                        <td>
-                            Escaped <code>\u0000</code> and raw embedded null
-                            bytes are returned without truncation.
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <code>edgecases/literaltypes.json</code>
-                        </td>
-
-                        <td>
-                            <code>null</code>, booleans, negative numbers,
-                            decimals, and exponent notation.
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <code>edgecases/emptystructures.json</code>
-                        </td>
-
-                        <td>
-                            Empty arrays, empty objects, and the legal empty
-                            object key <code>""</code>.
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <code>unicode/escapedquote.json</code>
-                        </td>
-
-                        <td>
-                            Object keys containing escaped quotation marks.
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <code>unicode/unicode.json</code>
-                        </td>
-
-                        <td>
-                            UTF-8 keys, escaped Unicode, surrogate pairs,
-                            and mixed-width characters.
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         Literal Tests
-    ========================== -->
-
-    <section>
-
-        <h2>JSON Literal Tests</h2>
-
-        <p>
-            The tests verify that primitive values are returned as their
-            correct JSON representation.
-        </p>
-
-        <div class="card-grid">
-
-            <div class="card">
-
-                <h3><code>null</code></h3>
-
-                <pre><code>null</code></pre>
-
-                <p>
-                    A key whose value is JSON <code>null</code> returns the
-                    literal text rather than an empty result.
+                    Valid pairs are decoded while unpaired surrogates remain
+                    safely represented.
                 </p>
 
             </div>
@@ -1143,12 +846,11 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Boolean</h3>
-
-                <pre><code>true</code></pre>
+                <h3>Primitive Literals</h3>
 
                 <p>
-                    Boolean literals are preserved.
+                    <code>null</code>, booleans, negative numbers,
+                    decimals, and exponent notation are verified.
                 </p>
 
             </div>
@@ -1156,130 +858,11 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Negative Decimal</h3>
-
-                <pre><code>-273.15</code></pre>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Exponent Notation</h3>
-
-                <pre><code>6.022e23</code></pre>
+                <h3>Embedded Nulls</h3>
 
                 <p>
-                    Numeric formatting is preserved as written in the
-                    source JSON.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         File Tests
-    ========================== -->
-
-    <section>
-
-        <h2>File Handling Tests</h2>
-
-        <p>
-            File behavior is tested separately from query execution.
-        </p>
-
-        <ul>
-            <li>
-                Basic fixtures <code>employee.json</code>,
-                <code>product.json</code>, and
-                <code>university.json</code> must open successfully.
-            </li>
-
-            <li>
-                A missing filename must remain closed and return the expected
-                error state.
-            </li>
-
-            <li>
-                An empty filename must not open a file.
-            </li>
-
-            <li>
-                Rechecking an already-open stream must still report success.
-            </li>
-
-            <li>
-                <code>jsonToString()</code> must copy expected JSON content
-                into a non-empty string.
-            </li>
-
-            <li>
-                <code>isFileOpen()</code> is checked against both valid and
-                invalid streams.
-            </li>
-        </ul>
-
-    </section>
-
-
-    <!-- =========================
-         Parameterized Tests
-    ========================== -->
-
-    <section>
-
-        <h2>Why Parameterized Tests Are Used</h2>
-
-        <p>
-            Many behaviors differ only in their input and expected output.
-            GoogleTest parameterization allows the same assertion logic to
-            run over a table of cases.
-        </p>
-
-        <pre><code>struct FindCase {
-    const char* name;
-    const char* filename;
-    const char* query;
-    const char* expected;
-};</code></pre>
-
-        <p>
-            Each case receives a descriptive name, so failed test output
-            identifies the exact behavior that regressed.
-        </p>
-
-        <div class="note">
-            This approach reduces repeated test code while keeping each
-            behavioral case independently visible in GoogleTest and CTest.
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         Test Design Philosophy
-    ========================== -->
-
-    <section>
-
-        <h2>Test Design</h2>
-
-        <div class="card-grid">
-
-            <div class="card">
-
-                <h3>Behavior-Oriented Names</h3>
-
-                <p>
-                    Cases use names such as
-                    <code>SiblingsAreNotAPath</code> and
-                    <code>RejectsIndexPastEndOfArray</code> so the intended
-                    rule is clear from the test report.
+                    Escaped and raw embedded null bytes are tested to ensure
+                    traversal does not truncate unexpectedly.
                 </p>
 
             </div>
@@ -1287,60 +870,11 @@ ctest --output-on-failure</code></pre>
 
             <div class="card">
 
-                <h3>Positive and Negative Cases</h3>
+                <h3>Empty Structures</h3>
 
                 <p>
-                    Tests verify both successful lookups and expected
-                    failures.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Real JSON Fixtures</h3>
-
-                <p>
-                    Traversal tests use actual JSON documents rather than
-                    only synthetic strings embedded inside the test source.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Exact Output Comparison</h3>
-
-                <p>
-                    Returned JSON text is compared against exact expected
-                    values whenever possible.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Regression Coverage</h3>
-
-                <p>
-                    Edge cases such as Unicode escapes, empty keys, embedded
-                    null bytes, and missing paths protect previously fragile
-                    behavior.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <h3>Independent Fixtures</h3>
-
-                <p>
-                    Basic, Unicode, and edge-case data are separated into
-                    dedicated files to make failures easier to isolate.
+                    Empty arrays, empty objects, and the legal empty key
+                    <code>""</code> are tested explicitly.
                 </p>
 
             </div>
@@ -1356,126 +890,101 @@ ctest --output-on-failure</code></pre>
 
     <section>
 
-        <h2>Test Fixture Map</h2>
+        <h2>Sample and Stress-Test Data</h2>
 
-        <div class="table-wrap">
+        <p>
+            The repository separates fixtures by purpose:
+        </p>
 
-            <table>
+        <ul>
 
-                <thead>
-                    <tr>
-                        <th>File</th>
-                        <th>Purpose</th>
-                    </tr>
-                </thead>
+            <li>
+                <code>jsonFiles/basic/</code> —
+                employee, product, and university traversal examples.
+            </li>
 
-                <tbody>
+            <li>
+                <code>jsonFiles/edgecases/</code> —
+                null values, embedded nulls, literal types, and empty structures.
+            </li>
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/basic/employee.json</code>
-                        </td>
+            <li>
+                <code>jsonFiles/unicode/</code> —
+                Unicode keys, escaped quotes, unusual keys, and surrogate cases.
+            </li>
 
-                        <td>
-                            Basic objects, employee arrays, nested fields,
-                            salaries, skills, and company information.
-                        </td>
-                    </tr>
+            <li>
+                <code>Bookings_1-level_1-KB_formatted.json</code> and
+                <code>Bookings_1-level_1-MB_formatted.json</code> —
+                benchmark inputs.
+            </li>
 
+            <li>
+                <code>big.json</code> —
+                larger nested data used for broader traversal and
+                performance experiments.
+            </li>
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/basic/product.json</code>
-                        </td>
+        </ul>
 
-                        <td>
-                            Product array and decimal-number traversal.
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td>
-                            <code>jsonFiles/basic/university.json</code>
-                        </td>
-
-                        <td>
-                            Deeper nested objects, departments, courses,
-                            and location data.
-                        </td>
-                    </tr>
+    </section>
 
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/unicode/unicode.json</code>
-                        </td>
+    <!-- =========================
+         Test Design
+    ========================== -->
 
-                        <td>
-                            Unicode keys, values, escapes, emoji, and
-                            surrogate pairs.
-                        </td>
-                    </tr>
+    <section>
 
+        <h2>Test Design</h2>
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/unicode/escapedquote.json</code>
-                        </td>
+        <div class="card-grid">
 
-                        <td>
-                            Escaped quote handling inside a JSON key.
-                        </td>
-                    </tr>
+            <div class="card">
 
+                <h3>Parameterized Cases</h3>
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/unicode/oddKeys.json</code>
-                        </td>
+                <p>
+                    One test body can verify many input/output pairs without
+                    duplicating setup code.
+                </p>
 
-                        <td>
-                            Unusual key forms and nested lookup behavior.
-                        </td>
-                    </tr>
+            </div>
 
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/edgecases/embeddednull.json</code>
-                        </td>
+            <div class="card">
 
-                        <td>
-                            Escaped and raw embedded null-byte behavior.
-                        </td>
-                    </tr>
+                <h3>Descriptive Names</h3>
 
+                <p>
+                    Cases such as <code>SiblingsAreNotAPath</code> identify
+                    the exact rule being checked.
+                </p>
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/edgecases/literaltypes.json</code>
-                        </td>
-
-                        <td>
-                            Null, boolean, negative numeric, and exponent
-                            values.
-                        </td>
-                    </tr>
+            </div>
 
 
-                    <tr>
-                        <td>
-                            <code>jsonFiles/edgecases/emptystructures.json</code>
-                        </td>
+            <div class="card">
 
-                        <td>
-                            Empty arrays, empty objects, and empty keys.
-                        </td>
-                    </tr>
+                <h3>Positive and Negative Cases</h3>
 
-                </tbody>
+                <p>
+                    Successful queries and expected failures are both covered.
+                </p>
 
-            </table>
+            </div>
+
+
+            <div class="card">
+
+                <h3>Exact Comparisons</h3>
+
+                <p>
+                    Returned JSON values are compared against explicit expected
+                    output.
+                </p>
+
+            </div>
 
         </div>
 
@@ -1483,17 +992,12 @@ ctest --output-on-failure</code></pre>
 
 
     <!-- =========================
-         Current Gaps
+         Testing Gaps
     ========================== -->
 
     <section>
 
         <h2>Current Testing Gaps</h2>
-
-        <p>
-            The current automated suite is broad, but several areas can still
-            be strengthened.
-        </p>
 
         <div class="status-grid">
 
@@ -1502,16 +1006,14 @@ ctest --output-on-failure</code></pre>
                 <h3>Strong Existing Coverage</h3>
 
                 <ul class="compact-list">
-                    <li>Query parser structure</li>
-                    <li>Malformed query rejection</li>
-                    <li>Nested object traversal</li>
-                    <li>Array traversal</li>
+                    <li>Query parsing</li>
+                    <li>Malformed queries</li>
+                    <li>Basic traversal</li>
                     <li>FIND execution</li>
                     <li>DISPLAY execution</li>
-                    <li>Unicode and escapes</li>
-                    <li>Embedded null bytes</li>
-                    <li>Empty structures</li>
-                    <li>Primitive JSON values</li>
+                    <li>Unicode</li>
+                    <li>Edge-case values</li>
+                    <li>File handling</li>
                 </ul>
 
             </div>
@@ -1524,52 +1026,15 @@ ctest --output-on-failure</code></pre>
                 <ul class="compact-list">
                     <li>End-to-end regex FILTER tests</li>
                     <li>End-to-end numeric FILTER tests</li>
-                    <li>Multiple matching FILTER results</li>
-                    <li>FILTER with no matching values</li>
+                    <li>Multiple FILTER matches</li>
+                    <li>FILTER with no matches</li>
                     <li>Malformed FILTER arguments</li>
-                    <li>More CLI-level integration tests</li>
-                    <li>Performance regression tests</li>
+                    <li>CLI-level integration tests</li>
                 </ul>
 
             </div>
 
         </div>
-
-    </section>
-
-
-    <!-- =========================
-         Test Status
-    ========================== -->
-
-    <section>
-
-        <h2>Test Status Reporting</h2>
-
-        <p>
-            The test suite should be run before the final artifact is
-            submitted, and the website should report the most recent actual
-            pass/fail result rather than assuming every test passes.
-        </p>
-
-        <div class="note">
-            After running <code>./build/JSONQL</code> or
-            <code>ctest --output-on-failure</code>, update this section with
-            the final number of passing and failing tests from that run.
-        </div>
-
-        <p>
-            A final version could report:
-        </p>
-
-        <pre><code>Automated tests: 96 total
-Passed: [update after final run]
-Failed: [update after final run]</code></pre>
-
-        <p>
-            This keeps the documentation tied to a real test execution rather
-            than only the number of cases defined in source code.
-        </p>
 
     </section>
 
@@ -1583,8 +1048,9 @@ Failed: [update after final run]</code></pre>
         <h2>Continue Exploring</h2>
 
         <p>
-            Testing verifies correctness. The Performance page evaluates how
-            the same implementation behaves as input size increases.
+            Correctness testing verifies that the engine produces the expected
+            result. Performance testing examines how quickly those operations
+            run as JSON input size increases.
         </p>
 
         <div class="docs-grid">
@@ -1594,8 +1060,8 @@ Failed: [update after final run]</code></pre>
                 <h3>Performance</h3>
 
                 <p>
-                    Review benchmark methodology, input sizes, and measured
-                    execution results.
+                    Review benchmark methodology, datasets, timing results,
+                    and optimization effects.
                 </p>
 
                 <span>View performance →</span>
@@ -1608,8 +1074,8 @@ Failed: [update after final run]</code></pre>
                 <h3>Limitations</h3>
 
                 <p>
-                    Review current implementation boundaries and areas that
-                    still need additional validation.
+                    Review current implementation boundaries and remaining
+                    areas for improvement.
                 </p>
 
                 <span>View limitations →</span>
@@ -1622,8 +1088,8 @@ Failed: [update after final run]</code></pre>
                 <h3>Algorithms</h3>
 
                 <p>
-                    Return to the implementation logic validated by these
-                    tests.
+                    Return to the parsing and traversal logic validated by
+                    these tests.
                 </p>
 
                 <span>View algorithms →</span>
@@ -1636,10 +1102,6 @@ Failed: [update after final run]</code></pre>
 
 </main>
 
-
-<!-- =========================
-     Footer
-========================== -->
 
 <footer>
 
