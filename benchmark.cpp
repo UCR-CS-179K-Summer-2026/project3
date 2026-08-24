@@ -191,15 +191,15 @@ int hugeFile() {
     std::cout << "\naverage of " << repeat << " runs\n"
                 << "---------------------------------------------\n"
                 << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                << "MMAP json time:              " << jsonToStringTime.count() << " ms\n"
+                << "MMAP json time:              " << jsonToStringTime.count() / repeat << " ms\n"
                 << "1 GB?, entry 591,518:        " << total / repeat << " ms\n"
-                << "1073741771 bytes in          " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
+                << "1073741771 bytes in          " << ((total + totalQueryTime + jsonToStringTime.count()) / repeat) << " ms = " << (1073741771/((total + totalQueryTime + jsonToStringTime.count()) / repeat))/1000000 << " GB/s" << std::endl;
     outputFile << "average of " << repeat << " runs\n"
                 << "---------------------------------------------\n"
                 << "queryTime:                   " << totalQueryTime / repeat << " ms\n"
-                << "MMAP json time:              " << jsonToStringTime.count() << " ms\n"
+                << "MMAP json time:              " << jsonToStringTime.count() / repeat << " ms\n"
                 << "1 GB?, entry 591,518:        " << total / repeat << " ms\n"
-                << "1073741771 bytes in          " << total / repeat << " ms = " << (1073741771/(total / repeat))/1000000 << " GB/s" << std::endl;
+                << "1073741771 bytes in          " << ((total + totalQueryTime + jsonToStringTime.count()) / repeat) << " ms = " << (1073741771/((total + totalQueryTime + jsonToStringTime.count()) / repeat))/1000000 << " GB/s" << std::endl;
 
     outputFile << "End Benchmark.\n---------------------------------------------\n" << std::endl;
     outputFile.close();
