@@ -55,12 +55,18 @@ void settingsUI() {
     std::cout << "+-----------------------------------------------+\n\n";
 }
 
-void query(std::string_view json, bool jsonl, bool outputToFile, std::ofstream& outputFile) {
+void query(std::string_view json, bool jsonl, bool outputToFile, std::string& outputFileName) {
     std::cout << "> " << std::flush;
     std::string line = "";
     std::getline(std::cin, line);
 
     std::vector<std::string> value;
+
+    std::ofstream outputFile(outputFileName, std::ios::app);
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening the file pre-parse!" << std::endl;
+        return;
+    }
 
     try {
         queryparser::parsequery(line);
@@ -95,7 +101,7 @@ void query(std::string_view json, bool jsonl, bool outputToFile, std::ofstream& 
         std::cout << "|                                               |\n";
         std::cout << "|                Printing below                 |\n";
         if(outputToFile) {
-            std::cout << "|                 And to file                   |\n";
+        std::cout << "|                 And to file                   |\n";
         }
         std::cout << "|                                               |\n";
         std::cout << "+-----------------------------------------------+\n";
@@ -104,6 +110,9 @@ void query(std::string_view json, bool jsonl, bool outputToFile, std::ofstream& 
                 std::cerr << "Error opening the file!" << std::endl;
                 return;
             }
+            outputFile << "New query: " << std::flush;
+            queryparser::displaylastparsedquery(); 
+            outputFile << "\n";
             for(const std::string& v : value) {
                 outputFile << v << "\n";
                 outputFile << std::endl;
@@ -147,7 +156,6 @@ int main() {
         } else if (option == "f") {
             std::cout << "Enter outputFile path:\n> " << std::flush;
             std::getline(std::cin, outputFileName);
-            std::ofstream outputFile(outputFileName);
             outputToFile = true;
         }
         std::cout << "Now, enter fileName to parse\n> " << std::flush;
@@ -179,7 +187,7 @@ int main() {
         }
         looped = true;
         
-        query(json, jsonl, outputToFile, outputFile);
+        query(json, jsonl, outputToFile, outputFileName);
 
         // getline, not >>, so the newline does not survive into the next getQuery
         std::string userWantRepeat;
