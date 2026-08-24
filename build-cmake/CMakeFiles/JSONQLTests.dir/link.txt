@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/JSONQLTests.dir/src/queryparser.cpp.o CMakeFiles/JSONQLTests.dir/src/jsonparser.cpp.o CMakeFiles/JSONQLTests.dir/tests/parsertest.cpp.o CMakeFiles/JSONQLTests.dir/tests/sprint1test.cpp.o -o JSONQLTests  lib/libgtest_main.a lib/libgtest.a

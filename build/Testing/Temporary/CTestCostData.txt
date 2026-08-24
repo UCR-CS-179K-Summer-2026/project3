@@ -1,0 +1,87 @@
+JsonParser.OpensEmployeeFile 1 0.00658758
+JsonParser.OpensProductFile 1 0.00538233
+JsonParser.OpensUniversityFile 1 0.00616317
+JsonParser.RejectsMissingFile 2 0.00580867
+JsonParser.RejectsEmptyFilename 2 0.00457685
+JsonParser.RepeatedCheckOfOpenFileSucceeds 2 0.00402244
+JsonParser.ConvertsEmployeeFileToString 2 0.00380179
+JsonParser.FindsFirstEmployeeName 1 0.006099
+JsonParser.FindsEmployeeSalary 1 0.00558617
+JsonParser.FindsEmployeeSkill 1 0.00541008
+JsonParser.FindsProductPrice 1 0.00555492
+JsonParser.FindsUniversityCity 1 0.00570429
+JsonParser.FindsUniversityCourse 1 0.00521625
+JsonParser.ReturnsEmptyForMissingKey 2 0.00330333
+JsonParser.TestEscapeChar 1 0.006873
+JsonParser.IsFileOpenAgreesWithTestForOpenFile 2 0.00312679
+JsonParser.IsFileOpenAgreesWithTestForMissingFile 2 0.00350469
+JsonParser.HandlesEscapedNullSequenceInValue 2 0.00366408
+JsonParser.DoesNotTruncateAtEmbeddedRawNullByte 2 0.00324123
+JsonParser.ReturnsNullLiteralForNullValue 2 0.00337158
+JsonParser.HandlesNegativeAndExponentNumbers 2 0.00343035
+JsonParser.HandlesBooleanLiteral 2 0.00325869
+JsonParser.ReturnsEmptyForIndexIntoEmptyArray 1 0.00585467
+JsonParser.ReturnsEmptyForKeyIntoEmptyObject 1 0.00618771
+QueryParser.ParsesSimpleFindQuery 1 0.00547396
+QueryParser.ParsesMultiFieldQuery 1 0.00543471
+QueryParser.ParsesArrayIndexToken 1 0.005558
+QueryParser.ParsesNestedQuery 1 0.00528796
+QueryParser.ParsesNestedQueryAtEnd 1 0.00523775
+QueryParser.ParsesDeeplyNestedQuery 1 0.00561329
+QueryParser.ParsesMultipleNestedGroups 1 0.0054015
+QueryParser.HandlesEmptyQuery 1 0.00598679
+QueryParser.HandlesWhitespaceOnlyQuery 1 0.00617567
+QueryParser.IgnoresRepeatedSpaces 1 0.00527125
+QueryParser.IgnoresLeadingAndTrailingSpaces 1 0.005527
+QueryParser.ReplacesPreviousParsedQuery 2 0.00329608
+QueryParser.PreservesQuotationMarks 1 0.00547567
+QueryParser.HandlesUnmatchedClosingBrace 1 0.00518879
+QueryParser.ParseInvalidQuery1 1 0.00547887
+JsonParser.nullKey 1 0.00678842
+JsonParser.ReturnsValueForEmptyKey 1 0.00646621
+QueryParser.IdentifiesRegexFilter 1 0.00596838
+QueryParser.IdentifiesNumericFilter 1 0.00654242
+QueryParser.ResetsFilterType 1 0.006968
+BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile  # GetParam() = 16-byte object <86-53 73-04 01-00 00-00 98-53 73-04 01-00 00-00> 1 0.00575467
+BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile  # GetParam() = 16-byte object <D8-53 73-04 01-00 00-00 E9-53 73-04 01-00 00-00> 1 0.00709704
+BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile  # GetParam() = 16-byte object <28-54 73-04 01-00 00-00 3C-54 73-04 01-00 00-00> 1 0.00702546
+BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName  # GetParam() = 64-byte object <3F-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 22-4C 61-75 72-61 22-00 44-DF 75-6B 01-00 00-00 78-E1 75-6B 01-00 00-07> 1 0.00620521
+BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary  # GetParam() = 64-byte object <60-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 30-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 39-35 30-30 30-00 00-00 06-8C 73-04 01-00 00-00 00-00 00-00 00-00 00-05> 1 0.00605596
+BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill  # GetParam() = 64-byte object <81-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-D3 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 22-47 69-74 22-00 00-00 08-DF 75-6B 01-00 00-00 D8-DD 75-6B 01-00 00-05> 1 0.00634475
+BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice  # GetParam() = 64-byte object <A1-57 73-04 01-00 00-00 E9-53 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 38-39 2E-39 39-00 00-00 02-00 00-00 00-00 00-00 00-00 00-00 00-00 00-05> 1 0.00658171
+BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity  # GetParam() = 64-byte object <BF-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 22-52 69-76 65-72 73-69 64-65 22-00 01-00 00-00 0A-8C 73-04 01-00 00-0B> 1 0.0060905
+BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse  # GetParam() = 64-byte object <EA-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 20-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 22-43 53-20 31-37 39-4B 22-00 75-6B 01-00 00-00 00-00 00-00 00-00 00-09> 1 0.00588025
+OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey  # GetParam() = 56-byte object <C5-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 22-42 6F-62 22-00 00-00 CC-00 72-04 01-00 00-00 68-E1 75-6B 01-00 00-05> 1 0.00599787
+OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey  # GetParam() = 56-byte object <D6-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 22-41 70-70 6C-65 22-00 30-01 72-04 01-00 00-00 68-E1 75-6B 01-00 00-07> 1 0.00618346
+OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue  # GetParam() = 56-byte object <F2-58 73-04 01-00 00-00 30-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 22-61 22-00 01-00 00-00 B8-01 72-04 01-00 00-00 05-00 00-00 00-00 00-03> 1 0.00607221
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey  # GetParam() = 64-byte object <66-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-63 61-66 C3-A9 22-00 68-E2 FB-04 01-00 00-00 0C-00 00-00 00-00 00-07 00-00 00-00 00-00 00-00> 1 0.00622467
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey  # GetParam() = 64-byte object <86-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 BC-D0 B8-D1 80-22 00-E2 FB-04 01-00 00-00 68-E2 FB-04 01-00 00-08 00-00 00-00 00-00 00-00> 1 0.00600529
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey  # GetParam() = 64-byte object <A4-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D8 A7-D9 84-D8 B9-D8 A7-D9 84-D9 85-22 00-00 40-DA 75-6B 01-00 00-0E 00-00 00-00 00-00 00-00> 1 0.00635108
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey  # GetParam() = 64-byte object <CD-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E2 88-9E E2-89 A0-E2 88-9A 22-00 01-00 00-00 00-DA 75-6B 01-00 00-0B 00-00 00-00 00-00 00-00> 1 0.00583904
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey  # GetParam() = 64-byte object <EE-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-00 77-B5 51-40 0A-F4 A3-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00> 1 0.0069055
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey  # GetParam() = 64-byte object <01-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-8C 8D-22 00-00 40-D9 75-6B 01-00 00-00 01-01 00-00 00-00 00-06 00-00 00-00 00-00 00-00> 1 0.00634938
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey  # GetParam() = 64-byte object <20-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 B7-D0 BD-D0 B0-D1 87-D0 B5-D0 BD-D0 B8-D0 B5-E2 9C-A8 22-00 00-15 00-00 00-00 00-00 00-00> 1 0.00584771
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey  # GetParam() = 64-byte object <56-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 00-77 FF-8F 01-00 00-00 01-00 00-00 00-00 00-00 06-00 00-00 00-00 00-00 01-00 00-00 00-00 00-00> 1 0.00632792
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape  # GetParam() = 64-byte object <71-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-6E 61-C3 AF-76 65-22 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00> 1 0.00573696
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape  # GetParam() = 64-byte object <8C-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-08 00-00 00-00 00-00 00-00> 1 0.00599433
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair  # GetParam() = 64-byte object <AA-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-98 80-22 00-00 50-52 37-EB 02-00 00-00 96-77 FF-8F 01-00 00-06 00-00 00-00 00-00 00-00> 1 0.00613671
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey  # GetParam() = 64-byte object <C6-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 31-00 75-6B 01-00 00-00 20-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-01 00-00 00-00 00-00 00-00> 1 0.00598896
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText  # GetParam() = 64-byte object <DE-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 38-30 30-22 00-17 20-FC 01-00 00-00 96-77 FF-8F 01-00 00-08 00-00 00-00 00-00 00-00> 1 0.00594142
+UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText  # GetParam() = 64-byte object <00-5B 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 63-30 30-22 00-00 00-00 00-00 00-00 68-D7 75-6B 01-00 00-08 00-00 00-00 00-00 00-00> 1 0.00601858
+EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray  # GetParam() = 32-byte object <36-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00> 1 0.00593637
+EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject  # GetParam() = 32-byte object <65-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00> 1 0.00744692
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 53-69 6D-70 6C-65 46-69 6E-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-7D 00-47 70-04 01-00 00-10 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00602896
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4D-75 6C-74 69-46 69-65 6C-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-20 6E-61 6D-65 7D-00 00-15 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00614196
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken  # GetParam() = 72-byte object <50-61 72-73 65-73 41-72 72-61 79-49 6E-64 65-78 54-6F 6B-65 6E-00 00-15 20-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.0075065
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-00 FB-04 01-00 00-11 A0-82 00-67 0A-00 00-00 25-00 00-00 00-00 00-00 28-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00655237
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-41 74-45 6E-64 00-16 46-49 4E-44 20-7B 64-61 79-20 7B-65 6D-70 6C-6F 79-65 65-73 7D-7D 00-16 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00880308
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00651829
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 30-83 00-67 0A-00 00-00 28-00 00-00 00-00 00-00 30-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00705579
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces  # GetParam() = 72-byte object <49-67 6E-6F 72-65 73-52 65-70 65-61 74-65 64-53 70-61 63-65 73-00 00-15 40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00719883
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1F-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1B-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00684304
+ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 19-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00> 1 0.00660775
+EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery  # GetParam() = 48-byte object <48-61 6E-64 6C-65 73-45 6D-70 74-79 51-75 65-72 79-00 C4-66 0A-00 00-11 00-01 C4-66 0A-00 00-00 FF-FF FF-FF 00-00 00-00 A0-0B 00-67 0A-00 00-00> 1 0.00794958
+EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery  # GetParam() = 48-byte object <00-01 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 20-20 20-20 20-00 00-00 30-00 00-00 00-00 00-00 01-08 00-00 00-00 00-05> 1 0.00718029
+InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace  # GetParam() = 48-byte object <40-01 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 46-49 4E-44 20-65 6D-70 6C-6F 79-65 65-73 20-7D 00-07 70-04 01-00 00-10> 1 0.00742175
+InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1  # GetParam() = 48-byte object <50-61 72-73 65-49 6E-76 61-6C 69-64 51-75 65-72 79-31 00-6B 01-00 00-12 46-49 4E-44 20-7D 00-00 00-E3 75-6B 01-00 00-00 C0-E4 75-6B 01-00 00-06> 1 0.00715729
+---

@@ -1,0 +1,80 @@
+[
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/JSONQL.dir/src/jsonparser.cpp.o -c /Users/lauracanon/CS179K/project3/src/jsonparser.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/jsonparser.cpp",
+  "output": "CMakeFiles/JSONQL.dir/src/jsonparser.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/JSONQL.dir/src/queryparser.cpp.o -c /Users/lauracanon/CS179K/project3/src/queryparser.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/queryparser.cpp",
+  "output": "CMakeFiles/JSONQL.dir/src/queryparser.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/JSONQL.dir/src/queryreader.cpp.o -c /Users/lauracanon/CS179K/project3/src/queryreader.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/queryreader.cpp",
+  "output": "CMakeFiles/JSONQL.dir/src/queryreader.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/JSONQL.dir/tests/jsonparsertest.cpp.o -c /Users/lauracanon/CS179K/project3/tests/jsonparsertest.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/tests/jsonparsertest.cpp",
+  "output": "CMakeFiles/JSONQL.dir/tests/jsonparsertest.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/include -isystem /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/JSONQL.dir/tests/queryparsertest.cpp.o -c /Users/lauracanon/CS179K/project3/tests/queryparsertest.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/tests/queryparsertest.cpp",
+  "output": "CMakeFiles/JSONQL.dir/tests/queryparsertest.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++  -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/json.dir/main.cpp.o -c /Users/lauracanon/CS179K/project3/main.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/main.cpp",
+  "output": "CMakeFiles/json.dir/main.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++  -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/json.dir/src/jsonparser.cpp.o -c /Users/lauracanon/CS179K/project3/src/jsonparser.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/jsonparser.cpp",
+  "output": "CMakeFiles/json.dir/src/jsonparser.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++  -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/json.dir/src/queryparser.cpp.o -c /Users/lauracanon/CS179K/project3/src/queryparser.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/queryparser.cpp",
+  "output": "CMakeFiles/json.dir/src/queryparser.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++  -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/json.dir/src/queryreader.cpp.o -c /Users/lauracanon/CS179K/project3/src/queryreader.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/queryreader.cpp",
+  "output": "CMakeFiles/json.dir/src/queryreader.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/benchmark.dir/benchmark.cpp.o -c /Users/lauracanon/CS179K/project3/benchmark.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/benchmark.cpp",
+  "output": "CMakeFiles/benchmark.dir/benchmark.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/benchmark.dir/src/jsonparser.cpp.o -c /Users/lauracanon/CS179K/project3/src/jsonparser.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/jsonparser.cpp",
+  "output": "CMakeFiles/benchmark.dir/src/jsonparser.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/benchmark.dir/src/queryparser.cpp.o -c /Users/lauracanon/CS179K/project3/src/queryparser.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/queryparser.cpp",
+  "output": "CMakeFiles/benchmark.dir/src/queryparser.cpp.o"
+},
+{
+  "directory": "/Users/lauracanon/CS179K/project3/build",
+  "command": "/usr/bin/c++ -DJSON_DATA_DIR=\\\"/Users/lauracanon/CS179K/project3/jsonFiles\\\" -I/Users/lauracanon/CS179K/project3/include -O2 -g -DNDEBUG -std=gnu++20 -arch arm64 -o CMakeFiles/benchmark.dir/src/queryreader.cpp.o -c /Users/lauracanon/CS179K/project3/src/queryreader.cpp",
+  "file": "/Users/lauracanon/CS179K/project3/src/queryreader.cpp",
+  "output": "CMakeFiles/benchmark.dir/src/queryreader.cpp.o"
+}
+]

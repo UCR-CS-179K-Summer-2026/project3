@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Getting Started — JSON Query Engine</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="nav-brand">JSON Query Engine</a>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu">
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="gettingstarted.html" class="active">Getting Started</a>
+            <a href="features.html">Features</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="algorithms.html">Algorithms</a>
+            <a href="testing.html">Testing</a>
+            <a href="performance.html">Performance</a>
+            <a href="limitations.html">Limitations</a>
+
+            <a
+                href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+                class="github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub ↗
+            </a>
+        </div>
+    </div>
+</nav>
+
+<main class="page-container">
+
+    <header class="hero">
+        <h1>Getting Started</h1>
+
+        <p>
+            Build the JSON Query Engine, load a JSON document, and run your first query.
+        </p>
+    </header>
+
+    <section>
+        <h2>Requirements</h2>
+
+        <p>
+            The JSON Query Engine is written in C++20 and uses CMake for project configuration.
+            GoogleTest is used for the automated test suite.
+        </p>
+
+        <ul>
+            <li>A compiler with C++20 support</li>
+            <li>CMake</li>
+            <li>Git</li>
+            <li>GoogleTest for running the automated tests</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>1. Clone the Repository</h2>
+
+        <pre><code>git clone https://github.com/UCR-CS-179K-Summer-2026/project3.git
+cd project3</code></pre>
+    </section>
+
+    <section>
+        <h2>2. Configure the Build</h2>
+
+        <p>
+            Create a separate build directory so generated build files remain separate
+            from the source code.
+        </p>
+
+        <pre><code>mkdir build
+cd build
+cmake ..</code></pre>
+    </section>
+
+    <section>
+        <h2>3. Build the Project</h2>
+
+        <pre><code>cmake --build .</code></pre>
+
+        <p>
+            After the build completes, the project executable can be run from the build output.
+        </p>
+    </section>
+
+    <section>
+        <h2>4. Load a JSON Document</h2>
+
+        <p>
+            The program reads a JSON document and then accepts query commands from the user.
+            The repository includes example JSON files under the project’s JSON fixture directories.
+        </p>
+
+        <p>
+            Example data includes employee, product, university, Unicode, edge-case,
+            and benchmark JSON files.
+        </p>
+    </section>
+
+    <section>
+        <h2>5. Run a Query</h2>
+
+        <p>
+            Once the JSON document is loaded, enter one of the supported query commands:
+        </p>
+
+        <div class="feature-grid">
+
+            <div class="card implemented">
+                <h3>FIND</h3>
+                <p>Check whether requested JSON components exist.</p>
+            </div>
+
+            <div class="card implemented">
+                <h3>DISPLAY</h3>
+                <p>Retrieve values from requested JSON components.</p>
+            </div>
+
+            <div class="card implemented">
+                <h3>FILTER</h3>
+                <p>Filter JSON values using supported matching conditions.</p>
+            </div>
+
+        </div>
+
+        <p style="margin-top: 20px;">
+            <a href="features.html">See full command syntax and examples →</a>
+        </p>
+    </section>
+
+    <section>
+        <h2>Next Steps</h2>
+
+        <div class="card-grid">
+
+            <a href="features.html" class="doc-card">
+                <h3>Learn the Query Language</h3>
+                <p>
+                    See FIND, DISPLAY, and FILTER examples with JSON input,
+                    queries, and expected results.
+                </p>
+                <span>View features →</span>
+            </a>
+
+            <a href="architecture.html" class="doc-card">
+                <h3>Understand the Internals</h3>
+                <p>
+                    Learn how the query parser, execution layer, and JSON traversal
+                    engine work together.
+                </p>
+                <span>View architecture →</span>
+            </a>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>
+        JSON Query Engine · CS179K Project ·
+        <a
+            href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub Repository
+        </a>
+    </p>
+</footer>
+
+<script src="js/navigation.js"></script>
+
+</body>
+</html>

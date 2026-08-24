@@ -1,0 +1,5 @@
+if(EXISTS "/Users/lauracanon/CS179K/project3/build/JSONQL[1]_tests.cmake")
+  include("/Users/lauracanon/CS179K/project3/build/JSONQL[1]_tests.cmake")
+else()
+  add_test(JSONQL_NOT_BUILT JSONQL_NOT_BUILT)
+endif()

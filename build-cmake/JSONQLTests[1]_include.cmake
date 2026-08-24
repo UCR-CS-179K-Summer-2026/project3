@@ -1,0 +1,5 @@
+if(EXISTS "/Users/lauracanon/CS179K/project3/build-cmake/JSONQLTests[1]_tests.cmake")
+  include("/Users/lauracanon/CS179K/project3/build-cmake/JSONQLTests[1]_tests.cmake")
+else()
+  add_test(JSONQLTests_NOT_BUILT JSONQLTests_NOT_BUILT)
+endif()

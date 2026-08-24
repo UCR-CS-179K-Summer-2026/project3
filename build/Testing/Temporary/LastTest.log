@@ -1,0 +1,1650 @@
+Start testing: Aug 15 22:46 -05
+----------------------------------------------------------
+1/61 Testing: JsonParser.RejectsMissingFile
+1/61 Test: JsonParser.RejectsMissingFile
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.RejectsMissingFile" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.RejectsMissingFile" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.RejectsMissingFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.RejectsMissingFile
+[       OK ] JsonParser.RejectsMissingFile (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.RejectsMissingFile" end time: Aug 15 22:46 -05
+"JsonParser.RejectsMissingFile" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/61 Testing: JsonParser.RejectsEmptyFilename
+2/61 Test: JsonParser.RejectsEmptyFilename
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.RejectsEmptyFilename" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.RejectsEmptyFilename" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.RejectsEmptyFilename
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.RejectsEmptyFilename
+[       OK ] JsonParser.RejectsEmptyFilename (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.RejectsEmptyFilename" end time: Aug 15 22:46 -05
+"JsonParser.RejectsEmptyFilename" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/61 Testing: JsonParser.RepeatedCheckOfOpenFileSucceeds
+3/61 Test: JsonParser.RepeatedCheckOfOpenFileSucceeds
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.RepeatedCheckOfOpenFileSucceeds" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.RepeatedCheckOfOpenFileSucceeds" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.RepeatedCheckOfOpenFileSucceeds
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.RepeatedCheckOfOpenFileSucceeds
+[       OK ] JsonParser.RepeatedCheckOfOpenFileSucceeds (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.RepeatedCheckOfOpenFileSucceeds" end time: Aug 15 22:46 -05
+"JsonParser.RepeatedCheckOfOpenFileSucceeds" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/61 Testing: JsonParser.ConvertsEmployeeFileToString
+4/61 Test: JsonParser.ConvertsEmployeeFileToString
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.ConvertsEmployeeFileToString" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.ConvertsEmployeeFileToString" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.ConvertsEmployeeFileToString
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.ConvertsEmployeeFileToString
+[       OK ] JsonParser.ConvertsEmployeeFileToString (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.ConvertsEmployeeFileToString" end time: Aug 15 22:46 -05
+"JsonParser.ConvertsEmployeeFileToString" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/61 Testing: JsonParser.ReturnsEmptyForMissingKey
+5/61 Test: JsonParser.ReturnsEmptyForMissingKey
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.ReturnsEmptyForMissingKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.ReturnsEmptyForMissingKey" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.ReturnsEmptyForMissingKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.ReturnsEmptyForMissingKey
+[       OK ] JsonParser.ReturnsEmptyForMissingKey (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.ReturnsEmptyForMissingKey" end time: Aug 15 22:46 -05
+"JsonParser.ReturnsEmptyForMissingKey" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/61 Testing: JsonParser.TestEscapeChar
+6/61 Test: JsonParser.TestEscapeChar
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.TestEscapeChar" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.TestEscapeChar" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.TestEscapeChar
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.TestEscapeChar
+[       OK ] JsonParser.TestEscapeChar (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.TestEscapeChar" end time: Aug 15 22:46 -05
+"JsonParser.TestEscapeChar" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/61 Testing: JsonParser.nullKey
+7/61 Test: JsonParser.nullKey
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.nullKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.nullKey" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.nullKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.nullKey
+[       OK ] JsonParser.nullKey (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.nullKey" end time: Aug 15 22:46 -05
+"JsonParser.nullKey" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/61 Testing: JsonParser.IsFileOpenAgreesWithTestForOpenFile
+8/61 Test: JsonParser.IsFileOpenAgreesWithTestForOpenFile
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.IsFileOpenAgreesWithTestForOpenFile" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.IsFileOpenAgreesWithTestForOpenFile" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.IsFileOpenAgreesWithTestForOpenFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.IsFileOpenAgreesWithTestForOpenFile
+[       OK ] JsonParser.IsFileOpenAgreesWithTestForOpenFile (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.IsFileOpenAgreesWithTestForOpenFile" end time: Aug 15 22:46 -05
+"JsonParser.IsFileOpenAgreesWithTestForOpenFile" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/61 Testing: JsonParser.IsFileOpenAgreesWithTestForMissingFile
+9/61 Test: JsonParser.IsFileOpenAgreesWithTestForMissingFile
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.IsFileOpenAgreesWithTestForMissingFile" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.IsFileOpenAgreesWithTestForMissingFile" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.IsFileOpenAgreesWithTestForMissingFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.IsFileOpenAgreesWithTestForMissingFile
+[       OK ] JsonParser.IsFileOpenAgreesWithTestForMissingFile (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.IsFileOpenAgreesWithTestForMissingFile" end time: Aug 15 22:46 -05
+"JsonParser.IsFileOpenAgreesWithTestForMissingFile" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/61 Testing: JsonParser.HandlesEscapedNullSequenceInValue
+10/61 Test: JsonParser.HandlesEscapedNullSequenceInValue
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.HandlesEscapedNullSequenceInValue" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.HandlesEscapedNullSequenceInValue" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.HandlesEscapedNullSequenceInValue
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.HandlesEscapedNullSequenceInValue
+[       OK ] JsonParser.HandlesEscapedNullSequenceInValue (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.HandlesEscapedNullSequenceInValue" end time: Aug 15 22:46 -05
+"JsonParser.HandlesEscapedNullSequenceInValue" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/61 Testing: JsonParser.DoesNotTruncateAtEmbeddedRawNullByte
+11/61 Test: JsonParser.DoesNotTruncateAtEmbeddedRawNullByte
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.DoesNotTruncateAtEmbeddedRawNullByte" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.DoesNotTruncateAtEmbeddedRawNullByte" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.DoesNotTruncateAtEmbeddedRawNullByte
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.DoesNotTruncateAtEmbeddedRawNullByte
+[       OK ] JsonParser.DoesNotTruncateAtEmbeddedRawNullByte (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.DoesNotTruncateAtEmbeddedRawNullByte" end time: Aug 15 22:46 -05
+"JsonParser.DoesNotTruncateAtEmbeddedRawNullByte" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/61 Testing: JsonParser.ReturnsNullLiteralForNullValue
+12/61 Test: JsonParser.ReturnsNullLiteralForNullValue
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.ReturnsNullLiteralForNullValue" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.ReturnsNullLiteralForNullValue" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.ReturnsNullLiteralForNullValue
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.ReturnsNullLiteralForNullValue
+[       OK ] JsonParser.ReturnsNullLiteralForNullValue (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.ReturnsNullLiteralForNullValue" end time: Aug 15 22:46 -05
+"JsonParser.ReturnsNullLiteralForNullValue" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/61 Testing: JsonParser.HandlesNegativeAndExponentNumbers
+13/61 Test: JsonParser.HandlesNegativeAndExponentNumbers
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.HandlesNegativeAndExponentNumbers" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.HandlesNegativeAndExponentNumbers" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.HandlesNegativeAndExponentNumbers
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.HandlesNegativeAndExponentNumbers
+[       OK ] JsonParser.HandlesNegativeAndExponentNumbers (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.HandlesNegativeAndExponentNumbers" end time: Aug 15 22:46 -05
+"JsonParser.HandlesNegativeAndExponentNumbers" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/61 Testing: JsonParser.HandlesBooleanLiteral
+14/61 Test: JsonParser.HandlesBooleanLiteral
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.HandlesBooleanLiteral" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.HandlesBooleanLiteral" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.HandlesBooleanLiteral
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.HandlesBooleanLiteral
+[       OK ] JsonParser.HandlesBooleanLiteral (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.HandlesBooleanLiteral" end time: Aug 15 22:46 -05
+"JsonParser.HandlesBooleanLiteral" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/61 Testing: JsonParser.ReturnsValueForEmptyKey
+15/61 Test: JsonParser.ReturnsValueForEmptyKey
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=JsonParser.ReturnsValueForEmptyKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"JsonParser.ReturnsValueForEmptyKey" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = JsonParser.ReturnsValueForEmptyKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from JsonParser
+[ RUN      ] JsonParser.ReturnsValueForEmptyKey
+[       OK ] JsonParser.ReturnsValueForEmptyKey (0 ms)
+[----------] 1 test from JsonParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"JsonParser.ReturnsValueForEmptyKey" end time: Aug 15 22:46 -05
+"JsonParser.ReturnsValueForEmptyKey" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/61 Testing: QueryParser.ReplacesPreviousParsedQuery
+16/61 Test: QueryParser.ReplacesPreviousParsedQuery
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=QueryParser.ReplacesPreviousParsedQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"QueryParser.ReplacesPreviousParsedQuery" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = QueryParser.ReplacesPreviousParsedQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from QueryParser
+[ RUN      ] QueryParser.ReplacesPreviousParsedQuery
+[       OK ] QueryParser.ReplacesPreviousParsedQuery (0 ms)
+[----------] 1 test from QueryParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"QueryParser.ReplacesPreviousParsedQuery" end time: Aug 15 22:46 -05
+"QueryParser.ReplacesPreviousParsedQuery" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/61 Testing: QueryParser.IdentifiesRegexFilter
+17/61 Test: QueryParser.IdentifiesRegexFilter
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=QueryParser.IdentifiesRegexFilter" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"QueryParser.IdentifiesRegexFilter" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = QueryParser.IdentifiesRegexFilter
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from QueryParser
+[ RUN      ] QueryParser.IdentifiesRegexFilter
+[       OK ] QueryParser.IdentifiesRegexFilter (0 ms)
+[----------] 1 test from QueryParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"QueryParser.IdentifiesRegexFilter" end time: Aug 15 22:46 -05
+"QueryParser.IdentifiesRegexFilter" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/61 Testing: QueryParser.IdentifiesNumericFilter
+18/61 Test: QueryParser.IdentifiesNumericFilter
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=QueryParser.IdentifiesNumericFilter" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"QueryParser.IdentifiesNumericFilter" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = QueryParser.IdentifiesNumericFilter
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from QueryParser
+[ RUN      ] QueryParser.IdentifiesNumericFilter
+[       OK ] QueryParser.IdentifiesNumericFilter (0 ms)
+[----------] 1 test from QueryParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"QueryParser.IdentifiesNumericFilter" end time: Aug 15 22:46 -05
+"QueryParser.IdentifiesNumericFilter" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/61 Testing: QueryParser.ResetsFilterType
+19/61 Test: QueryParser.ResetsFilterType
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=QueryParser.ResetsFilterType" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"QueryParser.ResetsFilterType" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = QueryParser.ResetsFilterType
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from QueryParser
+[ RUN      ] QueryParser.ResetsFilterType
+[       OK ] QueryParser.ResetsFilterType (0 ms)
+[----------] 1 test from QueryParser (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"QueryParser.ResetsFilterType" end time: Aug 15 22:46 -05
+"QueryParser.ResetsFilterType" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/61 Testing: BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile  # GetParam() = 16-byte object <86-53 73-04 01-00 00-00 98-53 73-04 01-00 00-00>
+20/61 Test: BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile  # GetParam() = 16-byte object <86-53 73-04 01-00 00-00 98-53 73-04 01-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile  # GetParam() = 16-byte object <86-53 73-04 01-00 00-00 98-53 73-04 01-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicFiles/JsonFileOpenTest
+[ RUN      ] BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile
+[       OK ] BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile (0 ms)
+[----------] 1 test from BasicFiles/JsonFileOpenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile  # GetParam() = 16-byte object <86-53 73-04 01-00 00-00 98-53 73-04 01-00 00-00>" end time: Aug 15 22:46 -05
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensEmployeeFile  # GetParam() = 16-byte object <86-53 73-04 01-00 00-00 98-53 73-04 01-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/61 Testing: BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile  # GetParam() = 16-byte object <D8-53 73-04 01-00 00-00 E9-53 73-04 01-00 00-00>
+21/61 Test: BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile  # GetParam() = 16-byte object <D8-53 73-04 01-00 00-00 E9-53 73-04 01-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile  # GetParam() = 16-byte object <D8-53 73-04 01-00 00-00 E9-53 73-04 01-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicFiles/JsonFileOpenTest
+[ RUN      ] BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile
+[       OK ] BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile (0 ms)
+[----------] 1 test from BasicFiles/JsonFileOpenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile  # GetParam() = 16-byte object <D8-53 73-04 01-00 00-00 E9-53 73-04 01-00 00-00>" end time: Aug 15 22:46 -05
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensProductFile  # GetParam() = 16-byte object <D8-53 73-04 01-00 00-00 E9-53 73-04 01-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/61 Testing: BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile  # GetParam() = 16-byte object <28-54 73-04 01-00 00-00 3C-54 73-04 01-00 00-00>
+22/61 Test: BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile  # GetParam() = 16-byte object <28-54 73-04 01-00 00-00 3C-54 73-04 01-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile  # GetParam() = 16-byte object <28-54 73-04 01-00 00-00 3C-54 73-04 01-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicFiles/JsonFileOpenTest
+[ RUN      ] BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile
+[       OK ] BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile (0 ms)
+[----------] 1 test from BasicFiles/JsonFileOpenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile  # GetParam() = 16-byte object <28-54 73-04 01-00 00-00 3C-54 73-04 01-00 00-00>" end time: Aug 15 22:46 -05
+"BasicFiles/JsonFileOpenTest.OpensBasicFixture/OpensUniversityFile  # GetParam() = 16-byte object <28-54 73-04 01-00 00-00 3C-54 73-04 01-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/61 Testing: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName  # GetParam() = 64-byte object <3F-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 22-4C 61-75 72-61 22-00 44-DF 75-6B 01-00 00-00 78-E1 75-6B 01-00 00-07>
+23/61 Test: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName  # GetParam() = 64-byte object <3F-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 22-4C 61-75 72-61 22-00 44-DF 75-6B 01-00 00-00 78-E1 75-6B 01-00 00-07>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName  # GetParam() = 64-byte object <3F-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 22-4C 61-75 72-61 22-00 44-DF 75-6B 01-00 00-00 78-E1 75-6B 01-00 00-07>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicTraversal/JsonBasicParseTest
+[ RUN      ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName
+[       OK ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName (0 ms)
+[----------] 1 test from BasicTraversal/JsonBasicParseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName  # GetParam() = 64-byte object <3F-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 22-4C 61-75 72-61 22-00 44-DF 75-6B 01-00 00-00 78-E1 75-6B 01-00 00-07>" end time: Aug 15 22:46 -05
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsFirstEmployeeName  # GetParam() = 64-byte object <3F-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 F8-CD FB-04 01-00 00-00 22-4C 61-75 72-61 22-00 44-DF 75-6B 01-00 00-00 78-E1 75-6B 01-00 00-07>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/61 Testing: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary  # GetParam() = 64-byte object <60-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 30-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 39-35 30-30 30-00 00-00 06-8C 73-04 01-00 00-00 00-00 00-00 00-00 00-05>
+24/61 Test: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary  # GetParam() = 64-byte object <60-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 30-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 39-35 30-30 30-00 00-00 06-8C 73-04 01-00 00-00 00-00 00-00 00-00 00-05>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary  # GetParam() = 64-byte object <60-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 30-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 39-35 30-30 30-00 00-00 06-8C 73-04 01-00 00-00 00-00 00-00 00-00 00-05>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicTraversal/JsonBasicParseTest
+[ RUN      ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary
+[       OK ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary (0 ms)
+[----------] 1 test from BasicTraversal/JsonBasicParseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary  # GetParam() = 64-byte object <60-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 30-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 39-35 30-30 30-00 00-00 06-8C 73-04 01-00 00-00 00-00 00-00 00-00 00-05>" end time: Aug 15 22:46 -05
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSalary  # GetParam() = 64-byte object <60-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 30-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 78-DA FB-04 01-00 00-00 39-35 30-30 30-00 00-00 06-8C 73-04 01-00 00-00 00-00 00-00 00-00 00-05>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/61 Testing: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill  # GetParam() = 64-byte object <81-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-D3 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 22-47 69-74 22-00 00-00 08-DF 75-6B 01-00 00-00 D8-DD 75-6B 01-00 00-05>
+25/61 Test: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill  # GetParam() = 64-byte object <81-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-D3 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 22-47 69-74 22-00 00-00 08-DF 75-6B 01-00 00-00 D8-DD 75-6B 01-00 00-05>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill  # GetParam() = 64-byte object <81-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-D3 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 22-47 69-74 22-00 00-00 08-DF 75-6B 01-00 00-00 D8-DD 75-6B 01-00 00-05>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicTraversal/JsonBasicParseTest
+[ RUN      ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill
+[       OK ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill (0 ms)
+[----------] 1 test from BasicTraversal/JsonBasicParseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill  # GetParam() = 64-byte object <81-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-D3 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 22-47 69-74 22-00 00-00 08-DF 75-6B 01-00 00-00 D8-DD 75-6B 01-00 00-05>" end time: Aug 15 22:46 -05
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsEmployeeSkill  # GetParam() = 64-byte object <81-57 73-04 01-00 00-00 98-53 73-04 01-00 00-00 B0-D3 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 10-D4 FB-04 01-00 00-00 22-47 69-74 22-00 00-00 08-DF 75-6B 01-00 00-00 D8-DD 75-6B 01-00 00-05>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/61 Testing: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice  # GetParam() = 64-byte object <A1-57 73-04 01-00 00-00 E9-53 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 38-39 2E-39 39-00 00-00 02-00 00-00 00-00 00-00 00-00 00-00 00-00 00-05>
+26/61 Test: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice  # GetParam() = 64-byte object <A1-57 73-04 01-00 00-00 E9-53 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 38-39 2E-39 39-00 00-00 02-00 00-00 00-00 00-00 00-00 00-00 00-00 00-05>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice  # GetParam() = 64-byte object <A1-57 73-04 01-00 00-00 E9-53 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 38-39 2E-39 39-00 00-00 02-00 00-00 00-00 00-00 00-00 00-00 00-00 00-05>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicTraversal/JsonBasicParseTest
+[ RUN      ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice
+[       OK ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice (0 ms)
+[----------] 1 test from BasicTraversal/JsonBasicParseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice  # GetParam() = 64-byte object <A1-57 73-04 01-00 00-00 E9-53 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 38-39 2E-39 39-00 00-00 02-00 00-00 00-00 00-00 00-00 00-00 00-00 00-05>" end time: Aug 15 22:46 -05
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsProductPrice  # GetParam() = 64-byte object <A1-57 73-04 01-00 00-00 E9-53 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 38-39 2E-39 39-00 00-00 02-00 00-00 00-00 00-00 00-00 00-00 00-00 00-05>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/61 Testing: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity  # GetParam() = 64-byte object <BF-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 22-52 69-76 65-72 73-69 64-65 22-00 01-00 00-00 0A-8C 73-04 01-00 00-0B>
+27/61 Test: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity  # GetParam() = 64-byte object <BF-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 22-52 69-76 65-72 73-69 64-65 22-00 01-00 00-00 0A-8C 73-04 01-00 00-0B>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity  # GetParam() = 64-byte object <BF-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 22-52 69-76 65-72 73-69 64-65 22-00 01-00 00-00 0A-8C 73-04 01-00 00-0B>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicTraversal/JsonBasicParseTest
+[ RUN      ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity
+[       OK ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity (0 ms)
+[----------] 1 test from BasicTraversal/JsonBasicParseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity  # GetParam() = 64-byte object <BF-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 22-52 69-76 65-72 73-69 64-65 22-00 01-00 00-00 0A-8C 73-04 01-00 00-0B>" end time: Aug 15 22:46 -05
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCity  # GetParam() = 64-byte object <BF-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 00-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 48-80 C2-66 0A-00 00-00 22-52 69-76 65-72 73-69 64-65 22-00 01-00 00-00 0A-8C 73-04 01-00 00-0B>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/61 Testing: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse  # GetParam() = 64-byte object <EA-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 20-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 22-43 53-20 31-37 39-4B 22-00 75-6B 01-00 00-00 00-00 00-00 00-00 00-09>
+28/61 Test: BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse  # GetParam() = 64-byte object <EA-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 20-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 22-43 53-20 31-37 39-4B 22-00 75-6B 01-00 00-00 00-00 00-00 00-00 00-09>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse  # GetParam() = 64-byte object <EA-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 20-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 22-43 53-20 31-37 39-4B 22-00 75-6B 01-00 00-00 00-00 00-00 00-00 00-09>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from BasicTraversal/JsonBasicParseTest
+[ RUN      ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse
+[       OK ] BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse (0 ms)
+[----------] 1 test from BasicTraversal/JsonBasicParseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse  # GetParam() = 64-byte object <EA-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 20-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 22-43 53-20 31-37 39-4B 22-00 75-6B 01-00 00-00 00-00 00-00 00-00 00-09>" end time: Aug 15 22:46 -05
+"BasicTraversal/JsonBasicParseTest.ReturnsExpectedValue/FindsUniversityCourse  # GetParam() = 64-byte object <EA-57 73-04 01-00 00-00 3C-54 73-04 01-00 00-00 20-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 98-E2 FB-04 01-00 00-00 22-43 53-20 31-37 39-4B 22-00 75-6B 01-00 00-00 00-00 00-00 00-00 00-09>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/61 Testing: OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey  # GetParam() = 56-byte object <C5-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 22-42 6F-62 22-00 00-00 CC-00 72-04 01-00 00-00 68-E1 75-6B 01-00 00-05>
+29/61 Test: OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey  # GetParam() = 56-byte object <C5-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 22-42 6F-62 22-00 00-00 CC-00 72-04 01-00 00-00 68-E1 75-6B 01-00 00-05>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey  # GetParam() = 56-byte object <C5-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 22-42 6F-62 22-00 00-00 CC-00 72-04 01-00 00-00 68-E1 75-6B 01-00 00-05>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from OddKeys/JsonOddKeyTest
+[ RUN      ] OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey
+[       OK ] OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey (0 ms)
+[----------] 1 test from OddKeys/JsonOddKeyTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey  # GetParam() = 56-byte object <C5-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 22-42 6F-62 22-00 00-00 CC-00 72-04 01-00 00-00 68-E1 75-6B 01-00 00-05>" end time: Aug 15 22:46 -05
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKey  # GetParam() = 56-byte object <C5-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 48-DF FB-04 01-00 00-00 22-42 6F-62 22-00 00-00 CC-00 72-04 01-00 00-00 68-E1 75-6B 01-00 00-05>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/61 Testing: OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey  # GetParam() = 56-byte object <D6-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 22-41 70-70 6C-65 22-00 30-01 72-04 01-00 00-00 68-E1 75-6B 01-00 00-07>
+30/61 Test: OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey  # GetParam() = 56-byte object <D6-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 22-41 70-70 6C-65 22-00 30-01 72-04 01-00 00-00 68-E1 75-6B 01-00 00-07>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey  # GetParam() = 56-byte object <D6-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 22-41 70-70 6C-65 22-00 30-01 72-04 01-00 00-00 68-E1 75-6B 01-00 00-07>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from OddKeys/JsonOddKeyTest
+[ RUN      ] OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey
+[       OK ] OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey (0 ms)
+[----------] 1 test from OddKeys/JsonOddKeyTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey  # GetParam() = 56-byte object <D6-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 22-41 70-70 6C-65 22-00 30-01 72-04 01-00 00-00 68-E1 75-6B 01-00 00-07>" end time: Aug 15 22:46 -05
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkey  # GetParam() = 56-byte object <D6-58 73-04 01-00 00-00 30-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 60-DF FB-04 01-00 00-00 22-41 70-70 6C-65 22-00 30-01 72-04 01-00 00-00 68-E1 75-6B 01-00 00-07>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/61 Testing: OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue  # GetParam() = 56-byte object <F2-58 73-04 01-00 00-00 30-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 22-61 22-00 01-00 00-00 B8-01 72-04 01-00 00-00 05-00 00-00 00-00 00-03>
+31/61 Test: OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue  # GetParam() = 56-byte object <F2-58 73-04 01-00 00-00 30-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 22-61 22-00 01-00 00-00 B8-01 72-04 01-00 00-00 05-00 00-00 00-00 00-03>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue  # GetParam() = 56-byte object <F2-58 73-04 01-00 00-00 30-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 22-61 22-00 01-00 00-00 B8-01 72-04 01-00 00-00 05-00 00-00 00-00 00-03>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from OddKeys/JsonOddKeyTest
+[ RUN      ] OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue
+[       OK ] OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue (0 ms)
+[----------] 1 test from OddKeys/JsonOddKeyTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue  # GetParam() = 56-byte object <F2-58 73-04 01-00 00-00 30-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 22-61 22-00 01-00 00-00 B8-01 72-04 01-00 00-00 05-00 00-00 00-00 00-03>" end time: Aug 15 22:46 -05
+"OddKeys/JsonOddKeyTest.ReturnsExpectedValue/UnicodeKeyAndSubkeyAndValue  # GetParam() = 56-byte object <F2-58 73-04 01-00 00-00 30-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 60-80 00-67 0A-00 00-00 22-61 22-00 01-00 00-00 B8-01 72-04 01-00 00-00 05-00 00-00 00-00 00-03>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey  # GetParam() = 64-byte object <66-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-63 61-66 C3-A9 22-00 68-E2 FB-04 01-00 00-00 0C-00 00-00 00-00 00-07 00-00 00-00 00-00 00-00>
+32/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey  # GetParam() = 64-byte object <66-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-63 61-66 C3-A9 22-00 68-E2 FB-04 01-00 00-00 0C-00 00-00 00-00 00-07 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey  # GetParam() = 64-byte object <66-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-63 61-66 C3-A9 22-00 68-E2 FB-04 01-00 00-00 0C-00 00-00 00-00 00-07 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey  # GetParam() = 64-byte object <66-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-63 61-66 C3-A9 22-00 68-E2 FB-04 01-00 00-00 0C-00 00-00 00-00 00-07 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsAccentedKey  # GetParam() = 64-byte object <66-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-63 61-66 C3-A9 22-00 68-E2 FB-04 01-00 00-00 0C-00 00-00 00-00 00-07 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey  # GetParam() = 64-byte object <86-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 BC-D0 B8-D1 80-22 00-E2 FB-04 01-00 00-00 68-E2 FB-04 01-00 00-08 00-00 00-00 00-00 00-00>
+33/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey  # GetParam() = 64-byte object <86-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 BC-D0 B8-D1 80-22 00-E2 FB-04 01-00 00-00 68-E2 FB-04 01-00 00-08 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey  # GetParam() = 64-byte object <86-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 BC-D0 B8-D1 80-22 00-E2 FB-04 01-00 00-00 68-E2 FB-04 01-00 00-08 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey  # GetParam() = 64-byte object <86-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 BC-D0 B8-D1 80-22 00-E2 FB-04 01-00 00-00 68-E2 FB-04 01-00 00-08 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCyrillicKey  # GetParam() = 64-byte object <86-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 BC-D0 B8-D1 80-22 00-E2 FB-04 01-00 00-00 68-E2 FB-04 01-00 00-08 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+34/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey  # GetParam() = 64-byte object <A4-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D8 A7-D9 84-D8 B9-D8 A7-D9 84-D9 85-22 00-00 40-DA 75-6B 01-00 00-0E 00-00 00-00 00-00 00-00>
+34/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey  # GetParam() = 64-byte object <A4-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D8 A7-D9 84-D8 B9-D8 A7-D9 84-D9 85-22 00-00 40-DA 75-6B 01-00 00-0E 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey  # GetParam() = 64-byte object <A4-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D8 A7-D9 84-D8 B9-D8 A7-D9 84-D9 85-22 00-00 40-DA 75-6B 01-00 00-0E 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey  # GetParam() = 64-byte object <A4-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D8 A7-D9 84-D8 B9-D8 A7-D9 84-D9 85-22 00-00 40-DA 75-6B 01-00 00-0E 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsArabicKey  # GetParam() = 64-byte object <A4-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D8 A7-D9 84-D8 B9-D8 A7-D9 84-D9 85-22 00-00 40-DA 75-6B 01-00 00-0E 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+35/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey  # GetParam() = 64-byte object <CD-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E2 88-9E E2-89 A0-E2 88-9A 22-00 01-00 00-00 00-DA 75-6B 01-00 00-0B 00-00 00-00 00-00 00-00>
+35/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey  # GetParam() = 64-byte object <CD-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E2 88-9E E2-89 A0-E2 88-9A 22-00 01-00 00-00 00-DA 75-6B 01-00 00-0B 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey  # GetParam() = 64-byte object <CD-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E2 88-9E E2-89 A0-E2 88-9A 22-00 01-00 00-00 00-DA 75-6B 01-00 00-0B 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey  # GetParam() = 64-byte object <CD-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E2 88-9E E2-89 A0-E2 88-9A 22-00 01-00 00-00 00-DA 75-6B 01-00 00-0B 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsGreekKey  # GetParam() = 64-byte object <CD-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E2 88-9E E2-89 A0-E2 88-9A 22-00 01-00 00-00 00-DA 75-6B 01-00 00-0B 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+36/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey  # GetParam() = 64-byte object <EE-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-00 77-B5 51-40 0A-F4 A3-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>
+36/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey  # GetParam() = 64-byte object <EE-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-00 77-B5 51-40 0A-F4 A3-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey  # GetParam() = 64-byte object <EE-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-00 77-B5 51-40 0A-F4 A3-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey  # GetParam() = 64-byte object <EE-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-00 77-B5 51-40 0A-F4 A3-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsCjkKey  # GetParam() = 64-byte object <EE-59 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-00 77-B5 51-40 0A-F4 A3-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+37/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey  # GetParam() = 64-byte object <01-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-8C 8D-22 00-00 40-D9 75-6B 01-00 00-00 01-01 00-00 00-00 00-06 00-00 00-00 00-00 00-00>
+37/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey  # GetParam() = 64-byte object <01-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-8C 8D-22 00-00 40-D9 75-6B 01-00 00-00 01-01 00-00 00-00 00-06 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey  # GetParam() = 64-byte object <01-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-8C 8D-22 00-00 40-D9 75-6B 01-00 00-00 01-01 00-00 00-00 00-06 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey  # GetParam() = 64-byte object <01-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-8C 8D-22 00-00 40-D9 75-6B 01-00 00-00 01-01 00-00 00-00 00-06 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsEmojiKey  # GetParam() = 64-byte object <01-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-8C 8D-22 00-00 40-D9 75-6B 01-00 00-00 01-01 00-00 00-00 00-06 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+38/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey  # GetParam() = 64-byte object <20-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 B7-D0 BD-D0 B0-D1 87-D0 B5-D0 BD-D0 B8-D0 B5-E2 9C-A8 22-00 00-15 00-00 00-00 00-00 00-00>
+38/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey  # GetParam() = 64-byte object <20-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 B7-D0 BD-D0 B0-D1 87-D0 B5-D0 BD-D0 B8-D0 B5-E2 9C-A8 22-00 00-15 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey  # GetParam() = 64-byte object <20-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 B7-D0 BD-D0 B0-D1 87-D0 B5-D0 BD-D0 B8-D0 B5-E2 9C-A8 22-00 00-15 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey  # GetParam() = 64-byte object <20-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 B7-D0 BD-D0 B0-D1 87-D0 B5-D0 BD-D0 B8-D0 B5-E2 9C-A8 22-00 00-15 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/FindsMixedWidthKey  # GetParam() = 64-byte object <20-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-D0 B7-D0 BD-D0 B0-D1 87-D0 B5-D0 BD-D0 B8-D0 B5-E2 9C-A8 22-00 00-15 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+39/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey  # GetParam() = 64-byte object <56-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 00-77 FF-8F 01-00 00-00 01-00 00-00 00-00 00-00 06-00 00-00 00-00 00-00 01-00 00-00 00-00 00-00>
+39/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey  # GetParam() = 64-byte object <56-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 00-77 FF-8F 01-00 00-00 01-00 00-00 00-00 00-00 06-00 00-00 00-00 00-00 01-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey  # GetParam() = 64-byte object <56-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 00-77 FF-8F 01-00 00-00 01-00 00-00 00-00 00-00 06-00 00-00 00-00 00-00 01-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey  # GetParam() = 64-byte object <56-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 00-77 FF-8F 01-00 00-00 01-00 00-00 00-00 00-00 06-00 00-00 00-00 00-00 01-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/RejectsUnaccentedKey  # GetParam() = 64-byte object <56-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 00-77 FF-8F 01-00 00-00 01-00 00-00 00-00 00-00 06-00 00-00 00-00 00-00 01-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+40/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape  # GetParam() = 64-byte object <71-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-6E 61-C3 AF-76 65-22 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>
+40/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape  # GetParam() = 64-byte object <71-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-6E 61-C3 AF-76 65-22 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape  # GetParam() = 64-byte object <71-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-6E 61-C3 AF-76 65-22 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape  # GetParam() = 64-byte object <71-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-6E 61-C3 AF-76 65-22 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesTwoByteEscape  # GetParam() = 64-byte object <71-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-6E 61-C3 AF-76 65-22 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-08 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+41/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape  # GetParam() = 64-byte object <8C-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>
+41/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape  # GetParam() = 64-byte object <8C-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape  # GetParam() = 64-byte object <8C-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape  # GetParam() = 64-byte object <8C-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesThreeByteEscape  # GetParam() = 64-byte object <8C-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-E6 9D-B1 E4-BA AC-22 00-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+42/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair  # GetParam() = 64-byte object <AA-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-98 80-22 00-00 50-52 37-EB 02-00 00-00 96-77 FF-8F 01-00 00-06 00-00 00-00 00-00 00-00>
+42/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair  # GetParam() = 64-byte object <AA-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-98 80-22 00-00 50-52 37-EB 02-00 00-00 96-77 FF-8F 01-00 00-06 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair  # GetParam() = 64-byte object <AA-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-98 80-22 00-00 50-52 37-EB 02-00 00-00 96-77 FF-8F 01-00 00-06 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair  # GetParam() = 64-byte object <AA-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-98 80-22 00-00 50-52 37-EB 02-00 00-00 96-77 FF-8F 01-00 00-06 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/DecodesSurrogatePair  # GetParam() = 64-byte object <AA-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-F0 9F-98 80-22 00-00 50-52 37-EB 02-00 00-00 96-77 FF-8F 01-00 00-06 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+43/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey  # GetParam() = 64-byte object <C6-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 31-00 75-6B 01-00 00-00 20-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-01 00-00 00-00 00-00 00-00>
+43/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey  # GetParam() = 64-byte object <C6-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 31-00 75-6B 01-00 00-00 20-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-01 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey  # GetParam() = 64-byte object <C6-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 31-00 75-6B 01-00 00-00 20-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-01 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey  # GetParam() = 64-byte object <C6-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 31-00 75-6B 01-00 00-00 20-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-01 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/EscapedKeyMatchesRawKey  # GetParam() = 64-byte object <C6-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 31-00 75-6B 01-00 00-00 20-13 20-FC 01-00 00-00 00-D9 75-6B 01-00 00-01 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+44/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText  # GetParam() = 64-byte object <DE-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 38-30 30-22 00-17 20-FC 01-00 00-00 96-77 FF-8F 01-00 00-08 00-00 00-00 00-00 00-00>
+44/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText  # GetParam() = 64-byte object <DE-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 38-30 30-22 00-17 20-FC 01-00 00-00 96-77 FF-8F 01-00 00-08 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText  # GetParam() = 64-byte object <DE-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 38-30 30-22 00-17 20-FC 01-00 00-00 96-77 FF-8F 01-00 00-08 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText  # GetParam() = 64-byte object <DE-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 38-30 30-22 00-17 20-FC 01-00 00-00 96-77 FF-8F 01-00 00-08 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedLeadSurrogateAsText  # GetParam() = 64-byte object <DE-5A 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 38-30 30-22 00-17 20-FC 01-00 00-00 96-77 FF-8F 01-00 00-08 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+45/61 Testing: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText  # GetParam() = 64-byte object <00-5B 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 63-30 30-22 00-00 00-00 00-00 00-00 68-D7 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>
+45/61 Test: UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText  # GetParam() = 64-byte object <00-5B 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 63-30 30-22 00-00 00-00 00-00 00-00 68-D7 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText  # GetParam() = 64-byte object <00-5B 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 63-30 30-22 00-00 00-00 00-00 00-00 68-D7 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from UnicodeCases/JsonUnicodeTest
+[ RUN      ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText
+[       OK ] UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText (0 ms)
+[----------] 1 test from UnicodeCases/JsonUnicodeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText  # GetParam() = 64-byte object <00-5B 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 63-30 30-22 00-00 00-00 00-00 00-00 68-D7 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>" end time: Aug 15 22:46 -05
+"UnicodeCases/JsonUnicodeTest.HandlesUnicodeCase/LeavesUnpairedTrailSurrogateAsText  # GetParam() = 64-byte object <00-5B 73-04 01-00 00-00 80-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 98-01 C3-66 0A-00 00-00 22-5C 75-64 63-30 30-22 00-00 00-00 00-00 00-00 68-D7 75-6B 01-00 00-08 00-00 00-00 00-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+46/61 Testing: EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray  # GetParam() = 32-byte object <36-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>
+46/61 Test: EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray  # GetParam() = 32-byte object <36-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray  # GetParam() = 32-byte object <36-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from EmptyStructures/JsonEmptyStructureTest
+[ RUN      ] EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray
+[       OK ] EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray (0 ms)
+[----------] 1 test from EmptyStructures/JsonEmptyStructureTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray  # GetParam() = 32-byte object <36-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>" end time: Aug 15 22:46 -05
+"EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForIndexIntoEmptyArray  # GetParam() = 32-byte object <36-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+47/61 Testing: EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject  # GetParam() = 32-byte object <65-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>
+47/61 Test: EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject  # GetParam() = 32-byte object <65-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject  # GetParam() = 32-byte object <65-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from EmptyStructures/JsonEmptyStructureTest
+[ RUN      ] EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject
+[       OK ] EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject (0 ms)
+[----------] 1 test from EmptyStructures/JsonEmptyStructureTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject  # GetParam() = 32-byte object <65-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>" end time: Aug 15 22:46 -05
+"EmptyStructures/JsonEmptyStructureTest.ReturnsEmptyForInvalidLookup/ReturnsEmptyForKeyIntoEmptyObject  # GetParam() = 32-byte object <65-5E 73-04 01-00 00-00 F0-80 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00 20-81 00-67 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+48/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 53-69 6D-70 6C-65 46-69 6E-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-7D 00-47 70-04 01-00 00-10 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+48/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 53-69 6D-70 6C-65 46-69 6E-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-7D 00-47 70-04 01-00 00-10 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 53-69 6D-70 6C-65 46-69 6E-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-7D 00-47 70-04 01-00 00-10 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 53-69 6D-70 6C-65 46-69 6E-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-7D 00-47 70-04 01-00 00-10 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesSimpleFindQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 53-69 6D-70 6C-65 46-69 6E-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-7D 00-47 70-04 01-00 00-10 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+49/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4D-75 6C-74 69-46 69-65 6C-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-20 6E-61 6D-65 7D-00 00-15 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+49/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4D-75 6C-74 69-46 69-65 6C-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-20 6E-61 6D-65 7D-00 00-15 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4D-75 6C-74 69-46 69-65 6C-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-20 6E-61 6D-65 7D-00 00-15 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4D-75 6C-74 69-46 69-65 6C-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-20 6E-61 6D-65 7D-00 00-15 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultiFieldQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4D-75 6C-74 69-46 69-65 6C-64 51-75 65-72 79-00 00-15 46-49 4E-44 20-7B 65-6D 70-6C 6F-79 65-65 73-20 6E-61 6D-65 7D-00 00-15 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+50/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken  # GetParam() = 72-byte object <50-61 72-73 65-73 41-72 72-61 79-49 6E-64 65-78 54-6F 6B-65 6E-00 00-15 20-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+50/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken  # GetParam() = 72-byte object <50-61 72-73 65-73 41-72 72-61 79-49 6E-64 65-78 54-6F 6B-65 6E-00 00-15 20-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken  # GetParam() = 72-byte object <50-61 72-73 65-73 41-72 72-61 79-49 6E-64 65-78 54-6F 6B-65 6E-00 00-15 20-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken  # GetParam() = 72-byte object <50-61 72-73 65-73 41-72 72-61 79-49 6E-64 65-78 54-6F 6B-65 6E-00 00-15 20-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesArrayIndexToken  # GetParam() = 72-byte object <50-61 72-73 65-73 41-72 72-61 79-49 6E-64 65-78 54-6F 6B-65 6E-00 00-15 20-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+51/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-00 FB-04 01-00 00-11 A0-82 00-67 0A-00 00-00 25-00 00-00 00-00 00-00 28-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+51/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-00 FB-04 01-00 00-11 A0-82 00-67 0A-00 00-00 25-00 00-00 00-00 00-00 28-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-00 FB-04 01-00 00-11 A0-82 00-67 0A-00 00-00 25-00 00-00 00-00 00-00 28-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-00 FB-04 01-00 00-11 A0-82 00-67 0A-00 00-00 25-00 00-00 00-00 00-00 28-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQuery  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-00 FB-04 01-00 00-11 A0-82 00-67 0A-00 00-00 25-00 00-00 00-00 00-00 28-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+52/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-41 74-45 6E-64 00-16 46-49 4E-44 20-7B 64-61 79-20 7B-65 6D-70 6C-6F 79-65 65-73 7D-7D 00-16 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+52/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-41 74-45 6E-64 00-16 46-49 4E-44 20-7B 64-61 79-20 7B-65 6D-70 6C-6F 79-65 65-73 7D-7D 00-16 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-41 74-45 6E-64 00-16 46-49 4E-44 20-7B 64-61 79-20 7B-65 6D-70 6C-6F 79-65 65-73 7D-7D 00-16 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-41 74-45 6E-64 00-16 46-49 4E-44 20-7B 64-61 79-20 7B-65 6D-70 6C-6F 79-65 65-73 7D-7D 00-16 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesNestedQueryAtEnd  # GetParam() = 72-byte object <50-61 72-73 65-73 4E-65 73-74 65-64 51-75 65-72 79-41 74-45 6E-64 00-16 46-49 4E-44 20-7B 64-61 79-20 7B-65 6D-70 6C-6F 79-65 65-73 7D-7D 00-16 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+53/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+53/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesDeeplyNestedQuery  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+54/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 30-83 00-67 0A-00 00-00 28-00 00-00 00-00 00-00 30-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+54/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 30-83 00-67 0A-00 00-00 28-00 00-00 00-00 00-00 30-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 30-83 00-67 0A-00 00-00 28-00 00-00 00-00 00-00 30-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 30-83 00-67 0A-00 00-00 28-00 00-00 00-00 00-00 30-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/ParsesMultipleNestedGroups  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 30-83 00-67 0A-00 00-00 28-00 00-00 00-00 00-00 30-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+55/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces  # GetParam() = 72-byte object <49-67 6E-6F 72-65 73-52 65-70 65-61 74-65 64-53 70-61 63-65 73-00 00-15 40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+55/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces  # GetParam() = 72-byte object <49-67 6E-6F 72-65 73-52 65-70 65-61 74-65 64-53 70-61 63-65 73-00 00-15 40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces  # GetParam() = 72-byte object <49-67 6E-6F 72-65 73-52 65-70 65-61 74-65 64-53 70-61 63-65 73-00 00-15 40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces  # GetParam() = 72-byte object <49-67 6E-6F 72-65 73-52 65-70 65-61 74-65 64-53 70-61 63-65 73-00 00-15 40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresRepeatedSpaces  # GetParam() = 72-byte object <49-67 6E-6F 72-65 73-52 65-70 65-61 74-65 64-53 70-61 63-65 73-00 00-15 40-00 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+56/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1F-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1B-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+56/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1F-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1B-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1F-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1B-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1F-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1B-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/IgnoresLeadingAndTrailingSpaces  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 1F-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 1B-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+57/61 Testing: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 19-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+57/61 Test: ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 19-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 19-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest
+[ RUN      ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks
+[       OK ] ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks (0 ms)
+[----------] 1 test from ValidQueries/QueryParserValidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 19-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" end time: Aug 15 22:46 -05
+"ValidQueries/QueryParserValidCaseTest.ParsesExpectedStructure/PreservesQuotationMarks  # GetParam() = 72-byte object <40-00 C3-66 0A-00 00-00 17-00 00-00 00-00 00-00 19-00 00-00 00-00 00-80 60-00 C3-66 0A-00 00-00 19-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 C0-80 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00 00-81 C3-66 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+58/61 Testing: EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery  # GetParam() = 48-byte object <48-61 6E-64 6C-65 73-45 6D-70 74-79 51-75 65-72 79-00 C4-66 0A-00 00-11 00-01 C4-66 0A-00 00-00 FF-FF FF-FF 00-00 00-00 A0-0B 00-67 0A-00 00-00>
+58/61 Test: EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery  # GetParam() = 48-byte object <48-61 6E-64 6C-65 73-45 6D-70 74-79 51-75 65-72 79-00 C4-66 0A-00 00-11 00-01 C4-66 0A-00 00-00 FF-FF FF-FF 00-00 00-00 A0-0B 00-67 0A-00 00-00>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery  # GetParam() = 48-byte object <48-61 6E-64 6C-65 73-45 6D-70 74-79 51-75 65-72 79-00 C4-66 0A-00 00-11 00-01 C4-66 0A-00 00-00 FF-FF FF-FF 00-00 00-00 A0-0B 00-67 0A-00 00-00>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from EmptyQueries/QueryParserEmptyCaseTest
+[ RUN      ] EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery
+[       OK ] EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery (0 ms)
+[----------] 1 test from EmptyQueries/QueryParserEmptyCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery  # GetParam() = 48-byte object <48-61 6E-64 6C-65 73-45 6D-70 74-79 51-75 65-72 79-00 C4-66 0A-00 00-11 00-01 C4-66 0A-00 00-00 FF-FF FF-FF 00-00 00-00 A0-0B 00-67 0A-00 00-00>" end time: Aug 15 22:46 -05
+"EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesEmptyQuery  # GetParam() = 48-byte object <48-61 6E-64 6C-65 73-45 6D-70 74-79 51-75 65-72 79-00 C4-66 0A-00 00-11 00-01 C4-66 0A-00 00-00 FF-FF FF-FF 00-00 00-00 A0-0B 00-67 0A-00 00-00>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+59/61 Testing: EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery  # GetParam() = 48-byte object <00-01 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 20-20 20-20 20-00 00-00 30-00 00-00 00-00 00-00 01-08 00-00 00-00 00-05>
+59/61 Test: EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery  # GetParam() = 48-byte object <00-01 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 20-20 20-20 20-00 00-00 30-00 00-00 00-00 00-00 01-08 00-00 00-00 00-05>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery  # GetParam() = 48-byte object <00-01 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 20-20 20-20 20-00 00-00 30-00 00-00 00-00 00-00 01-08 00-00 00-00 00-05>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from EmptyQueries/QueryParserEmptyCaseTest
+[ RUN      ] EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery
+[       OK ] EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery (0 ms)
+[----------] 1 test from EmptyQueries/QueryParserEmptyCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery  # GetParam() = 48-byte object <00-01 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 20-20 20-20 20-00 00-00 30-00 00-00 00-00 00-00 01-08 00-00 00-00 00-05>" end time: Aug 15 22:46 -05
+"EmptyQueries/QueryParserEmptyCaseTest.ProducesEmptyResult/HandlesWhitespaceOnlyQuery  # GetParam() = 48-byte object <00-01 C3-66 0A-00 00-00 1A-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 20-20 20-20 20-00 00-00 30-00 00-00 00-00 00-00 01-08 00-00 00-00 00-05>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+60/61 Testing: InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace  # GetParam() = 48-byte object <40-01 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 46-49 4E-44 20-65 6D-70 6C-6F 79-65 65-73 20-7D 00-07 70-04 01-00 00-10>
+60/61 Test: InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace  # GetParam() = 48-byte object <40-01 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 46-49 4E-44 20-65 6D-70 6C-6F 79-65 65-73 20-7D 00-07 70-04 01-00 00-10>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace  # GetParam() = 48-byte object <40-01 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 46-49 4E-44 20-65 6D-70 6C-6F 79-65 65-73 20-7D 00-07 70-04 01-00 00-10>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from InvalidQueries/QueryParserInvalidCaseTest
+[ RUN      ] InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace
+[       OK ] InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace (0 ms)
+[----------] 1 test from InvalidQueries/QueryParserInvalidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace  # GetParam() = 48-byte object <40-01 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 46-49 4E-44 20-65 6D-70 6C-6F 79-65 65-73 20-7D 00-07 70-04 01-00 00-10>" end time: Aug 15 22:46 -05
+"InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/HandlesUnmatchedClosingBrace  # GetParam() = 48-byte object <40-01 C3-66 0A-00 00-00 1C-00 00-00 00-00 00-00 20-00 00-00 00-00 00-80 46-49 4E-44 20-65 6D-70 6C-6F 79-65 65-73 20-7D 00-07 70-04 01-00 00-10>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+61/61 Testing: InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1  # GetParam() = 48-byte object <50-61 72-73 65-49 6E-76 61-6C 69-64 51-75 65-72 79-31 00-6B 01-00 00-12 46-49 4E-44 20-7D 00-00 00-E3 75-6B 01-00 00-00 C0-E4 75-6B 01-00 00-06>
+61/61 Test: InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1  # GetParam() = 48-byte object <50-61 72-73 65-49 6E-76 61-6C 69-64 51-75 65-72 79-31 00-6B 01-00 00-12 46-49 4E-44 20-7D 00-00 00-E3 75-6B 01-00 00-00 C0-E4 75-6B 01-00 00-06>
+Command: "/Users/lauracanon/CS179K/project3/build/JSONQL" "--gtest_filter=InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1" "--gtest_also_run_disabled_tests"
+Directory: /Users/lauracanon/CS179K/project3/build
+"InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1  # GetParam() = 48-byte object <50-61 72-73 65-49 6E-76 61-6C 69-64 51-75 65-72 79-31 00-6B 01-00 00-12 46-49 4E-44 20-7D 00-00 00-E3 75-6B 01-00 00-00 C0-E4 75-6B 01-00 00-06>" start time: Aug 15 22:46 -05
+Output:
+----------------------------------------------------------
+Running main() from /Users/lauracanon/CS179K/project3/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from InvalidQueries/QueryParserInvalidCaseTest
+[ RUN      ] InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1
+[       OK ] InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1 (0 ms)
+[----------] 1 test from InvalidQueries/QueryParserInvalidCaseTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1  # GetParam() = 48-byte object <50-61 72-73 65-49 6E-76 61-6C 69-64 51-75 65-72 79-31 00-6B 01-00 00-12 46-49 4E-44 20-7D 00-00 00-E3 75-6B 01-00 00-00 C0-E4 75-6B 01-00 00-06>" end time: Aug 15 22:46 -05
+"InvalidQueries/QueryParserInvalidCaseTest.ThrowsRuntimeError/ParseInvalidQuery1  # GetParam() = 48-byte object <50-61 72-73 65-49 6E-76 61-6C 69-64 51-75 65-72 79-31 00-6B 01-00 00-12 46-49 4E-44 20-7D 00-00 00-E3 75-6B 01-00 00-00 C0-E4 75-6B 01-00 00-06>" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Aug 15 22:46 -05
