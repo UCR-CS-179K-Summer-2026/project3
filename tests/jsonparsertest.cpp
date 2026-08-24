@@ -514,6 +514,42 @@ INSTANTIATE_TEST_SUITE_P(
 );
 
 // ====================
+// FILTER queries
+// ====================
+
+struct FilterCase {
+    const char* name;
+    const char* filename;
+    const char* query;
+    const char* expected;
+};
+
+class JsonFilterTest : public ::testing::TestWithParam<FilterCase> {};
+
+TEST_P(JsonFilterTest, ReturnsNamedValues) {
+    const auto& test = GetParam();
+    std::ifstream file(test.filename);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(test.query);
+
+    const std::string result =
+        json_parser::parsejson(jsonText, queryparser::getparsedquery());
+
+    EXPECT_EQ(result, test.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    FilterQueries,
+    JsonFilterTest,
+    ::testing::Values(
+        
+    ),
+    caseName<FilterCase>
+);
+
+// ====================
 // Unicode and escaped-key fixtures
 // ====================
 

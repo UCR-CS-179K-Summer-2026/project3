@@ -510,6 +510,10 @@ namespace json_parser {
             } else {
                 output = searchArray(container, end, want, std::stod(group[2].asstring()), std::stod(group[3].asstring()));
             }
+
+            for (const std::string& elem : output){
+                std::cout << elem << std::endl;
+            }
         }
 
         // If just one, print "x", if many, print as array
