@@ -696,6 +696,16 @@ INSTANTIATE_TEST_SUITE_P(
                 "in_stock": false,
                 "tags": ["usb-c", "adapter", "laptop"]
             })")
+        },
+
+        FilterCase {
+            "FilterUniversityDepartmentCS",
+            std::string(UNIVERSITY_FILE),
+            R"(FILTER { university { departments { courses }}} CS)",
+            removeWhitespaces(R"({
+                "name": "Computer Science",
+                "courses": ["CS 100", "CS 179K", "CS 180"]
+            })")
         }
     ),
     caseName<FilterCase>
