@@ -31,9 +31,10 @@ int singleQuery() {
     for (unsigned run = 0; run < repeat; ++run) {
         auto start = std::chrono::steady_clock::now();
 
-        std::ifstream smallFile(small);
-        std::string smallJson = json_parser::jsonToString(smallFile);
-        std::string smallValue = json_parser::parsejson(smallJson, {"0", "Booking_ID"});
+        std::string_view smallJson = json_parser::mapFile(small);
+        ParsedQuery query;
+        queryparser::parsequery("DISPLAY {\"0\" {\"Booking_ID\"}}");
+        std::string smallValue = json_parser::parsejson(smallJson, queryparser::getparsedquery());
 
         std::chrono::duration<double, std::milli> smallTime = std::chrono::steady_clock::now() - start;
         smallTotal += smallTime.count();
@@ -41,9 +42,10 @@ int singleQuery() {
 
         start = std::chrono::steady_clock::now();
 
-        std::ifstream largeFile(large);
-        std::string largeJson = json_parser::jsonToString(largeFile);
-        std::string largeValue = json_parser::parsejson(largeJson, {"1800", "Booking_ID"});
+        
+        std::string_view largeJson = json_parser::mapFile(large);
+        queryparser::parsequery("DISPLAY {\"1800\" {\"Booking_ID\"}}");
+        std::string largeValue = json_parser::parsejson(largeJson, queryparser::getparsedquery());
 
         std::chrono::duration<double, std::milli> largeTime = std::chrono::steady_clock::now() - start;
         largeTotal += largeTime.count();
@@ -172,8 +174,8 @@ int hugeFile() {
     for (unsigned run = 0; run < repeat; ++run) {
 
         start = std::chrono::steady_clock::now();
-
-        queryparser::parsequery("DISPLAY {\"logs\" {\"591518\"}}");
+        std::string defaultQuery = "DISPLAY {\"logs\" {\"591518\"}}";
+        queryparser::parsequery(defaultQuery);
         queryparser::displaylastparsedquery();
         std::chrono::duration<double, std::milli> queryTime = std::chrono::steady_clock::now() - start;
 
