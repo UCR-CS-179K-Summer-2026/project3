@@ -1,303 +1,115 @@
-# Group 3, JSON Analytics Engine
+# JSON Query Engine
 
-Laura Canon, Moustafa Soliman, James Mace
+A C++20 command-line query engine for searching structured JSON documents.
 
-### Project Summary
+The project uses a recursive query parser and direct JSON traversal to support:
 
-Our software will take in a JSON or JSONL file and a query as input, then return data that matches the query.
+- `FIND` — check whether requested JSON components exist
+- `DISPLAY` — retrieve selected JSON values
+- `FILTER` — filter array elements using numeric ranges or regular expressions
 
-The system will support different query operations such as finding paths, filtering values, displaying values, and retrieving all values under a repeated key.
+The engine also includes GoogleTest-based correctness testing and benchmark utilities for evaluating traversal performance.
 
-We also plan to use optimization techniques to improve performance when working with large files or complex queries.
+## Documentation
 
-### Language
+Full project documentation:
 
-C++
+https://ucr-cs-179k-summer-2026.github.io/project3/
 
-### Example JSON
+The documentation includes:
 
-```json
-{
-  "employees": [
-    {
-      "name": "Laura",
-      "department": "Product",
-      "salary": 90000
-    },
-    {
-      "name": "Moustafa",
-      "department": "IT Support",
-      "salary": 120000
-    },
-    {
-      "name": "James",
-      "department": "Engineering",
-      "salary": 90000
-    }
-  ]
-}
-```
-### Example JSONL
-```jsonl
-{"id": 1, "name": "Alice", "role": "Admin"}
-{"id": 2, "name": "Bob", "role": "User"}
-{"id": 3, "name": "Charlie", "role": "Moderator"}
+- Getting Started
+- Features and query examples
+- Architecture
+- Algorithms
+- Testing
+- Performance
+- Limitations
+
+## Quick Start
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/UCR-CS-179K-Summer-2026/project3.git
+cd project3
+````
+
+### 2. Build the project
+
+```bash
+cmake -S . -B build
+cmake --build build
 ```
 
-### Query Formatting Rules
+### 3. Run the query engine
 
-* All JSON keys must be enclosed in double quotes.
-* Array indexes are numbers and do not require quotes.
-* String values and regular expressions must be enclosed in double quotes.
-* Numeric bounds do not require quotes.
-* Spaces after commas are optional.
-* Spaces and commas inside quoted strings are preserved.
-* For JSONL, the same rules apply, except that if you run a FIND or DISPLAY command, it will execute that command on every single entry of the JSONL. If you want to run that command on a specific entry of the JSONL, then you must index it, as seen in the examples below.
-
-### Query Features
-
-#### FIND
-
-Checks whether all specified keys at each level exists.
-
-Keys listed side by side are separate targets at the same level, and all of them must exist. A nested group descends from the key immediately before it.
-
-Syntax:
-
-```text
-FIND {"key"}
-FIND {"key" "other key"}
-FIND {"key" { "subkey" { "sub-subkey" }}}
+```bash
+./build/json
 ```
 
-Example (JSON) :
-
-```text
-Query:
-FIND {"employees" { "0" { "name" }}}
-
-Result:
-true
-```
-
-If the path does not exist:
-
-```text
-Query:
-FIND {"employees" { "0" { "age" }}}
-
-Result:
-false
-```
-
-Example (JSONL) :
-
-To be clear, these examples are running on the JSONL file, not the JSON file.
-```text
-Query:
-FIND {"name}
-
-Result:
-true
-```
-
-If the path does not exist:
-
-```text
-Query:
-FIND {"age"}
-
-Result:
-false
-```
-
-To Query a specific index in the JSONL:
-
-```text
-Query:
-FIND {0 {"name"}}
-
-Result:
-true
-```
-
-#### FILTER
-
-Returns values or records that satisfy a filter.
-
-Regex syntax:
-
-```text
-FILTER {"key" { "subkey" }} "regex"
-```
+Enter the JSON filename when prompted, then enter a query.
 
 Example:
 
 ```text
-Query:
-FILTER {"employees" { "name" }} "^L"
-
-Result:
-[
-    {
-      "name": "Laura",
-      "department": "Product",
-      "salary": 90000
-    }
-]
+DISPLAY {"users" {1 {"name"}}}
 ```
 
-Numeric range syntax:
+Example result:
 
 ```text
-FILTER {"key" { "subkey" }} lower-bound upper-bound
+"Marco Ruiz"
 ```
 
-Example:
+## Running Tests
+
+Run the GoogleTest suite directly:
+
+```bash
+./build/JSONQL
+```
+
+Or run the tests through CTest:
+
+```bash
+cd build
+ctest --output-on-failure
+```
+
+Current test status:
 
 ```text
-Query:
-FILTER {"employees" { "salary" }} 80000 100000
-
-Result:
-[
-    {
-      "name": "Laura",
-      "department": "Product",
-      "salary": 90000
-    },
-    {
-      "name": "James",
-      "department": "Engineering",
-      "salary": 90000
-    }
-]
+96 tests passed
+0 tests failed
 ```
 
-The numeric range is inclusive.
+## Running Benchmarks
 
-Example (JSONL) :
+```bash
+./build/benchmark
+```
 
-TODO !!!
+The benchmark executable includes small-file, controlled traversal, and experimental large-file benchmark modes.
 
-#### DISPLAY
+See the documentation website for benchmark methodology and current results.
 
-Returns the value stored at a specific path.
+## System Requirements
 
-Keys listed side by side each name a value to show, and all of them must exist. A key followed by a nested group only names the way down, so its own value is not shown.
+* C++20-compatible compiler
+* CMake
+* Git
+* Unix-like environment recommended for the memory-mapped large-file path
 
-Syntax:
+The large-file implementation uses POSIX APIs such as `mmap()`, so that feature may require changes on non-POSIX systems.
+
+## Project Structure
 
 ```text
-DISPLAY {"key"}
-DISPLAY {"key" "other key"}
-DISPLAY {"key" { "subkey" { "sub-subkey" }}}
-```
-
-Example:
-
-```text
-Query:
-DISPLAY {"employees" { "0" { "name" }}}
-
-Result:
-"Laura"
-```
-
-Another example:
-
-```text
-Query:
-DISPLAY {"employees" { "1" { "department" }}}
-
-Result:
-"IT Support"
-```
-
-Several values at once:
-
-```text
-Query:
-DISPLAY {"employees" { "0" { "name" "salary" }}}
-
-Result:
-["Laura", 90000]
-```
-
-Example (JSONL) :
-
-```text
-Query:
-DISPLAY {"name"}
-
-Result:
-[Alice] 
-[Bob]
-[Charlie]
-```
-
-Several values at once:
-
-```text
-Query:
-DISPLAY {"id" "name"}
-
-Result:
-[1, "Alice"]
-[2, "Bob"]
-[3, "Charlie"]
-```
-
-To Query a specific index in the JSONL:
-
-```text
-Query:
-DISPLAY {0 {"name"}}
-
-Result:
-[Alice]
-```
-
-### Unicode Support
-
-Unicode (UTF-16) is fully supported. Unicode is read in as \uXXXX, and converted to the corresponding byte sequence. Surrogates (\uXXXX\uXXXX) are also checked, and converted to their corresponding byte sequence for comparisons.
-```
-{
-    "\u0061": "Bob",
-    "\u0062": {
-        "\u0063": "Apple",
-        "\u0064": "\u0061"
-    }
-}
-``` 
-Returns "a" if the query DISPLAY {"b" {"d"}} is given. 
-
-### Edge Cases
-
-The query system should handle cases such as:
-
-* Missing keys
-* Invalid array indexes
-* Empty arrays
-* Null values
-* Keys containing spaces
-* Keys containing commas
-* Invalid regular expressions
-* Invalid query syntax
-
-Example:
-```json
-{
-    "": "Empty key",
-    "empty_array": [],
-    "empty_object": {}
-}
-```
-
-```text
-Query:
-DISPLAY {""}
-
-Result:
-"Empty key"
+include/       Public headers
+src/           Query and JSON parser implementation
+tests/         GoogleTest test suite
+jsonFiles/     JSON fixtures and benchmark data
+main.cpp       Command-line application
+benchmark.cpp  Performance benchmarks
 ```
