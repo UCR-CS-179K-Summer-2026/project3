@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Limitations — JSON Query Engine</title>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+
+        <a href="index.html" class="nav-brand">
+            JSON Query Engine
+        </a>
+
+        <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open navigation menu"
+        >
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+            <a href="gettingstarted.html">Getting Started</a>
+            <a href="features.html">Features</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="algorithms.html">Algorithms</a>
+            <a href="testing.html">Testing</a>
+            <a href="performance.html">Performance</a>
+            <a href="limitations.html" class="active">Limitations</a>
+
+            <a
+                href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+                class="github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub ↗
+            </a>
+
+        </div>
+    </div>
+</nav>
+
+
+<main class="page-container">
+
+    <header class="hero">
+
+        <h1>Limitations</h1>
+
+        <p>
+            The current JSON Query Engine supports FIND, DISPLAY, and FILTER,
+            but several parts of the implementation can still be expanded or improved.
+        </p>
+
+    </header>
+
+
+    <section>
+
+        <h2>Current Limitations</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Sequential Lookup</h3>
+
+                <p>
+                    Object keys and array elements are searched sequentially.
+                    The engine does not build a persistent index of the document.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Limited Query Language</h3>
+
+                <p>
+                    The current language focuses on FIND, DISPLAY, and FILTER.
+                    Aggregation, wildcard navigation, and data modification are
+                    not implemented.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>FILTER Scope</h3>
+
+                <p>
+                    FILTER supports numeric ranges and regular expressions,
+                    but does not currently support complex multi-condition
+                    expressions.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Platform-Specific Large Files</h3>
+
+                <p>
+                    The memory-mapped large-file path uses POSIX
+                    <code>mmap()</code>, so it may require changes for
+                    non-Unix platforms.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2>Testing and Performance Gaps</h2>
+
+        <div class="two-column">
+
+            <div class="info-card">
+
+                <h3>Testing</h3>
+
+                <p>
+                    FIND and DISPLAY have strong automated coverage.
+                    End-to-end FILTER execution tests are the main correctness
+                    area still worth expanding.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Performance</h3>
+
+                <p>
+                    More controlled benchmarks between approximately
+                    20 MB and 200 MB would provide a stronger scaling and
+                    optimization comparison.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2>Future Improvements</h2>
+
+        <ul>
+            <li>Add broader automated FILTER execution tests.</li>
+            <li>Improve query error messages and diagnostics.</li>
+            <li>Add more controlled large-file benchmarks.</li>
+            <li>Explore caching or indexing for repeated queries.</li>
+            <li>Make large-file mapping more portable across platforms.</li>
+            <li>Expand the query language with additional operators.</li>
+        </ul>
+
+        <div class="note">
+            The current project is designed as a focused JSON query engine,
+            rather than a complete JSON database or general-purpose query language.
+        </div>
+
+    </section>
+
+
+    <section>
+
+        <h2>Continue Exploring</h2>
+
+        <div class="docs-grid">
+
+            <a href="performance.html" class="doc-card">
+
+                <h3>Performance</h3>
+
+                <p>
+                    Review benchmark results and large-file experiments.
+                </p>
+
+                <span>View performance →</span>
+
+            </a>
+
+
+            <a href="testing.html" class="doc-card">
+
+                <h3>Testing</h3>
+
+                <p>
+                    Review the automated correctness test suite.
+                </p>
+
+                <span>View testing →</span>
+
+            </a>
+
+
+            <a href="algorithms.html" class="doc-card">
+
+                <h3>Algorithms</h3>
+
+                <p>
+                    Review the parsing and traversal logic.
+                </p>
+
+                <span>View algorithms →</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        JSON Query Engine · CS179K Project ·
+
+        <a
+            href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub Repository
+        </a>
+    </p>
+
+</footer>
+
+
+<script src="js/navigation.js"></script>
+
+</body>
+
+</html>

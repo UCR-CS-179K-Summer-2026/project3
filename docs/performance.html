@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Performance — JSON Query Engine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+
+        <a href="index.html" class="nav-brand">
+            JSON Query Engine
+        </a>
+
+        <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-label="Open navigation menu"
+        >
+            ☰
+        </button>
+
+        <div class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+            <a href="gettingstarted.html">Getting Started</a>
+            <a href="features.html">Features</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="algorithms.html">Algorithms</a>
+            <a href="testing.html">Testing</a>
+            <a href="performance.html" class="active">Performance</a>
+            <a href="limitations.html">Limitations</a>
+
+            <a
+                href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+                class="github-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub ↗
+            </a>
+
+        </div>
+    </div>
+</nav>
+
+
+<main class="page-container">
+
+    <!-- =========================
+         Hero
+    ========================== -->
+
+    <header class="hero">
+
+        <h1>Performance</h1>
+
+        <p>
+            The benchmark executable measures JSON lookup performance across
+            small files, larger inputs, controlled traversal cases, and an
+            experimental memory-mapped large-file path.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#results" class="button button-primary">
+                View Results
+            </a>
+
+            <a href="#benchmark-design" class="button button-secondary">
+                Benchmark Design
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         Benchmark Design
+    ========================== -->
+
+    <section id="benchmark-design">
+
+        <h2>Benchmark Design</h2>
+
+        <p>
+            Performance experiments are implemented separately from the
+            correctness tests in <code>benchmark.cpp</code>. The executable
+            currently exposes four benchmark modes.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Purpose</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Single Query</td>
+
+                        <td>
+                            Compare lookup time between the small and larger
+                            booking datasets.
+                        </td>
+
+                        <td>Implemented</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Many Queries</td>
+
+                        <td>
+                            Intended for repeated multi-query experiments.
+                        </td>
+
+                        <td>Not implemented yet</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Big File</td>
+
+                        <td>
+                            Compare several traversal patterns through
+                            <code>big.json</code>.
+                        </td>
+
+                        <td>Implemented</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Huge File</td>
+
+                        <td>
+                            Exercise the memory-mapped parsing path on a
+                            locally generated 1 GB JSON document.
+                        </td>
+
+                        <td>Experimental</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="note">
+            Correctness testing and performance measurement are intentionally
+            separate. GoogleTest verifies that results are correct, while the
+            benchmark executable measures execution time.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Running the Benchmark
+    ========================== -->
+
+    <section>
+
+        <h2>Running the Benchmark</h2>
+
+        <p>
+            Configure and build the project:
+        </p>
+
+        <pre><code>cmake -S . -B build
+cmake --build build</code></pre>
+
+        <p>
+            Run the benchmark executable:
+        </p>
+
+        <pre><code>./build/benchmark</code></pre>
+
+        <p>
+            The program then displays:
+        </p>
+
+        <pre><code>Which test?
+1 : Single Query
+2 : Many Queries
+3 : Big File
+4 : Huge File
+::</code></pre>
+
+        <p>
+            The implemented timing modes allow the experiment to be repeated
+            multiple times so an average can be calculated.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Benchmark Inputs
+    ========================== -->
+
+    <section>
+
+        <h2>Benchmark Inputs</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>Approximate Size</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <code>Bookings_1-level_1-KB_formatted.json</code>
+                        </td>
+
+                        <td>~1 KB</td>
+
+                        <td>
+                            Small baseline for end-to-end lookup.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>Bookings_1-level_1-MB_formatted.json</code>
+                        </td>
+
+                        <td>~1 MB</td>
+
+                        <td>
+                            Larger end-to-end lookup comparison.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>big.json</code>
+                        </td>
+
+                        <td>~15 KB</td>
+
+                        <td>
+                            Controlled traversal patterns including nesting,
+                            Unicode, escaping, arrays, and missing keys.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>data_1gb.json</code>
+                        </td>
+
+                        <td>~1 GB</td>
+
+                        <td>
+                            Experimental memory-mapped large-file traversal.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="note">
+            The 1 GB dataset is generated and used locally and is not stored
+            in the GitHub repository.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Main Results
+    ========================== -->
+
+    <section id="results">
+
+        <h2>Measured Results</h2>
+
+        <p>
+            The most current results come from two experiments:
+            a 100-run input-size comparison and a 1,000-run controlled
+            traversal benchmark.
+        </p>
+
+
+        <!-- =========================
+             Small vs Large
+        ========================== -->
+
+        <h3>Input-Size Comparison</h3>
+
+        <p>
+            The Single Query benchmark was repeated
+            <strong>100 times</strong>. The reported result is the average
+            elapsed time for each file and lookup.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Dataset</th>
+                        <th>Lookup</th>
+                        <th>Average Time</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>~1 KB booking file</td>
+
+                        <td>
+                            Entry 0 →
+                            <code>Booking_ID</code>
+                        </td>
+
+                        <td>
+                            <strong>0.0532 ms</strong>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>~1 MB booking file</td>
+
+                        <td>
+                            Entry 1800 →
+                            <code>Booking_ID</code>
+                        </td>
+
+                        <td>
+                            <strong>4.5208 ms</strong>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <pre><code>average of 100 runs
+1 KB, entry 0:      0.0531858 ms
+1 MB, entry 1800:   4.52082 ms</code></pre>
+
+        <p>
+            The larger test takes substantially longer because it processes
+            a much larger file and accesses an element farther into the JSON
+            array.
+        </p>
+
+        <div class="note">
+            This benchmark includes file opening, reading the document into a
+            string, and JSON traversal. It therefore represents an end-to-end
+            lookup rather than pure traversal time.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Controlled Traversal
+    ========================== -->
+
+    <section>
+
+        <h2>Controlled Traversal Results</h2>
+
+        <p>
+            The <code>big.json</code> benchmark loads the document before
+            timing begins and then executes each lookup
+            <strong>1,000 times</strong>. This provides a more focused view
+            of JSON traversal cost.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Case</th>
+                        <th>Average Time</th>
+                        <th>Behavior Exercised</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Wide object — first key</td>
+                        <td>18.94 µs</td>
+                        <td>Lookup in a wide object.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Wide object — last key</td>
+                        <td>14.54 µs</td>
+                        <td>Lookup later in the same wide structure.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Wide object — missing key</td>
+                        <td>12.58 µs</td>
+                        <td>Lookup where the requested key does not exist.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Raw UTF-8 key</td>
+                        <td>8.29 µs</td>
+                        <td>Direct UTF-8 key comparison.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Escaped Unicode key</td>
+                        <td>8.35 µs</td>
+                        <td>Unicode escape conversion during comparison.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Surrogate-pair key</td>
+                        <td>7.88 µs</td>
+                        <td>Four-byte Unicode character handling.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Escaped quote key</td>
+                        <td>7.57 µs</td>
+                        <td>Escaped JSON string handling.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>15-level nested path</td>
+                        <td>7.72 µs</td>
+                        <td>Repeated nested descent.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Deep escaped keys</td>
+                        <td>8.02 µs</td>
+                        <td>Nesting combined with escaped-key comparison.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Array index</td>
+                        <td>4.09 µs</td>
+                        <td>Array navigation followed by nested lookup.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Long escaped value</td>
+                        <td>7.50 µs</td>
+                        <td>Skipping and returning escaped string data.</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Value near end of document</td>
+                        <td>9.50 µs</td>
+                        <td>Lookup of a target placed near the document end.</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <h3>Recorded Benchmark Output</h3>
+
+        <pre><code>wide, first key          18.94 us
+wide, last key           14.54 us
+wide, missing key        12.58 us
+raw utf8 key              8.29 us
+escaped key               8.35 us
+surrogate key             7.88 us
+escaped quote key         7.57 us
+deep, 15 levels           7.72 us
+deep, escaped keys        8.02 us
+array index               4.09 us
+long escaped value        7.50 us
+needle, last in doc       9.50 us</code></pre>
+
+        <div class="note">
+            These values are microbenchmarks. Small timing differences between
+            individual cases should not be treated as universal ordering rules.
+            The cases primarily show that the benchmark can isolate different
+            traversal behaviors.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Interpreting Results
+    ========================== -->
+
+    <section>
+
+        <h2>Interpreting the Results</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Input Size Has a Visible Effect</h3>
+
+                <p>
+                    The end-to-end booking benchmark increased from about
+                    <code>0.053 ms</code> on the small input to about
+                    <code>4.52 ms</code> on the larger input.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Traversal Is Lightweight on Small Fixtures</h3>
+
+                <p>
+                    The controlled <code>big.json</code> queries complete in
+                    single-digit to low double-digit microseconds on this
+                    benchmark run.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Unicode Handling Remains Comparable</h3>
+
+                <p>
+                    Raw UTF-8, escaped Unicode, surrogate-pair, and escaped
+                    quote lookups remain within the same general timing range.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Query Shape Matters</h3>
+
+                <p>
+                    Object width, nesting, array navigation, escaping, and
+                    target position all change the amount and type of work
+                    performed by the traversal helpers.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Why Position Can Matter
+    ========================== -->
+
+    <section>
+
+        <h2>Sequential Lookup Behavior</h2>
+
+        <p>
+            The engine does not construct a hash table or global index of all
+            JSON keys. When <code>seekComponent()</code> searches an object,
+            members are examined sequentially until the requested component
+            is found or the object ends.
+        </p>
+
+        <p>
+            Therefore, the amount of JSON text that must be examined can
+            depend on where a key appears within its container.
+        </p>
+
+        <div class="warning">
+            The current microbenchmark does not show a simple
+            “first key is always faster than last key” relationship.
+            At microsecond scale, caching, measurement overhead, branch
+            behavior, and the exact fixture layout can affect individual
+            measurements. 
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Memory Mapping
+    ========================== -->
+
+    <section>
+
+        <h2>Large-File Optimization: Memory Mapping</h2>
+
+        <p>
+            The project also includes an alternative loading path for very
+            large files:
+        </p>
+
+        <pre><code>std::string_view json =
+    json_parser::mapFile(path);</code></pre>
+
+        <p>
+            <code>mapFile()</code> uses a read-only memory mapping and exposes
+            the mapped bytes through <code>std::string_view</code>.
+        </p>
+
+        <div class="two-column">
+
+            <div class="info-card">
+
+                <h3>String-Based Loading</h3>
+
+                <pre><code>std::ifstream file(...);
+
+std::string json =
+    json_parser::jsonToString(file);</code></pre>
+
+                <p>
+                    The full document is copied into a new string before
+                    querying.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Mapped Loading</h3>
+
+                <pre><code>std::string_view json =
+    json_parser::mapFile(path);</code></pre>
+
+                <p>
+                    The parser views the mapped file directly without first
+                    copying the complete file into another large string.
+                </p>
+
+            </div>
+
+        </div>
+
+        <p>
+            This optimization is especially relevant for very large JSON
+            files because the traversal functions already operate on
+            <code>std::string_view</code>.
+        </p>
+
+        <div class="note">
+            Memory mapping changes how the document is loaded and exposed to
+            the parser. It does not replace the engine's sequential
+            component-search algorithm.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Huge File Benchmark
+    ========================== -->
+
+    <section>
+
+        <h2>Experimental 1 GB Benchmark</h2>
+
+        <p>
+            The benchmark program includes an experimental mode using a
+            locally generated JSON file of approximately 1 GB:
+        </p>
+
+        <pre><code>jsonFiles/data_1gb.json</code></pre>
+
+        <p>
+            The benchmark executes:
+        </p>
+
+        <pre><code>DISPLAY {"logs" {"591518"}}</code></pre>
+
+        <p>
+            This mode is intended to evaluate querying a very large
+            memory-mapped document without first creating a complete
+            <code>std::string</code> copy.
+        </p>
+
+        <div class="warning">
+            <strong>Timing methodology under review:</strong>
+            the latest 1 GB benchmark run produced an unrealistically high
+            calculated throughput.
+        </div>
+
+        <p>
+            The memory-mapped execution path itself is implemented and can be
+            exercised, but the timing boundaries for this benchmark should be
+            corrected and re-run before using it for quantitative performance
+            claims.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         What Is Measured
+    ========================== -->
+
+    <section>
+
+        <h2>What Each Benchmark Measures</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>File Loading</th>
+                        <th>Query Parsing</th>
+                        <th>JSON Traversal</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Single Query</td>
+                        <td>Included</td>
+                        <td>Not the main target</td>
+                        <td>Included</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Big File</td>
+                        <td>Excluded from timed region</td>
+                        <td>Excluded</td>
+                        <td>Included</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Huge File</td>
+                        <td>Memory mapping measured separately</td>
+                        <td>Included</td>
+                        <td>Included</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p>
+            These benchmarks should not be compared as though they measure
+            exactly the same workload. Each is intended to isolate a different
+            part of the system.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Benchmark Limitations
+    ========================== -->
+
+    <section>
+
+        <h2>Current Benchmark Limitations</h2>
+
+        <div class="status-grid">
+
+            <div class="status-card implemented">
+
+                <h3>Current Coverage</h3>
+
+                <ul class="compact-list">
+                    <li>~1 KB and ~1 MB end-to-end lookup</li>
+                    <li>Repeated traversal measurements</li>
+                    <li>Wide objects</li>
+                    <li>Missing keys</li>
+                    <li>Unicode and escaped keys</li>
+                    <li>Deep nested paths</li>
+                    <li>Array indexing</li>
+                    <li>Long escaped values</li>
+                    <li>Experimental 1 GB mapped-file path</li>
+                </ul>
+
+            </div>
+
+
+            <div class="status-card progress">
+
+                <h3>Benchmarking to Add</h3>
+
+                <ul class="compact-list">
+                    <li>20–200 MB datasets</li>
+                    <li>Intermediate scaling measurements</li>
+                    <li>Before/after optimization comparison</li>
+                    <li>Many Queries benchmark</li>
+                    <li>Validated large-file timing</li>
+                    <li>Memory-use measurements</li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="note">
+            Benchmark option 2, <strong>Many Queries</strong>, is currently
+            present in the menu but is not implemented.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Final Artifact Benchmark
+    ========================== -->
+
+    <section>
+
+        <h2>Next Performance Experiment</h2>
+
+        <p>
+            A stronger scaling study can use the same JSON structure at
+            several sizes between 20 MB and 200 MB.
+        </p>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Input Size</th>
+                        <th>Baseline</th>
+                        <th>Optimized</th>
+                        <th>Improvement</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>20 MB</td>
+                        <td>To measure</td>
+                        <td>To measure</td>
+                        <td>To calculate</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>50 MB</td>
+                        <td>To measure</td>
+                        <td>To measure</td>
+                        <td>To calculate</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>100 MB</td>
+                        <td>To measure</td>
+                        <td>To measure</td>
+                        <td>To calculate</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>200 MB</td>
+                        <td>To measure</td>
+                        <td>To measure</td>
+                        <td>To calculate</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p>
+            For a meaningful comparison, both versions should use the same
+            query, dataset structure, hardware, build configuration, and
+            number of repetitions.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         Takeaways
+    ========================== -->
+
+    <section>
+
+        <h2>Performance Takeaways</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+
+                <h3>Larger Inputs Cost More</h3>
+
+                <p>
+                    The measured end-to-end lookup increased substantially
+                    between the small booking fixture and the approximately
+                    1 MB fixture.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Traversal Can Be Isolated</h3>
+
+                <p>
+                    Loading <code>big.json</code> before timing makes it
+                    possible to measure traversal separately from disk input.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Different Paths Exercise Different Work</h3>
+
+                <p>
+                    Nesting, array lookup, Unicode conversion, escaped strings,
+                    and missing components all exercise different helper paths.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>Memory Mapping Supports Large Inputs</h3>
+
+                <p>
+                    The mapped-file path allows a large document to be exposed
+                    as a <code>std::string_view</code> without creating
+                    another full-size JSON string.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Continue Exploring
+    ========================== -->
+
+    <section>
+
+        <h2>Continue Exploring</h2>
+
+        <p>
+            Performance experiments show how the implementation behaves under
+            different workloads. The Limitations page explains the remaining
+            constraints and areas for future improvement.
+        </p>
+
+        <div class="docs-grid">
+
+            <a href="limitations.html" class="doc-card">
+
+                <h3>Limitations</h3>
+
+                <p>
+                    Review platform requirements, implementation boundaries,
+                    and remaining work.
+                </p>
+
+                <span>View limitations →</span>
+
+            </a>
+
+
+            <a href="algorithms.html" class="doc-card">
+
+                <h3>Algorithms</h3>
+
+                <p>
+                    Review the traversal algorithms responsible for the
+                    measured behavior.
+                </p>
+
+                <span>View algorithms →</span>
+
+            </a>
+
+
+            <a href="testing.html" class="doc-card">
+
+                <h3>Testing</h3>
+
+                <p>
+                    Review the correctness suite used independently of
+                    performance measurements.
+                </p>
+
+                <span>View testing →</span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        JSON Query Engine · CS179K Project ·
+
+        <a
+            href="https://github.com/UCR-CS-179K-Summer-2026/project3"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub Repository
+        </a>
+    </p>
+
+</footer>
+
+
+<script src="js/navigation.js"></script>
+
+</body>
+
+</html>
