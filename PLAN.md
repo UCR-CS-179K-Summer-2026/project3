@@ -59,7 +59,6 @@
 * Helped separate query parsing from query execution.
 * Prepared the query system to work with the JSON parser.
 
-
 ## Sprint 3:
 
 ### Laura — Query Parser, Testing, and Documentation

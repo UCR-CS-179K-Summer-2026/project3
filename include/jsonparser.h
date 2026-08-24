@@ -12,6 +12,8 @@ namespace json_parser {
 
     int test(std::ifstream& json);
 
+    std::vector<std::string> repeatSearch(std::string_view json, const ParsedQuery& query);
+
     std::string jsonToString(std::ifstream& json);
 
     int isFileOpen(std::ifstream& json);
