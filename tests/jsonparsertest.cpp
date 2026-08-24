@@ -40,6 +40,9 @@ constexpr auto LITERAL_TYPES_FILE =
 constexpr auto EMPTY_STRUCTURES_FILE =
     JSON_DATA_DIR "/edgecases/emptystructures.json";
 
+constexpr auto JSONL_FILE =
+    JSON_DATA_DIR "/jsonl.jsonl";
+
 // Reads a fixture once and returns its full JSON text.
 // ASSERT_TRUE stays in each test so a missing fixture gives a clear failure.
 std::string readJsonFile(const char* filename) {
@@ -772,4 +775,138 @@ INSTANTIATE_TEST_SUITE_P(
     ),
     caseName<EmptyStructureCase>
 );
+
+// ====================
+// JSONL documents
+// ====================
+
+// A JSONL file spells one document per line, so repeatSearch answers with one
+// entry per record instead of the single value parsejson returns. A query whose
+// first part is a number names one record and is answered from that record alone.
+struct JsonlCase {
+    const char* name;
+    const char* query;
+    std::vector<std::string> expected;
+};
+
+class JsonlQueryTest : public ::testing::TestWithParam<JsonlCase> {};
+
+TEST_P(JsonlQueryTest, ReturnsPerRecordResults) {
+    const auto& test = GetParam();
+    std::ifstream file(JSONL_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(test.query);
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(jsonText, queryparser::getparsedquery());
+
+    EXPECT_EQ(result, test.expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JsonlQueries,
+    JsonlQueryTest,
+    ::testing::Values(
+        // Every record carries the key, so every record answers. The last record
+        // ends the file without a newline and still has to be read.
+        JsonlCase{
+            "ShowsKeyFromEveryRecord",
+            R"(DISPLAY "name")",
+            {"\"Alice\"", "\"Bob\"", "\"Charlie\""}
+        },
+        // Siblings are joined per record, so each record contributes one entry.
+        JsonlCase{
+            "ShowsSiblingKeysPerRecord",
+            R"(DISPLAY {"name" "role"})",
+            {R"(["Alice", "Admin"])", R"(["Bob", "User"])", R"(["Charlie", "Moderator"])"}
+        },
+        // FIND asks about the file rather than each record, so one hit settles it
+        // and the answer is a single "true" instead of one per record.
+        JsonlCase{
+            "FindReportsOneAnswerForTheFile",
+            R"(FIND "role")",
+            {"true"}
+        },
+        // No record carries the key, so the sweep runs out and reports "false".
+        JsonlCase{
+            "FindReportsFalseWhenNoRecordMatches",
+            R"(FIND "nosuchkey")",
+            {"false"}
+        },
+        // A bare number names a record, and nothing follows it, so the whole
+        // record is the answer, spelled exactly as the file spells it.
+        JsonlCase{
+            "IndexAloneReturnsWholeRecord",
+            "DISPLAY 0",
+            {R"({"id": 1, "name": "Alice", "role": "Admin"})"}
+        },
+        // Indexing is zero based, so 2 names the third record.
+        JsonlCase{
+            "IndexCountsFromZero",
+            "DISPLAY 2",
+            {R"({"id": 3, "name": "Charlie", "role": "Moderator"})"}
+        },
+        // What follows the index reads as an ordinary query against that record.
+        JsonlCase{
+            "IndexNarrowsToOneRecord",
+            R"(DISPLAY 1 "name")",
+            {"\"Bob\""}
+        },
+        // Nesting still descends normally once the index has picked the record.
+        JsonlCase{
+            "IndexCombinesWithNesting",
+            R"(DISPLAY 2 {"name" "role"})",
+            {R"(["Charlie", "Moderator"])"}
+        },
+        // FIND against a single record answers for that record alone.
+        JsonlCase{
+            "IndexedFindReportsThatRecord",
+            R"(FIND 1 "role")",
+            {"true"}
+        },
+        // The document does not run that far, so nothing is named.
+        JsonlCase{
+            "ReturnsEmptyForIndexPastLastRecord",
+            "DISPLAY 99",
+            {}
+        },
+        // The record exists but does not carry the key.
+        JsonlCase{
+            "ReturnsEmptyForMissingKeyInIndexedRecord",
+            R"(DISPLAY 1 "nosuchkey")",
+            {}
+        }
+    ),
+    caseName<JsonlCase>
+);
+
+// The sweep visits every record, so the entry count follows the record count
+// rather than the number of keys named.
+TEST(JsonParser, JsonlSweepVisitsEveryRecord) {
+    std::ifstream file(JSONL_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(R"(DISPLAY "id")");
+
+    EXPECT_EQ(json_parser::repeatSearch(jsonText, queryparser::getparsedquery()).size(), 3u);
+}
+
+// An indexed query reads only the record it names, so it must not pick up a
+// value that sits in a neighbouring record.
+TEST(JsonParser, JsonlIndexDoesNotLeakAcrossRecords) {
+    std::ifstream file(JSONL_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+    queryparser::parsequery(R"(DISPLAY 0 "name")");
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(jsonText, queryparser::getparsedquery());
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"Alice\"");
+}
 }
