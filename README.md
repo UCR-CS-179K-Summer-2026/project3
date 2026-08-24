@@ -1,4 +1,5 @@
 # JSON Query Engine
+By Laura Canon, Moustafa Soliman, James Mace
 
 A C++20 command-line query engine for searching structured JSON documents.
 
