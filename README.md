@@ -111,6 +111,16 @@ Result:
 false
 ```
 
+To Query a specific index in the JSONL:
+
+```text
+Query:
+FIND {0 {"name"}}
+
+Result:
+true
+```
+
 #### FILTER
 
 Returns values or records that satisfy a filter.
@@ -236,6 +246,16 @@ Result:
 [1, "Alice"]
 [2, "Bob"]
 [3, "Charlie"]
+```
+
+To Query a specific index in the JSONL:
+
+```text
+Query:
+DISPLAY {0 {"name"}}
+
+Result:
+[Alice]
 ```
 
 ### Unicode Support
