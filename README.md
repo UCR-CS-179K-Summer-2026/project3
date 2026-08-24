@@ -1,83 +1,116 @@
-# Group 3, Project 3 Plan.
-Laura Canon, Moustafa Soliman, James Mace
+# Group 3 - JSON Query Engine
+By Laura Canon, Moustafa Soliman, James Mace
 
+A C++20 command-line query engine for searching structured JSON documents.
 
-## What option did you choose?
-We chose option 2, the high-performance JSON analytics engine.
+The project uses a recursive query parser and direct JSON traversal to support:
 
+- `FIND` — check whether requested JSON components exist
+- `DISPLAY` — retrieve selected JSON values
+- `FILTER` — filter array elements using numeric ranges or regular expressions
 
-## What exactly will your software do?
-Our software will take in a JSON file and query path as input, and then return the data that path finds as output. It will utilize different optimization techniques to ensure that it is fast even if the data input is large or query is complex.
+The engine also includes GoogleTest-based correctness testing and benchmark utilities for evaluating traversal performance.
 
+## Documentation
 
-## What language(s) will you use?
-Rust
+Full project documentation:
 
+https://ucr-cs-179k-summer-2026.github.io/project3/
 
-## What do you hope to accomplish in the remaining 2 hours?
-Learn more about JSON format, JSON parsing and optimization techniques. 
+The documentation includes:
 
-## Queries
+- Getting Started
+- Features and query examples
+- Architecture
+- Algorithms
+- Testing
+- Performance
+- Limitations
 
-JSON example
-```json 
-{
-  "employees": [
-   {
-      "name": "Laura",
-      "department": "Product",
-      "salary": 90000
-    },
-    {
-      "name": "Moustafa",
-      "department": "IT Support",
-      "salary": 120000
-    },
-    {
-      "name": "James",
-      "department": "Engineering",
-      "salary": 90000
-    }
-  ]
-}
+## Quick Start
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/UCR-CS-179K-Summer-2026/project3.git
+cd project3
+````
+
+### 2. Build the project
+
+```bash
+cmake -S . -B build
+cmake --build build
 ```
+
+### 3. Run the query engine
+
+```bash
+./build/json
+```
+
+Enter the JSON filename when prompted, then enter a query.
+
+Example:
+
 ```text
-FIND, FILTER, DISPLAY, ALLOF
+DISPLAY {"users" {1 {"name"}}}
+```
 
-FIND {"key"} 
-FIND {"key", "subkey", "sub-subkey"}
+Example result:
 
-returns boolean indicating if key exists or not
+```text
+"Marco Ruiz"
+```
 
-EX) 
-Query: FIND {"employees", "0", "name"}
-Result: true
+## Running Tests
 
+Run the GoogleTest suite directly:
 
-FILTER {"regex"}
-FILTER {"key", "regex"}
-FILTER {{key, subkey, sub-subkey, etc}, regex}
-FILTER {key (number), lower-bound, upper-bound}
-FILTER {{key, subkey, sub-subkey, etc} (number), lower-bound, upper-bound}
+```bash
+./build/JSONQL
+```
 
-returns the values that match the keys and filters
+Or run the tests through CTest:
 
-EX) 
-Query: FILTER {"employees", "salary", "80000,100000"}
-Result: ["Laura", "James"]
+```bash
+cd build
+ctest --output-on-failure
+```
 
+Current test status:
 
-DISPLAY {"key"}
-DISPLAY {"key", "subkey", "sub-subkey", ...}
+```text
+96 tests passed
+0 tests failed
+```
 
-EX)
-Query {"employees", "0", "name"}
-result: "Laura"
+## Running Benchmarks
 
-ALLOF {"key"}
-ALLOF {"key", "subkey", "sub-subkey", ...}
+```bash
+./build/benchmark
+```
 
-EX)
-Query: ALLOF {"employees", "name"}
-Result: [ "Laura", "Moustafa", "James" ]
+The benchmark executable includes small-file, controlled traversal, and experimental large-file benchmark modes.
+
+See the documentation website for benchmark methodology and current results.
+
+## System Requirements
+
+* C++20-compatible compiler
+* CMake
+* Git
+* Unix-like environment recommended for the memory-mapped large-file path
+
+The large-file implementation uses POSIX APIs such as `mmap()`, so that feature may require changes on non-POSIX systems.
+
+## Project Structure
+
+```text
+include/       Public headers
+src/           Query and JSON parser implementation
+tests/         GoogleTest test suite
+jsonFiles/     JSON fixtures and benchmark data
+main.cpp       Command-line application
+benchmark.cpp  Performance benchmarks
 ```
