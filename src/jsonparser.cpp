@@ -388,6 +388,17 @@ namespace json_parser {
             }
         }
 
+        // Function to check if a string is a valid double.
+        bool isDouble(const std::string& test){
+            try {
+                std::stod(test);
+            } catch (...) {
+                return false;
+            }
+
+            return true;
+        }
+
         std::vector<std::string> searchArray(const char*& p, const char* end, 
             std::string& want, double leftbound, double rightbound) {
 
@@ -415,9 +426,12 @@ namespace json_parser {
                     std::regex pattern("^L");
                     std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
 
-                    double doubleValue = std::stod(value);
-                    if(doubleValue >= leftbound && doubleValue <= rightbound) {
-                        matches = true;
+                    // This helps prevent a weird stod bug if you were to try for example the name key in employee.json
+                    if(isDouble(value)){
+                        double doubleValue = std::stod(value);
+                        if(doubleValue >= leftbound && doubleValue <= rightbound) {
+                            matches = true;
+                        }
                     }
                 }
 
@@ -508,11 +522,11 @@ namespace json_parser {
                     throw std::runtime_error("Invalid regex.");
                 }
             } else {
-                output = searchArray(container, end, want, std::stod(group[2].asstring()), std::stod(group[3].asstring()));
-            }
-
-            for (const std::string& elem : output){
-                std::cout << elem << std::endl;
+                if(isDouble(group[2].asstring()) && isDouble(group[3].asstring())){
+                    output = searchArray(container, end, want, std::stod(group[2].asstring()), std::stod(group[3].asstring()));
+                }else{
+                    throw std::runtime_error("Invalid doubles inserted.");
+                }
             }
         }
 

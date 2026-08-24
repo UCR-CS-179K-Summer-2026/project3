@@ -520,16 +520,28 @@ INSTANTIATE_TEST_SUITE_P(
 // FILTER queries
 // ====================
 
+const std::string removeWhitespaces(const std::string& str) {
+    std::string result = "";
+
+    for (char elem : str) {
+        if(elem != ' ' && elem != '\n'){
+            result += elem;
+        }
+    }
+
+    return result;
+}
+
 struct FilterCase {
-    const char* name;
-    const char* filename;
-    const char* query;
-    const char* expected;
+    const std::string name;
+    const std::string filename;
+    const std::string query;
+    const std::string expected;
 };
 
 class JsonFilterTest : public ::testing::TestWithParam<FilterCase> {};
 
-TEST_P(JsonFilterTest, ReturnsNamedValues) {
+TEST_P(JsonFilterTest, ReturnsFiltered) {
     const auto& test = GetParam();
     std::ifstream file(test.filename);
     ASSERT_TRUE(file.is_open());
@@ -538,7 +550,7 @@ TEST_P(JsonFilterTest, ReturnsNamedValues) {
     queryparser::parsequery(test.query);
 
     const std::string result =
-        json_parser::parsejson(jsonText, queryparser::getparsedquery());
+        removeWhitespaces(json_parser::parsejson(jsonText, queryparser::getparsedquery()));
 
     EXPECT_EQ(result, test.expected);
 }
@@ -547,7 +559,144 @@ INSTANTIATE_TEST_SUITE_P(
     FilterQueries,
     JsonFilterTest,
     ::testing::Values(
-        
+        FilterCase{
+            "ShowsAllEmployeeData",
+            std::string(EMPLOYEE_FILE),
+            R"(FILTER { employees { name }} .*)",
+            removeWhitespaces(R"([{
+                "id": 101,
+                "name": "Laura",
+                "department": "Product",
+                "salary": 90000,
+                "active": true,
+                "skills": ["C++", "Git", "JSON"]
+            }, 
+            {
+                "id": 102,
+                "name": "Moustafa",
+                "department": "IT Support",
+                "salary": 80000,
+                "active": true,
+                "skills": ["Networking", "Linux", "Troubleshooting"]
+            }, 
+            {
+                "id": 103,
+                "name": "James",
+                "department": "Engineering",
+                "salary": 95000,
+                "active": false,
+                "skills": ["C++", "Testing", "CMake"]
+            }])")
+        },
+
+        FilterCase{
+            "ShowsIndividualEmployeeData",
+            std::string(EMPLOYEE_FILE),
+            R"(FILTER { employees { name }} ^L)",
+            removeWhitespaces(R"({
+                "id": 101,
+                "name": "Laura",
+                "department": "Product",
+                "salary": 90000,
+                "active": true,
+                "skills": ["C++", "Git", "JSON"]
+            })")
+        },
+
+        FilterCase {
+            "ShowEmployeeSalaries",
+            std::string(EMPLOYEE_FILE),
+            R"(FILTER { employees { salary }} 90000 95000)",
+            removeWhitespaces(R"([{
+                "id": 101,
+                "name": "Laura",
+                "department": "Product",
+                "salary": 90000,
+                "active": true,
+                "skills": ["C++", "Git", "JSON"]
+            },
+            {
+                "id": 103,
+                "name": "James",
+                "department": "Engineering",
+                "salary": 95000,
+                "active": false,
+                "skills": ["C++", "Testing", "CMake"]
+            }])")
+        },
+
+        FilterCase {
+            "ShowNoEmployees",
+            std::string(EMPLOYEE_FILE),
+            R"(FILTER { employees { name }} ^F)",
+            "[]" 
+        },
+
+        FilterCase {
+            "ShowAllProducts",
+            std::string(PRODUCT_FILE),
+            R"(FILTER { products { name }} .*)",
+            removeWhitespaces(R"([{
+                "id": 201,
+                "name": "Mechanical Keyboard",
+                "category": "Electronics",
+                "price": 89.99,
+                "in_stock": true,
+                "tags": ["keyboard", "office", "usb"]
+            },
+            {
+                "id": 202,
+                "name": "USB-C Hub",
+                "category": "Electronics",
+                "price": 34.5,
+                "in_stock": false,
+                "tags": ["usb-c", "adapter", "laptop"]
+            },
+            {
+                "id": 203,
+                "name": "Notebook",
+                "category": "Office Supplies",
+                "price": 6.25,
+                "in_stock": true,
+                "tags": ["paper", "school", "notes"]
+            }])")
+        },
+
+        FilterCase {
+            "ShowProductPrices",
+            std::string(PRODUCT_FILE),
+            R"(FILTER { products { price }} 30.00 90.00)",
+            removeWhitespaces(R"([{
+                "id": 201,
+                "name": "Mechanical Keyboard",
+                "category": "Electronics",
+                "price": 89.99,
+                "in_stock": true,
+                "tags": ["keyboard", "office", "usb"]
+            },
+            {
+                "id": 202,
+                "name": "USB-C Hub",
+                "category": "Electronics",
+                "price": 34.5,
+                "in_stock": false,
+                "tags": ["usb-c", "adapter", "laptop"]
+            }])")
+        },
+
+        FilterCase {
+            "FilterSpecialProductRegex",
+            std::string(PRODUCT_FILE),
+            R"(FILTER { products { tags }} adapter)",
+            removeWhitespaces(R"({
+                "id": 202,
+                "name": "USB-C Hub",
+                "category": "Electronics",
+                "price": 34.5,
+                "in_stock": false,
+                "tags": ["usb-c", "adapter", "laptop"]
+            })")
+        }
     ),
     caseName<FilterCase>
 );
