@@ -93,10 +93,17 @@ void query(std::string_view json, bool jsonl, bool outputToFile, std::ofstream& 
         std::cout << "|                                               |\n";
         std::cout << "|                Value found...                 |\n";
         std::cout << "|                                               |\n";
-        std::cout << "|                Printing below.                |\n";
+        std::cout << "|                Printing below                 |\n";
+        if(outputToFile) {
+            std::cout << "|                 And to file                   |\n";
+        }
         std::cout << "|                                               |\n";
         std::cout << "+-----------------------------------------------+\n";
         if(outputToFile) {
+            if (!outputFile.is_open()) {
+                std::cerr << "Error opening the file!" << std::endl;
+                return;
+            }
             for(const std::string& v : value) {
                 outputFile << v << "\n";
                 outputFile << std::endl;
