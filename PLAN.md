@@ -97,7 +97,9 @@
 
 ### Moustafa — 
 
-- put sprint 4 items here
+- Added error handling for FILTER query.
+- Prevented "stod" error messages for the numeric bounds FILTER query. 
+- Im
 
 ## Sprint 5:
 ### Laura — FILTER working on JSONL files
