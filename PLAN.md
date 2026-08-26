@@ -84,4 +84,34 @@
 - Helped prepare the parser for the new FIND and DISPLAY execution flow.
 
 ## Sprint 4:
-Optimization.
+### Laura — Testing, and Documentation
+
+- 
+
+### James — FIND/DISPLAY JSONL Integration, MMAP optimization
+
+- repeatSearch helper function to query on JSONL files. Basically, just run the parseJSON function on each entry of the JSONL file.
+- use MMAP to open the files and return a std::string_view to the JSON file in system memory, which avoids costly string copying.
+- Make main UI prettier and more functional
+- Make benchmark reporting more accurate
+
+### Moustafa — 
+
+- put sprint 4 items here
+
+## Sprint 5:
+### Laura — FILTER working on JSONL files
+
+- put items here
+
+### James — SIMD optimization, support bug fixin gon FILTER
+
+- More functional main UI
+   - piping output to file instead of just CLI.
+- Benchmark.cpp also reports the exact time of each step of the process more explicitly. Also fixed the math for calculating the GB/s parsing speed.
+- 
+
+### Moustafa — 
+
+- put items here
+
