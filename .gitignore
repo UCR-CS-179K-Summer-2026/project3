@@ -19,4 +19,5 @@ compile_commands*
 benchmark
 benchmark.cache/
 jsonFiles/data_1gb.json
-*.txt
+*.txt.cache/
+.cache/

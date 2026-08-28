@@ -62,10 +62,16 @@ void query(std::string_view json, bool jsonl, bool outputToFile, std::string& ou
 
     std::vector<std::string> value;
 
-    std::ofstream outputFile(outputFileName, std::ios::app);
-    if (!outputFile.is_open()) {
-        std::cerr << "Error opening the file pre-parse!" << std::endl;
-        return;
+    std::ofstream outputFile;
+
+    // Only open a file when output-to-file mode is actually enabled.
+    if (outputToFile) {
+        outputFile.open(outputFileName, std::ios::app);
+
+        if (!outputFile.is_open()) {
+            std::cerr << "Error opening the output file!" << std::endl;
+            return;
+        }
     }
 
     try {

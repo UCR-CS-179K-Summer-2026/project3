@@ -549,29 +549,74 @@ namespace json_parser {
             return out;
         }
 
-        // Returns the text of the indexed object
-        // or {} if that index does not exist
-        std::string_view recordAt(std::string_view json, size_t index) {
-            const char* p = json.data();
-            const char* end = p + json.size();
-
-            for (size_t i = 0; ; ++i) {
-                skipWs(p, end);
-                if (p >= end) {
-                    return {};
-                }
-
-                const char* rec = p;
-                if (!skipValue(p, end)) {
-                    return {};
-                }
-
-                if (i == index) {
-                    return std::string_view(rec, static_cast<size_t>(p - rec));
+        // True when the line contains no non-whitespace characters.
+        bool isBlank(std::string_view record) {
+            for (char c : record) {
+                if (!isWs(c)) {
+                    return false;
                 }
             }
+
+            return true;
         }
 
+        // Checks that one JSONL line contains exactly one complete JSON value.
+        bool validJsonRecord(std::string_view record) {
+            const char* p = record.data();
+            const char* end = p + record.size();
+
+            skipWs(p, end);
+
+            if (p >= end) {
+                return false;
+            }
+
+            if (!skipValue(p, end)) {
+                return false;
+            }
+
+            // Nothing except whitespace should remain after the JSON value.
+            skipWs(p, end);
+            return p == end;
+        }
+
+        // Return one JSONL record by zero-based line index.
+        std::string_view recordAt(std::string_view json, size_t index) {
+            size_t start = 0;
+            size_t current = 0;
+
+            while (start < json.size()) {
+
+                // Find the end of this JSONL record.
+                size_t end = json.find('\n', start);
+
+                // Last record may not end with '\n'.
+                if (end == std::string_view::npos) {
+                    end = json.size();
+                }
+
+                std::string_view record = json.substr(start, end - start);
+
+                // Remove Windows '\r' from "\r\n".
+                if (!record.empty() && record.back() == '\r') {
+                    record.remove_suffix(1);
+                }
+
+                // Count only non-empty JSONL records.
+                if (!isBlank(record)) {
+                    if (current == index) {
+                        return record;
+                    }
+
+                    ++current;
+                }
+
+                start = end + 1;
+            }
+
+            // Requested record does not exist.
+            return {};
+        }
     }
 
     std::string jsonToString(std::ifstream& json) {
@@ -640,49 +685,103 @@ namespace json_parser {
         return joinValues(values);
     }
 
-    // JSONL
+    // JSONL: process each line as one independent JSON record.
     std::vector<std::string> repeatSearch(std::string_view json, const ParsedQuery& query)
     {
         std::vector<std::string> values;
 
-        // A leading number names one record, so only that record is queried.
+        // If the first query part is a number, query only that JSONL record.
         size_t index = 0;
-        if (query.parts.size() > 1 && query.parts[1].isstring() &&
+        if (query.parts.size() > 1 &&
+            query.parts[1].isstring() &&
             toIndex(query.parts[1].asstring(), index)) {
 
             std::string_view record = recordAt(json, index);
-            if (record.empty()) return {};
 
-            if (query.parts.size() == 2) return { convertUnicode(record) };
+            // Requested JSONL record does not exist.
+            if (record.empty()) {
+                return {};
+            }
 
+            // Reject a malformed record selected by index.
+            if (!validJsonRecord(record)) {
+                throw std::runtime_error(
+                    "Invalid JSONL record at index " +
+                    std::to_string(index)
+                );
+            }
+
+            // If only an index was given, return the whole record.
+            if (query.parts.size() == 2) {
+                return { convertUnicode(record) };
+            }
+
+            // Remove the record index before running the normal JSON query.
             ParsedQuery rest = query;
-            rest.parts.erase(rest.parts.begin() + 1);   // the remainder reads as an ordinary query
+            rest.parts.erase(rest.parts.begin() + 1);
 
             std::string value = parsejson(record, rest);
-            if (value.empty()) return {};
+
+            if (value.empty()) {
+                return {};
+            }
 
             return { std::move(value) };
         }
 
-        const char* p = json.data();
-        const char* end = p + json.size();
+        size_t start = 0;
+        size_t lineNumber = 1;
 
-        while (p < end) {
-            const char* rec = p;
-            if (!skipValue(p, end)) break;
+        while (start < json.size()) {
 
-            std::string value = parsejson(std::string_view(rec, static_cast<size_t>(p - rec)), query);
+            // Find the end of the current JSONL record.
+            size_t end = json.find('\n', start);
 
+            // Last line may not end with '\n'.
+            if (end == std::string_view::npos) {
+                end = json.size();
+            }
+
+            // string_view avoids copying each record.
+            std::string_view record = json.substr(start, end - start);
+
+            // Support Windows-style "\r\n" line endings.
+            if (!record.empty() && record.back() == '\r') {
+                record.remove_suffix(1);
+            }
+
+            // Reject malformed non-blank JSONL records.
+            if (!isBlank(record) && !validJsonRecord(record)) {
+                throw std::runtime_error(
+                    "Invalid JSONL record on line " +
+                    std::to_string(lineNumber)
+                );
+            }
+            // Skip blank and whitespace-only lines.
+            if (!isBlank(record)) {
+                std::string value = parsejson(record, query);
+
+            // FIND only needs one successful match.
             if (query.command == Query::FIND) {
-                if (value == "true") return {"true"};
-            } else if (!value.empty()) {
+                if (value == "true") {
+                    return {"true"};
+                }
+            }
+            // Skip empty FILTER results from individual JSONL records.
+            else if (!value.empty() && value != "[]") {
                 values.push_back(std::move(value));
             }
 
-            skipWs(p, end);
+            }
+            // Move to the beginning of the next record.
+            start = end + 1;
+            ++lineNumber;
         }
 
-        if (query.command == Query::FIND) return {"false"};
+        // No JSONL record matched FIND.
+        if (query.command == Query::FIND) {
+            return {"false"};
+        }
 
         return values;
     }
