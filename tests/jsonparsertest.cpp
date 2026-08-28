@@ -40,8 +40,11 @@ constexpr auto LITERAL_TYPES_FILE =
 constexpr auto EMPTY_STRUCTURES_FILE =
     JSON_DATA_DIR "/edgecases/emptystructures.json";
 
-constexpr auto JSONL_FILE =
-    JSON_DATA_DIR "/jsonl.jsonl";
+constexpr auto JSONL_TESTING_FILE =
+    JSON_DATA_DIR "/jsonl/testing.jsonl";
+
+constexpr auto JSONL_ACADEMIA_FILE =
+    JSON_DATA_DIR "/jsonl/academia.jsonl";
 
 // Reads a fixture once and returns its full JSON text.
 // ASSERT_TRUE stays in each test so a missing fixture gives a clear failure.
@@ -975,9 +978,8 @@ INSTANTIATE_TEST_SUITE_P(
 // JSONL documents
 // ====================
 
-// A JSONL file spells one document per line, so repeatSearch answers with one
-// entry per record instead of the single value parsejson returns. A query whose
-// first part is a number names one record and is answered from that record alone.
+// repeatSearch() applies the existing query behavior to each JSONL record.
+// A numeric first argument selects one zero-based record instead.
 struct JsonlCase {
     const char* name;
     const char* query;
@@ -988,14 +990,18 @@ class JsonlQueryTest : public ::testing::TestWithParam<JsonlCase> {};
 
 TEST_P(JsonlQueryTest, ReturnsPerRecordResults) {
     const auto& test = GetParam();
-    std::ifstream file(JSONL_FILE);
+
+    std::ifstream file(JSONL_TESTING_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
     queryparser::parsequery(test.query);
 
     const std::vector<std::string> result =
-        json_parser::repeatSearch(jsonText, queryparser::getparsedquery());
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
 
     EXPECT_EQ(result, test.expected);
 }
@@ -1004,70 +1010,86 @@ INSTANTIATE_TEST_SUITE_P(
     JsonlQueries,
     JsonlQueryTest,
     ::testing::Values(
-        // Every record carries the key, so every record answers. The last record
-        // ends the file without a newline and still has to be read.
+
+        // Reads the first employee name from every JSONL record.
         JsonlCase{
-            "ShowsKeyFromEveryRecord",
-            R"(DISPLAY "name")",
-            {"\"Alice\"", "\"Bob\"", "\"Charlie\""}
+            "ShowsNestedValueFromEveryRecord",
+            R"(DISPLAY "employees" {"0" {"name"}})",
+            {"\"Laura\"", "\"James\"", "\"Liam\""}
         },
-        // Siblings are joined per record, so each record contributes one entry.
+
+        // Multiple leaves are grouped separately for each record.
         JsonlCase{
-            "ShowsSiblingKeysPerRecord",
-            R"(DISPLAY {"name" "role"})",
-            {R"(["Alice", "Admin"])", R"(["Bob", "User"])", R"(["Charlie", "Moderator"])"}
+            "ShowsSiblingValuesPerRecord",
+            R"(DISPLAY "employees" {"0" {"name" "salary"}})",
+            {
+                R"(["Laura", 90000])",
+                R"(["James", 95000])",
+                R"(["Liam", 92000])"
+            }
         },
-        // FIND asks about the file rather than each record, so one hit settles it
-        // and the answer is a single "true" instead of one per record.
+
+        // FIND succeeds as soon as one JSONL record contains the target.
         JsonlCase{
-            "FindReportsOneAnswerForTheFile",
-            R"(FIND "role")",
+            "FindReportsOneAnswerForFile",
+            R"(FIND "employees")",
             {"true"}
         },
-        // No record carries the key, so the sweep runs out and reports "false".
+
+        // No JSONL record contains this root key.
         JsonlCase{
             "FindReportsFalseWhenNoRecordMatches",
             R"(FIND "nosuchkey")",
             {"false"}
         },
-        // A bare number names a record, and nothing follows it, so the whole
-        // record is the answer, spelled exactly as the file spells it.
+
+        // A number alone returns that entire JSONL record.
         JsonlCase{
             "IndexAloneReturnsWholeRecord",
             "DISPLAY 0",
-            {R"({"id": 1, "name": "Alice", "role": "Admin"})"}
+            {
+                R"({"employees":[{"name":"Laura","salary":90000,"department":"Engineering"},{"name":"Moustafa","salary":80000,"department":"Sales"}]})"
+            }
         },
-        // Indexing is zero based, so 2 names the third record.
+
+        // JSONL indexing is zero based, so index 2 is the third record.
         JsonlCase{
             "IndexCountsFromZero",
             "DISPLAY 2",
-            {R"({"id": 3, "name": "Charlie", "role": "Moderator"})"}
+            {
+                R"({"employees":[{"name":"Liam","salary":92000,"department":"Engineering"},{"name":"Nina","salary":88000,"department":"HR"}]})"
+            }
         },
-        // What follows the index reads as an ordinary query against that record.
+
+        // After choosing a record, normal nested JSON querying still applies.
         JsonlCase{
             "IndexNarrowsToOneRecord",
-            R"(DISPLAY 1 "name")",
-            {"\"Bob\""}
+            R"(DISPLAY 1 "employees" {"0" {"name"}})",
+            {"\"James\""}
         },
-        // Nesting still descends normally once the index has picked the record.
+
+        // Indexed records can still return multiple nested sibling values.
         JsonlCase{
             "IndexCombinesWithNesting",
-            R"(DISPLAY 2 {"name" "role"})",
-            {R"(["Charlie", "Moderator"])"}
+            R"(DISPLAY 2 "employees" {"0" {"name" "department"}})",
+            {R"(["Liam", "Engineering"])"}
         },
-        // FIND against a single record answers for that record alone.
+
+        // FIND can also be limited to one selected JSONL record.
         JsonlCase{
-            "IndexedFindReportsThatRecord",
-            R"(FIND 1 "role")",
+            "IndexedFindReportsForSelectedRecord",
+            R"(FIND 1 "employees" {"0" {"department"}})",
             {"true"}
         },
-        // The document does not run that far, so nothing is named.
+
+        // An index larger than the file's record count returns nothing.
         JsonlCase{
             "ReturnsEmptyForIndexPastLastRecord",
             "DISPLAY 99",
             {}
         },
-        // The record exists but does not carry the key.
+
+        // The selected record exists, but the requested key does not.
         JsonlCase{
             "ReturnsEmptyForMissingKeyInIndexedRecord",
             R"(DISPLAY 1 "nosuchkey")",
@@ -1077,31 +1099,542 @@ INSTANTIATE_TEST_SUITE_P(
     caseName<JsonlCase>
 );
 
-// The sweep visits every record, so the entry count follows the record count
-// rather than the number of keys named.
-TEST(JsonParser, JsonlSweepVisitsEveryRecord) {
-    std::ifstream file(JSONL_FILE);
+
+// ====================
+// JSONL FILTER queries
+// ====================
+
+// FILTER should collect matching objects from multiple JSONL records.
+TEST(JsonParser, JsonlFilterFindsNumericMatchesAcrossRecords) {
+    std::ifstream file(JSONL_TESTING_FILE);
     ASSERT_TRUE(file.is_open());
 
     const std::string jsonText = json_parser::jsonToString(file);
-    queryparser::parsequery(R"(DISPLAY "id")");
 
-    EXPECT_EQ(json_parser::repeatSearch(jsonText, queryparser::getparsedquery()).size(), 3u);
-}
-
-// An indexed query reads only the record it names, so it must not pick up a
-// value that sits in a neighbouring record.
-TEST(JsonParser, JsonlIndexDoesNotLeakAcrossRecords) {
-    std::ifstream file(JSONL_FILE);
-    ASSERT_TRUE(file.is_open());
-
-    const std::string jsonText = json_parser::jsonToString(file);
-    queryparser::parsequery(R"(DISPLAY 0 "name")");
+    queryparser::parsequery(
+        R"(FILTER { employees { salary }} 90000 95000)"
+    );
 
     const std::vector<std::string> result =
-        json_parser::repeatSearch(jsonText, queryparser::getparsedquery());
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 3u);
+
+    EXPECT_EQ(
+        result[0],
+        R"({"name":"Laura","salary":90000,"department":"Engineering"})"
+    );
+
+    EXPECT_EQ(
+        result[1],
+        R"({"name":"James","salary":95000,"department":"Engineering"})"
+    );
+
+    EXPECT_EQ(
+        result[2],
+        R"({"name":"Liam","salary":92000,"department":"Engineering"})"
+    );
+}
+
+
+// Regex FILTER should also search across separate JSONL records.
+TEST(JsonParser, JsonlFilterFindsRegexMatchesAcrossRecords) {
+    std::ifstream file(JSONL_TESTING_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(FILTER { employees { name }} ^L)"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 2u);
+
+    EXPECT_EQ(
+        result[0],
+        R"({"name":"Laura","salary":90000,"department":"Engineering"})"
+    );
+
+    EXPECT_EQ(
+        result[1],
+        R"({"name":"Liam","salary":92000,"department":"Engineering"})"
+    );
+}
+
+
+// A record with no FILTER matches should not contribute "[]" to JSONL output.
+TEST(JsonParser, JsonlFilterSkipsEmptyPerRecordResults) {
+    std::ifstream file(JSONL_TESTING_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(FILTER { employees { name }} ^L)"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    for (const std::string& value : result) {
+        EXPECT_NE(value, "[]");
+    }
+}
+
+
+// If no record contains a FILTER match, the JSONL result should be empty.
+TEST(JsonParser, JsonlFilterReturnsEmptyWhenNothingMatches) {
+    std::ifstream file(JSONL_TESTING_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(FILTER { employees { name }} ^Z)"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_TRUE(result.empty());
+}
+
+
+// ====================
+// Larger JSONL fixture
+// ====================
+
+// academia.jsonl contains 300 records, so this verifies that a full sweep
+// reaches every record rather than stopping after the first few.
+TEST(JsonParser, JsonlAcademiaVisitsAllRecords) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(R"(DISPLAY "id")");
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 300u);
+
+    EXPECT_EQ(result.front(), "\"paper_0001\"");
+    EXPECT_EQ(result.back(), "\"paper_0300\"");
+}
+
+
+// Checks an exact top-level value from the first academia record.
+TEST(JsonParser, JsonlAcademiaReadsIndexedTopLevelValue) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 0 "title")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
 
     ASSERT_EQ(result.size(), 1u);
-    EXPECT_EQ(result[0], "\"Alice\"");
+    EXPECT_EQ(result[0], "\"A Study of Topology\"");
 }
+
+
+// Checks nested object traversal after selecting a JSONL record.
+TEST(JsonParser, JsonlAcademiaReadsNestedMetadata) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 0 "metadata" {"language"})"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"en\"");
+}
+
+
+// Checks object -> array -> object traversal inside a JSONL record.
+TEST(JsonParser, JsonlAcademiaReadsNestedArrayValue) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 0 "authors" {"0" {"name"}})"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"Morgan Nguyen\"");
+}
+
+
+// JSON booleans should be preserved when read through the JSONL path.
+TEST(JsonParser, JsonlAcademiaPreservesBooleanValue) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 0 "open_access")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "false");
+}
+
+
+// Numbers should also preserve their normal JSON representation.
+TEST(JsonParser, JsonlAcademiaPreservesNumericValue) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 0 "year")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "2020");
+}
+
+
+// Reads the final record to catch zero-based indexing and end-of-file bugs.
+TEST(JsonParser, JsonlAcademiaCanReadLastRecord) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 299 "id")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"paper_0300\"");
+}
+
+
+// Index 300 is one past the last valid academia record.
+TEST(JsonParser, JsonlAcademiaRejectsIndexPastEnd) {
+    std::ifstream file(JSONL_ACADEMIA_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 300 "id")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_TRUE(result.empty());
+}
+
+
+// ====================
+// JSONL line edge cases
+// ====================
+
+// The final JSONL record does not need a trailing newline.
+TEST(JsonParser, JsonlReadsFinalRecordWithoutTrailingNewline) {
+    const std::string jsonText =
+        R"({"name":"Alice"})" "\n"
+        R"({"name":"Bob"})";
+
+    queryparser::parsequery(
+        R"(DISPLAY "name")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_EQ(
+        result,
+        (std::vector<std::string>{
+            "\"Alice\"",
+            "\"Bob\""
+        })
+    );
+}
+
+
+// Windows JSONL files use "\r\n" instead of only "\n".
+TEST(JsonParser, JsonlSupportsWindowsLineEndings) {
+    const std::string jsonText =
+        "{\"name\":\"Alice\"}\r\n"
+        "{\"name\":\"Bob\"}\r\n"
+        "{\"name\":\"Charlie\"}\r\n";
+
+    queryparser::parsequery(
+        R"(DISPLAY "name")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_EQ(
+        result,
+        (std::vector<std::string>{
+            "\"Alice\"",
+            "\"Bob\"",
+            "\"Charlie\""
+        })
+    );
+}
+
+
+// Empty lines should be ignored instead of becoming JSONL records.
+TEST(JsonParser, JsonlSkipsEmptyLines) {
+    const std::string jsonText =
+        R"({"name":"Alice"})" "\n"
+        "\n"
+        R"({"name":"Bob"})" "\n"
+        "\n"
+        R"({"name":"Charlie"})";
+
+    queryparser::parsequery(
+        R"(DISPLAY "name")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_EQ(
+        result,
+        (std::vector<std::string>{
+            "\"Alice\"",
+            "\"Bob\"",
+            "\"Charlie\""
+        })
+    );
+}
+
+
+// Empty lines must not change zero-based JSONL record indexes.
+TEST(JsonParser, JsonlIndexIgnoresEmptyLines) {
+    const std::string jsonText =
+        R"({"name":"Alice"})" "\n"
+        "\n"
+        R"({"name":"Bob"})" "\n"
+        "\n"
+        R"({"name":"Charlie"})";
+
+    queryparser::parsequery(
+        R"(DISPLAY 1 "name")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"Bob\"");
+}
+
+
+// An entirely empty JSONL document contains no records.
+TEST(JsonParser, JsonlEmptyDocumentReturnsNoDisplayResults) {
+    const std::string jsonText = "";
+
+    queryparser::parsequery(
+        R"(DISPLAY "name")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_TRUE(result.empty());
+}
+
+
+// FIND on an empty JSONL document should report that no record matched.
+TEST(JsonParser, JsonlFindOnEmptyDocumentReturnsFalse) {
+    const std::string jsonText = "";
+
+    queryparser::parsequery(
+        R"(FIND "name")"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    EXPECT_EQ(
+        result,
+        (std::vector<std::string>{"false"})
+    );
+}
+
+
+// Ensures a selected record cannot accidentally return data from its neighbor.
+TEST(JsonParser, JsonlIndexDoesNotLeakAcrossRecords) {
+    std::ifstream file(JSONL_TESTING_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string jsonText = json_parser::jsonToString(file);
+
+    queryparser::parsequery(
+        R"(DISPLAY 0 "employees" {"0" {"name"}})"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"Laura\"");
+}
+
+// Lines containing only spaces or tabs should not count as JSONL records.
+TEST(JsonParser, JsonlIgnoresWhitespaceOnlyLines) {
+    std::ifstream file(JSONL_TESTING_FILE);
+    ASSERT_TRUE(file.is_open());
+
+    const std::string original =
+        json_parser::jsonToString(file);
+
+    // Insert whitespace-only lines between the real records.
+    std::string jsonText;
+    size_t start = 0;
+
+    while (start < original.size()) {
+        size_t end = original.find('\n', start);
+
+        if (end == std::string::npos) {
+            jsonText += original.substr(start);
+            break;
+        }
+
+        jsonText += original.substr(start, end - start + 1);
+
+        // Add lines that contain whitespace but no JSON.
+        jsonText += "      \n";
+        jsonText += "\t\t\n";
+
+        start = end + 1;
+    }
+
+    queryparser::parsequery(
+        R"(DISPLAY 1 "employees" {"0" {"name"}})"
+    );
+
+    const std::vector<std::string> result =
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+    // Whitespace-only lines must not shift record index 1.
+    ASSERT_EQ(result.size(), 1u);
+    EXPECT_EQ(result[0], "\"James\"");
+}
+
+TEST(JsonParser, JsonlRejectsMalformedRecordWithLineNumber) {
+    const std::string jsonText =
+        R"({"name":"Alice"})" "\n"
+        R"({"name":"Bob")" "\n"
+        R"({"name":"Charlie"})";
+
+    queryparser::parsequery(
+        R"(DISPLAY "name")"
+    );
+
+    try {
+        json_parser::repeatSearch(
+            jsonText,
+            queryparser::getparsedquery()
+        );
+
+        FAIL() << "Expected malformed JSONL to throw";
+    }
+    catch (const std::runtime_error& e) {
+        EXPECT_EQ(
+            std::string(e.what()),
+            "Invalid JSONL record on line 2"
+        );
+    }
+}
+
 }
