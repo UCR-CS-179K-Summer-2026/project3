@@ -97,9 +97,10 @@
 
 ### Moustafa — 
 
-- Added error handling for FILTER query.
+- Added error handling for FILTER regex query.
 - Prevented "stod" error messages for the numeric bounds FILTER query. 
-- Im
+- Applied regex search for FILTER queries.
+- Added error handling for FILTER numeric bounds query.
 
 ## Sprint 5:
 ### Laura — FILTER working on JSONL files
