@@ -468,6 +468,8 @@ namespace json_parser {
                 return found;
             }
 
+            std::regex pattern(regex);
+
             while (p < end && *p != ']') {
                 const char* element = p;
 
@@ -476,7 +478,6 @@ namespace json_parser {
                 if (seekComponent(q, end, want) && hasValue(q, end)) {
                     const char* start = q;
                     if (!skipValue(q, end)) return found;
-                    std::regex pattern(regex);
                     std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
 
                     value = value.substr(1, value.size() - 2); // Ignore quotation marks.
