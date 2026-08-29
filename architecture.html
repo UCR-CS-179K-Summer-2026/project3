@@ -106,30 +106,34 @@
         <h2>High-Level Architecture</h2>
 
         <p>
-            The program follows a pipeline in which the input file is mapped
-            once, the user's query is parsed independently, and the application
-            chooses either normal JSON execution or record-by-record JSONL
-            execution based on the selected file type.
+            The high-level architecture has two inputs that meet at execution:
+            the user's query is parsed into a <code>ParsedQuery</code>, while the
+            selected JSON or JSONL file is memory-mapped and exposed as a
+            <code>std::string_view</code>. Normal JSON is sent directly to
+            <code>parsejson()</code>. JSONL first passes through
+            <code>repeatSearch()</code>, which selects or iterates records and
+            reuses <code>parsejson()</code> for each selected record.
         </p>
 
         <img
             src="images/SystemArchi.png"
-            alt="High-level architecture showing JSON input and query input flowing through the JSON Query Engine"
+            alt="High-level system architecture showing query parsing, memory-mapped JSON and JSONL input, parsejson, repeatSearch, supported operations, and results"
             class="diagram-image"
         >
 
         <p>
-            The <strong>query parser</strong> converts textual query syntax
-            into a recursive <code>ParsedQuery</code>. For a normal JSON file,
-            that structure is passed directly to <code>parsejson()</code>. For
-            a JSONL file, <code>repeatSearch()</code> selects or iterates records
-            and then reuses the same JSON execution path on each record.
+            Both execution paths converge on the same supported operations:
+            <strong>FIND</strong>, <strong>DISPLAY</strong>, and
+            <strong>FILTER</strong>. This keeps query semantics shared between
+            JSON and JSONL instead of maintaining two separate execution engines.
         </p>
 
         <div class="note">
-            Architecture diagrams on this page show component relationships
-            and data flow. Function-level control flow and pseudocode are
-            documented separately on the Algorithms page.
+            This page intentionally uses two architecture diagrams: the
+            <strong>High-Level Architecture</strong> shows the complete data flow,
+            while <strong>Internal System Design</strong> shows how the main
+            functions and helpers relate internally. Detailed control flow stays
+            on the Algorithms page.
         </div>
 
     </section>
@@ -551,12 +555,6 @@ city</code></pre>
             A major architectural boundary exists between
             <code>queryparser</code> and <code>json_parser</code>.
         </p>
-
-        <img
-            src="images/QueryRepresentation.png"
-            alt="Diagram showing raw query text being converted into a ParsedQuery and passed to the JSON execution layer"
-            class="diagram-image"
-        >
 
         <p>
             The query parser accepts the raw command text and creates a
@@ -1007,16 +1005,28 @@ city</code></pre>
         <h2>Internal System Design</h2>
 
         <p>
-            This diagram focuses on the relationships among the application's
-            internal modules: the command-line layer, query data structures,
-            execution entry points, and JSON processing subsystem.
+            This diagram zooms in on the internal execution relationships.
+            <code>parsequery()</code> creates the <code>ParsedQuery</code>,
+            <code>mapFile()</code> supplies mapped input, and
+            <code>parsejson()</code> coordinates FIND, DISPLAY, and FILTER.
+            JSONL processing is handled by <code>repeatSearch()</code> and
+            record access before reusing the normal JSON execution path.
+            Lower-level traversal helpers such as <code>seekComponent()</code>,
+            <code>skipValue()</code>, string scanning, index conversion, and
+            Unicode conversion support the command algorithms.
         </p>
 
         <img
             src="images/InternalSystem.png"
-            alt="Internal system design diagram for the JSON Query Engine"
+            alt="Internal system design showing parsequery, ParsedQuery, mapFile, parsejson, JSONL processing, FIND, DISPLAY, FILTER, seekComponent, traversal helpers, and results"
             class="diagram-image"
         >
+
+        <div class="note">
+            The internal diagram is intentionally more function-oriented than
+            the high-level diagram. It shows which helpers support traversal and
+            how JSONL reuses the normal JSON execution engine.
+        </div>
     </section>
 
 

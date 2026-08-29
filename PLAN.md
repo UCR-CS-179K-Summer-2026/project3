@@ -1,89 +1,130 @@
-## 4-Sprint Plan:
+# 5-Sprint Plan:
 
 ## Sprint 1 Plan:
 
-Goal: Set up the project, document the main features, define the query format, and prepare the C++ environment.
+### Laura — Documentation, JSON Files, and Testing
 
-### Laura — Documentation
+- Updated `README.md`, `PLAN.md`, and GitHub Pages.
+- Documented the project overview, query format, examples, and edge cases.
+- Created `employee.json`, `product.json`, and `university.json`.
+- Added new query-parser edge-case tests.
+- Added tests for valid, missing, and empty JSON file paths.
+- Verified that the project builds and all Sprint 1 tests pass.
 
-### Tasks
-- Update `README.md`
-- Add project summary and team members
-- Add the main features:
-  - FIND
-  - FILTER
-  - DISPLAY
-  - DISPLAYTYPE
-  - ALLOF
-- Add simple examples for each feature
-- Add query formatting rules
-- Add a few edge cases
-- Update `PLAN.md`
+### James — JSON Parser
 
-### Deliverables
-- `README.md`
-- `PLAN.md`
+- Implemented the initial JSON parser.
+- Added support for receiving JSON data and a query path.
+- Traversed JSON data using keys and array indices.
+- Added support for nested objects and arrays.
+- Returned the value located at the requested path.
+- Connected the parser components to the project build.
 
----
+### Moustafa — Query Parser
 
-### James — GitHub Pages and Project Setup
-
-### Tasks
-- Set up the C++ project
-- Create `CMakeLists.txt`
-- Make sure the project compiles
-- Set up GitHub Pages
-- Add basic system architecture
-- Add basic module and function descriptions
-
-### Deliverables
-- Working C++ project
-- GitHub Pages site
-- Initial design documentation
-
----
-
-### Moustafa — Query Design and Testing
-
-### Tasks
-- Define the syntax for:
-  - FIND
-  - FILTER
-  - DISPLAY
-  - DISPLAYTYPE
-  - ALLOF
-- Create example queries
-- Create basic test cases
-- Test keys with spaces and commas
-- Test invalid queries and indexes
-
-### Deliverables
-- Query format
-- Test cases
-- Expected results
-
----
-
-### Sprint 1 Done When
-
-- `README.md` is complete
-- `PLAN.md` is complete
-- GitHub Pages is working
-- C++ project compiles
-- Query syntax is defined
-- Basic tests are created
+- Implemented the initial query parser.
+- Converted query strings into `std::vector<JSONTypes>` structures.
+- Added support for commands, arguments, and nested `{}` groups.
+- Used recursive structures to represent nested queries.
+- Added tests for simple, nested, and deeply nested queries.
+- Prepared the parsed query format for later JSON lookup.
 
 ## Sprint 2:
-Complex structure (arrays, etc) and querying.
 
-Examples: Finding all data corresponding to a specific key
+### Laura — Testing and Architecture
 
+* Organized and improved the project testing system.
+* Added more tests for JSON parsing, query parsing, arrays, nested data, and edge cases.
+* Helped organize the overall project structure.
+* Improved how the JSON parser, query parser, and query reader work together.
+* Made sure Sprint 1 features still worked after the new changes.
+
+### James — Unicode Support and Optimization
+
+* Added Unicode support to the JSON parser.
+* Added support for Unicode escape sequences and special characters.
+* Improved how Unicode keys are handled in queries.
+* Optimized the JSON parser to reduce unnecessary work.
+* Improved object and array searching.
+* Added performance tests for different types of JSON data.
+* Made the JSON parser about 4× faster than the original version**.
+
+### Moustafa — Query Reader and Query Constructor
+
+* Created the query reader.
+* Created the `QueryConstruct` structure for storing queries.
+* Added support for `FIND`, `FILTER`, `DISPLAY`, and `ALLOF`.
+* Converted parsed queries into structured commands, paths, and parameters.
+* Added support for different types of query parameters.
+* Helped separate query parsing from query execution.
+* Prepared the query system to work with the JSON parser.
 
 ## Sprint 3:
-Error handling
 
-Examples: Invalid data, empty keys, etc
+### Laura — Query Parser, Testing, and Documentation
 
+- Added the `ParsedQuery` structure for parsed query data.
+- Added command and FILTER type identification.
+- Added tests for FILTER metadata and parser state.
+- Created and updated architecture and algorithm diagrams.
+- Updated GitHub Pages to match the current implementation.
+
+### James — FIND/DISPLAY and JSON Integration
+
+- Connected parsed queries to JSON execution.
+- Implemented `FIND` and `DISPLAY`.
+- Added `findGroup()`, `displayGroup()`, and `seekComponent()`.
+- Updated `parsejson()` to handle parsed commands.
+- Added tests for FIND, DISPLAY, nested data, arrays, missing values, and Unicode cases.
+
+### Moustafa — Query Parser Cleanup
+
+- Cleaned up the query parser to make integration easier.
+- Simplified parser output and organization.
+- Helped prepare the parser for the new FIND and DISPLAY execution flow.
 
 ## Sprint 4:
-Optimization.
+### Laura — Documentation Redesign and JSONL Implementation
+
+- Redesigned and polished the GitHub Pages documentation site.
+- Standardized the layout, navigation, typography, and styling across all pages.
+- Expanded the Getting Started, Features, Architecture, Algorithms, Testing, Performance, and Limitations documentation.
+- Improved examples, diagrams, pseudocode, and explanations of the query and JSON traversal systems.
+- Reorganized the `gh-pages` branch and fixed the GitHub Pages deployment setup.
+- Began implementing JSONL support.
+
+### James — FIND/DISPLAY JSONL Integration, MMAP optimization
+
+- repeatSearch helper function to query on JSONL files. Basically, just run the parseJSON function on each entry of the JSONL file.
+- use MMAP to open the files and return a std::string_view to the JSON file in system memory, which avoids costly string copying.
+- Make main UI prettier and more functional
+- Make benchmark reporting more accurate
+
+### Moustafa — 
+
+- Added error handling for FILTER regex query.
+- Prevented "stod" error messages for the numeric bounds FILTER query. 
+- Applied regex search for FILTER queries.
+- Added error handling for FILTER numeric bounds query.
+
+## Sprint 5:
+### Laura — Full JSONL Support, Fixtures, and Testing
+
+- Completed JSONL support across the project.
+- Added JSONL files and fixtures for testing different record structures and query behavior.
+- Added tests that verify JSONL functionality, including record traversal, zero-based indexing, nested queries, FIND, DISPLAY, and FILTER behavior.
+- Added JSONL edge-case tests for empty lines, whitespace-only lines, Windows line endings, missing trailing newlines, invalid indexes, and malformed records.
+- Updated the documentation to reflect the completed JSONL functionality and testing coverage.
+
+### James — SIMD optimization, support bug fixin gon FILTER
+
+- More functional main UI
+   - piping output to file instead of just CLI.
+- Benchmark.cpp also reports the exact time of each step of the process more explicitly. Also fixed the math for calculating the GB/s parsing speed.
+- 
+
+### Moustafa — Filtering Nested Array Structures.
+
+- Modified filter query so that it can work with nested structures inside arrays, such as the ones in data_1gb.json
+- Moved regex creation outside of while loop.
+
