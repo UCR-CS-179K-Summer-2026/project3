@@ -121,6 +121,19 @@
 
             <div class="card">
 
+                <h3>JSONL Record Model</h3>
+
+                <p>
+                    JSONL files are processed as independent nonblank records.
+                    Queries can scan all records or select one by zero-based index,
+                    but there is no cross-record join, aggregation, or persistent index.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
                 <h3>Platform-Specific Large Files</h3>
 
                 <p>
@@ -147,9 +160,10 @@
                 <h3>Testing</h3>
 
                 <p>
-                    FIND and DISPLAY have strong automated coverage.
-                    End-to-end FILTER execution tests are the main correctness
-                    area still worth expanding.
+                    FIND, DISPLAY, FILTER, JSONL traversal, Unicode handling,
+                    and malformed-query behavior all have automated coverage.
+                    Remaining gaps are mainly broader edge cases, malformed
+                    FILTER arguments, CLI integration, and large-file regression tests.
                 </p>
 
             </div>
@@ -174,15 +188,56 @@
 
     <section>
 
+        <h2>Attempted SIMD Optimization</h2>
+
+        <div class="info-card">
+
+            <h3>Structural Character Scanning</h3>
+
+            <p>
+                A SIMD optimization was tested to speed up scanning for JSON structural
+                characters. For each 16-byte block, the implementation generated bitmasks
+                for characters such as <code>&quot;</code>, <code>\</code>, <code>{</code>,
+                <code>}</code>, <code>[</code>, and <code>]</code>. If no structural
+                character was found, the parser could skip the entire 16-byte block at once.
+                If a structural character was found, parsing fell back to the existing
+                character-by-character method.
+            </p>
+
+            <p>
+                In benchmarks, this approach was approximately <strong>2× slower</strong>
+                than the existing implementation. Most keys and values in the tested JSON
+                files were shorter than 16 bytes, so the mask usually found at least one
+                relevant character. That meant the SIMD work was often performed only to
+                fall back to the original parser immediately afterward.
+            </p>
+
+            <p>
+                The technique could theoretically provide much larger gains for long runs of
+                text with no structural characters—potentially approaching a 16-byte-at-a-time
+                speedup—but that pattern was not common in the project datasets and is not
+                typical of the JSON workloads tested here. Because it reduced performance on
+                representative inputs, the SIMD approach was not kept in the final parser.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section>
+
         <h2>Future Improvements</h2>
 
         <ul>
-            <li>Add broader automated FILTER execution tests.</li>
+            <li>Add more malformed and mixed-type FILTER edge-case tests.</li>
+            <li>Add larger and malformed JSONL test cases.</li>
+            <li>Add CLI integration tests, including output-to-file behavior.</li>
             <li>Improve query error messages and diagnostics.</li>
-            <li>Add more controlled large-file benchmarks.</li>
+            <li>Add more controlled large-file and performance-regression benchmarks.</li>
             <li>Explore caching or indexing for repeated queries.</li>
-            <li>Make large-file mapping more portable across platforms.</li>
-            <li>Expand the query language with additional operators.</li>
+            <li>Make memory-mapped file loading more portable across platforms.</li>
+            <li>Expand the query language with additional operators and multi-condition filters.</li>
         </ul>
 
         <div class="note">

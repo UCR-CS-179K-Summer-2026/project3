@@ -84,8 +84,9 @@
         <h1>Getting Started</h1>
 
         <p>
-            Build the JSON Query Engine, load a JSON document,
-            and run your first FIND, DISPLAY, or FILTER query.
+            Build the JSON Query Engine, load a JSON or JSONL file,
+            choose where results are written, and run your first
+            FIND, DISPLAY, or FILTER query.
         </p>
 
         <div class="hero-actions">
@@ -294,11 +295,55 @@ Generating done</code></pre>
 |                    -------                    |
 |                                               |
 | Please enter filename you would like to query |
-| For example : big                             |
+| For example : big.json                        |
+|                                               |
+|      Before entering filename:                |
+|            For settings,  enter: s            |
 |                                               |
 +-----------------------------------------------+
 >    
 </code></pre>
+
+    </section>
+
+
+    <!-- =========================
+         Output Settings
+    ========================== -->
+
+    <section>
+
+        <h2>5. Optional: Choose an Output Setting</h2>
+
+        <p>
+            Before entering a filename, type <code>s</code> to open the
+            settings menu. The current CLI can keep results in the terminal
+            or append them to a file you choose.
+        </p>
+
+        <pre><code>+-----------------------------------------------+
+|                                               |
+|    Please choose setting                      |
+|                                               |
+|    Options                                    |
+|                                               |
+|       f   -    pipe results of query to file  |
+|       c   -    pipe results of query to CLI   |
+|       x   -    exit without making changes    |
+|                                               |
++-----------------------------------------------+</code></pre>
+
+        <ul>
+            <li><code>c</code> keeps the normal command-line output behavior.</li>
+            <li><code>f</code> asks for an output-file path and appends query results there.</li>
+            <li><code>x</code> leaves the settings menu without changing the output mode.</li>
+        </ul>
+
+        <div class="note">
+            Output-to-file mode does not replace the terminal result. The
+            application still prints the result in the CLI and also appends
+            it to the selected file.
+        </div>
 
     </section>
 
@@ -309,22 +354,29 @@ Generating done</code></pre>
 
     <section>
 
-        <h2>5. Select a JSON File</h2>
+        <h2>6. Select a JSON or JSONL File</h2>
 
         <p>
-            At the filename prompt, enter the name of the JSON dataset
-            you want to query.
+            At the filename prompt, enter the file you want to query from the
+            project&apos;s <code>jsonFiles/</code> directory. Include the file
+            extension.
+        </p>
+
+        <p><strong>JSON example</strong></p>
+        <pre><code>big.json</code></pre>
+
+        <p><strong>JSONL example</strong></p>
+        <pre><code>jsonl/testing.jsonl</code></pre>
+
+        <p>
+            The application automatically checks whether the selected filename
+            ends in <code>.jsonl</code>. JSONL files are then processed as a
+            sequence of independent nonblank JSON records.
         </p>
 
         <p>
-            For example:
-        </p>
-
-        <pre><code>big</code></pre>
-
-        <p>
-            If the JSON file is opened successfully, the application
-            displays the query prompt:
+            If the file is opened successfully, the application displays the
+            query prompt:
         </p>
 
         <pre><code>JSON opened successfully.
@@ -334,8 +386,8 @@ Please enter Query
 &gt;</code></pre>
 
         <p>
-            You can now submit FIND, DISPLAY, or FILTER commands against
-            the loaded JSON document.
+            You can now submit FIND, DISPLAY, or FILTER commands against the
+            mapped input file.
         </p>
 
     </section>
@@ -347,7 +399,7 @@ Please enter Query
 
     <section>
 
-        <h2>6. Run Your First Query</h2>
+        <h2>7. Run Your First Query</h2>
 
         <p>
             A <code>DISPLAY</code> query retrieves a value from a
@@ -416,7 +468,7 @@ Please enter Query
 
     <section>
 
-        <h2>7. Retrieve Values with DISPLAY</h2>
+        <h2>8. Retrieve Values with DISPLAY</h2>
 
         <p>
             <code>DISPLAY</code> follows a path through the JSON
@@ -448,7 +500,7 @@ Please enter Query
 
     <section>
 
-        <h2>8. Check a Path with FIND</h2>
+        <h2>9. Check a Path with FIND</h2>
 
         <p>
             <code>FIND</code> checks whether a requested path or
@@ -478,7 +530,7 @@ Please enter Query
 
     <section>
 
-        <h2>9. Filter JSON Data</h2>
+        <h2>10. Filter JSON Data</h2>
 
         <p>
             <code>FILTER</code> searches entries using a supported
@@ -540,12 +592,67 @@ Please enter Query
 
 
     <!-- =========================
+         JSONL Quick Start
+    ========================== -->
+
+    <section>
+
+        <h2>11. Try a JSONL Query</h2>
+
+        <p>
+            JSONL uses the same FIND, DISPLAY, and FILTER commands, but each
+            nonblank line is treated as its own JSON record. Without a record
+            index, the engine can apply the query across the file.
+        </p>
+
+        <h3>Example: Display a Value From Every Record</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>JSONL Structure</h3>
+                <pre><code>{"employees":[{"name":"Laura"}]}
+{"employees":[{"name":"James"}]}
+{"employees":[{"name":"Liam"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>DISPLAY "employees" {"0" {"name"}}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>"Laura"
+"James"
+"Liam"</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            You can also place a zero-based record index immediately after the
+            command to target one JSONL record. For example,
+            <code>DISPLAY 2 "employees" {"0" {"name"}}</code> selects the
+            third nonblank record and returns <code>"Liam"</code>.
+        </p>
+
+        <div class="note">
+            A query such as <code>DISPLAY 0</code> returns the complete first
+            JSONL record. See the Features page for additional FIND, DISPLAY,
+            and FILTER JSONL examples.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
          Query Again
     ========================== -->
 
     <section>
 
-        <h2>10. Run Another Query</h2>
+        <h2>12. Run Another Query</h2>
 
         <p>
             After displaying a result, the application asks whether
@@ -561,7 +668,7 @@ Please enter Query
         <ul>
             <li>
                 Enter <code>y</code> to run another query against
-                the currently loaded JSON document.
+                the same currently loaded JSON or JSONL file.
             </li>
 
             <li>
@@ -581,7 +688,8 @@ Please enter Query
         <h2>Supported Commands</h2>
 
         <p>
-            The current JSON Query Engine supports three main query commands.
+            The current JSON Query Engine supports three main query commands
+            for both JSON and JSONL input.
         </p>
 
         <div class="feature-grid">
@@ -627,6 +735,12 @@ Please enter Query
             </div>
 
 
+        </div>
+
+        <div class="note">
+            Input files are memory mapped and reused for repeated queries, so
+            the CLI does not reopen and recopy the full file before every
+            command.
         </div>
 
     </section>
