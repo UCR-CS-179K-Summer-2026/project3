@@ -364,26 +364,12 @@ namespace json_parser {
         }
 
         // Filter Helper Function
-        void getWantedKey(const std::vector<JSONType>& group, std::string& want) {
+        void getPath(const std::vector<JSONType>& group, std::vector<std::string>& path) {
             for(const JSONType& elem : group){
                 if(elem.isstring()){
-                    want = elem.asstring();
+                    path.push_back(elem.asstring());
                 }else if(elem.isvector()){
-                    getWantedKey(elem.asvector(), want);
-                }
-            }
-        }
-
-        // Reaches presumed array
-        void reachArray(const char*& p, const char* end, const std::string& want,
-            const std::vector<JSONType>& group){
-            for(const JSONType& elem : group){
-                if(elem.isstring()){
-                    if(elem.asstring() != want){
-                        seekComponent(p, end, elem.asstring());
-                    }
-                }else if(elem.isvector()){
-                    reachArray(p, end, want, elem.asvector());
+                    getPath(elem.asvector(), path);
                 }
             }
         }
@@ -399,8 +385,29 @@ namespace json_parser {
             return true;
         }
 
+        // Reaches presumed array
+        int reachArray(const char*& p, const char* end, const std::vector<std::string>& path){
+            int i = 0;
+
+            for(const std::string& node : path){
+                if(!seekComponent(p, end, node)){
+                    throw std::runtime_error("Invalid path.");
+                }
+
+                skipWs(p, end);
+
+                if(p < end && *p == '['){
+                    return i;
+                }
+
+                i++;
+            }
+
+            return i;
+        }
+
         std::vector<std::string> searchArray(const char*& p, const char* end, 
-            std::string& want, double leftbound, double rightbound) {
+            const std::vector<std::string>& path, double leftbound, double rightbound) {
 
             std::vector<std::string> found = {};
 
@@ -420,7 +427,7 @@ namespace json_parser {
 
                 const char* q = element;              // search off a copy
                 bool matches = false;
-                if (seekComponent(q, end, want) && hasValue(q, end)) {
+                if (seekValue(q, end, path)) {
                     const char* start = q;
                     if (!skipValue(q, end)) return found;
                     std::regex pattern("^L");
@@ -452,7 +459,7 @@ namespace json_parser {
         }
 
         std::vector<std::string> searchArray(const char*& p, const char* end, 
-            const std::string& want, 
+            const std::vector<std::string>& path, 
             const std::string& regex) {
             
             std::vector<std::string> found = {};
@@ -474,8 +481,9 @@ namespace json_parser {
                 const char* element = p;
 
                 const char* q = element;              // search off a copy
+
                 bool matches = false;
-                if (seekComponent(q, end, want) && hasValue(q, end)) {
+                if (seekValue(q, end, path)) {
                     const char* start = q;
                     if (!skipValue(q, end)) return found;
                     std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
@@ -507,24 +515,30 @@ namespace json_parser {
             size_t from,
             bool isRegexFilter
         ){
-            std::string want;
+            int pathStart = 0;
+            std::vector<std::string> path;
 
             if(group[1].isvector()){
-                getWantedKey(group[1].asvector(), want);
-                reachArray(container, end, want, group[1].asvector());
+                getPath(group[1].asvector(), path);
+                pathStart = reachArray(container, end, path);
             }else{
                 throw std::runtime_error("Second parameter has to be a vector.");
             }
 
+            std::vector<std::string> filter(
+                path.begin() + pathStart + 1,
+                path.end()
+            );
+
             if(isRegexFilter){
                 if(group[2].isstring()){
-                    output = searchArray(container, end, want, group[2].asstring());
+                    output = searchArray(container, end, filter, group[2].asstring());
                 }else{
                     throw std::runtime_error("Invalid regex.");
                 }
             } else {
                 if(isDouble(group[2].asstring()) && isDouble(group[3].asstring())){
-                    output = searchArray(container, end, want, std::stod(group[2].asstring()), std::stod(group[3].asstring()));
+                    output = searchArray(container, end, filter, std::stod(group[2].asstring()), std::stod(group[3].asstring()));
                 }else{
                     throw std::runtime_error("Invalid doubles inserted.");
                 }
