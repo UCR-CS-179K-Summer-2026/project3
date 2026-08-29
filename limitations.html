@@ -163,7 +163,8 @@
                     FIND, DISPLAY, FILTER, JSONL traversal, Unicode handling,
                     and malformed-query behavior all have automated coverage.
                     Remaining gaps are mainly broader edge cases, malformed
-                    FILTER arguments, CLI integration, and large-file regression tests.
+                    and mixed-type FILTER arguments, CLI integration, very large JSONL
+                    stress testing, and large-file performance regression tests.
                 </p>
 
             </div>
@@ -231,7 +232,7 @@
 
         <ul>
             <li>Add more malformed and mixed-type FILTER edge-case tests.</li>
-            <li>Add larger and malformed JSONL test cases.</li>
+            <li>Add very large JSONL stress and performance tests beyond the current correctness fixtures.</li>
             <li>Add CLI integration tests, including output-to-file behavior.</li>
             <li>Improve query error messages and diagnostics.</li>
             <li>Add more controlled large-file and performance-regression benchmarks.</li>

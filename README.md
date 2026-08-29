@@ -1,15 +1,16 @@
 # Group 3 - JSON Query Engine
 By Laura Canon, Moustafa Soliman, James Mace
 
-A C++20 command-line query engine for searching structured JSON documents.
+A C++20 command-line query engine for searching structured JSON and JSONL documents.
 
 The project uses a recursive query parser and direct JSON traversal to support:
 
 - `FIND` — check whether requested JSON components exist
 - `DISPLAY` — retrieve selected JSON values
 - `FILTER` — filter array elements using numeric ranges or regular expressions
+- JSONL support — query all records or select one record with a zero-based index
 
-The engine also includes GoogleTest-based correctness testing and benchmark utilities for evaluating traversal performance.
+The engine also includes memory-mapped file loading, optional output-to-file mode, GoogleTest-based correctness testing, and benchmark utilities for evaluating traversal performance.
 
 ## Documentation
 
@@ -49,7 +50,9 @@ cmake --build build
 ./build/json
 ```
 
-Enter the JSON filename when prompted, then enter a query.
+Choose the output mode when prompted, then enter a `.json` or `.jsonl` filename and a query.
+
+JSONL files can be queried across all records, or a numeric first argument can select one zero-based record.
 
 Example:
 
@@ -81,7 +84,7 @@ ctest --output-on-failure
 Current test status:
 
 ```text
-96 tests passed
+136 tests passed
 0 tests failed
 ```
 
@@ -102,7 +105,7 @@ See the documentation website for benchmark methodology and current results.
 * Git
 * Unix-like environment recommended for the memory-mapped large-file path
 
-The large-file implementation uses POSIX APIs such as `mmap()`, so that feature may require changes on non-POSIX systems.
+The memory-mapped file-loading path uses POSIX APIs such as `mmap()`, so that feature may require changes on non-POSIX systems.
 
 ## Project Structure
 

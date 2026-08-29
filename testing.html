@@ -99,14 +99,14 @@
 
         <p>
             The latest automated test run executed
-            <strong>117 tests across 14 test suites</strong>.
+            <strong>136 tests across 14 test suites</strong>.
             All tests passed.
         </p>
 
         <div class="status-grid">
 
             <div class="status-card implemented">
-                <h3>117 Tests</h3>
+                <h3>136 Tests</h3>
                 <p>Total automated correctness tests executed.</p>
             </div>
 
@@ -116,7 +116,7 @@
             </div>
 
             <div class="status-card implemented">
-                <h3>117 Passed</h3>
+                <h3>136 Passed</h3>
                 <p>Every test completed successfully.</p>
             </div>
 
@@ -127,8 +127,8 @@
 
         </div>
 
-        <pre><code>[==========] 117 tests from 14 test suites ran.
-[  PASSED  ] 117 tests.</code></pre>
+        <pre><code>[==========] 136 tests from 14 test suites ran.
+[  PASSED  ] 136 tests.</code></pre>
 
     </section>
 
@@ -221,11 +221,12 @@
                         <td>JSONL</td>
                         <td>
                             Per-record queries, zero-based record indexing, nested
-                            lookups, FIND aggregation, and missing/out-of-range cases.
+                            lookups, FIND and FILTER across records, 300-record sweeps,
+                            line-ending/blank-line handling, and malformed records.
                         </td>
                         <td>
                             Confirms newline-delimited JSON is handled independently
-                            record by record.
+                            record by record, including common file-format edge cases.
                         </td>
                     </tr>
 
@@ -346,10 +347,11 @@ ctest --output-on-failure</code></pre>
 
                     <tr>
                         <td><code>JsonParser</code></td>
-                        <td>18</td>
+                        <td>37</td>
                         <td>
-                            File behavior, literals, missing keys, null handling,
-                            parser helpers, and JSONL record sweeping/index isolation.
+                            File behavior, literals, missing keys, null handling, parser
+                            helpers, JSONL FILTER, 300-record traversal, line-ending and
+                            blank-line handling, malformed-record reporting, and index isolation.
                         </td>
                     </tr>
 
@@ -430,7 +432,7 @@ ctest --output-on-failure</code></pre>
                         <td><code>JsonlQueryTest</code></td>
                         <td>11</td>
                         <td>
-                            Per-record JSONL DISPLAY and FIND behavior, record
+                            Per-record JSONL DISPLAY and FIND behavior, zero-based record
                             indexing, nesting, and out-of-range/missing-key cases.
                         </td>
                     </tr>
@@ -846,6 +848,61 @@ ctest --output-on-failure</code></pre>
 
 
     <!-- =========================
+         JSONL Correctness Coverage
+    ========================== -->
+
+    <section>
+
+        <h2>JSONL Correctness Coverage</h2>
+
+        <p>
+            JSONL is exercised through both the dedicated 11-case query suite and
+            additional <code>JsonParser</code> tests. Current coverage checks
+            whole-file queries, zero-based record selection, nested lookups, FIND
+            aggregation, and FILTER matches collected across records.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+                <h3>Larger Fixture</h3>
+                <p>
+                    <code>academia.jsonl</code> contains 300 records. Tests verify a
+                    complete sweep, first/last record access, nested metadata and arrays,
+                    booleans, numbers, and an index one past the end.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Line Handling</h3>
+                <p>
+                    Coverage includes a final record without a trailing newline, Windows
+                    <code>\r\n</code> line endings, empty lines, and whitespace-only lines.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Record Isolation</h3>
+                <p>
+                    Indexing is checked to ensure blank lines do not shift record numbers
+                    and a selected record cannot leak data from a neighboring record.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Malformed Records</h3>
+                <p>
+                    A malformed JSONL record is expected to throw with the exact failing
+                    line number, making bad input easier to diagnose.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
          Unicode and Edge Cases
     ========================== -->
 
@@ -969,7 +1026,8 @@ ctest --output-on-failure</code></pre>
             <li>
                 <code>jsonFiles/jsonl/</code> —
                 newline-delimited JSON fixtures used for per-record queries,
-                indexing, nested lookups, and FIND behavior.
+                indexing, nested lookups, FIND/FILTER behavior, a 300-record sweep,
+                and record-format edge cases.
             </li>
 
             <li>
@@ -1085,7 +1143,7 @@ ctest --output-on-failure</code></pre>
                 <ul class="compact-list">
                     <li>Malformed FILTER argument coverage</li>
                     <li>Additional FILTER edge cases and mixed data types</li>
-                    <li>Larger JSONL stress and malformed-record cases</li>
+                    <li>Very large JSONL stress/performance coverage beyond the 300-record correctness fixture</li>
                     <li>CLI-level integration tests</li>
                     <li>Benchmark regression tests or performance thresholds</li>
                 </ul>
