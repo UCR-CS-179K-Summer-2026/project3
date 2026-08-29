@@ -97,9 +97,10 @@
 
 ### Moustafa — 
 
-- Added error handling for FILTER query.
+- Added error handling for FILTER regex query.
 - Prevented "stod" error messages for the numeric bounds FILTER query. 
-- Im
+- Applied regex search for FILTER queries.
+- Added error handling for FILTER numeric bounds query.
 
 ## Sprint 5:
 ### Laura — FILTER working on JSONL files
@@ -113,7 +114,8 @@
 - Benchmark.cpp also reports the exact time of each step of the process more explicitly. Also fixed the math for calculating the GB/s parsing speed.
 - 
 
-### Moustafa — 
+### Moustafa — Filtering Nested Array Structures.
 
-- put items here
+- Modified filter query so that it can work with nested structures inside arrays, such as the ones in data_1gb.json
+- Moved regex creation outside of while loop.
 
