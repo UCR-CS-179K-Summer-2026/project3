@@ -138,7 +138,7 @@ int bigFile() {
 // uploaded to github because it is 1 GB, and I havent search into how
 // to do it. It reads to the very last line of the json and returns how
 // long it took to do so. Then, writes its findings to benchmark.txt.
-int hugeFile() {
+int hugeFile(int option) {
 
     std::ofstream outputFile("benchmarks.txt",std::ios::app);
 
@@ -174,18 +174,29 @@ int hugeFile() {
     for (unsigned run = 0; run < repeat; ++run) {
 
         start = std::chrono::steady_clock::now();
-        std::string defaultQuery = "DISPLAY {\"logs\" {\"591518\"}}";
+        std::string defaultQuery = "";
+        if(option == 1){
+            defaultQuery = "DISPLAY {\"logs\" {\"591518\"}}";
+        } else if(option == 2) {
+            defaultQuery = "FILTER { logs { http { duration_ms }}} 300 400";
+        }
         queryparser::parsequery(defaultQuery);
         queryparser::displaylastparsedquery();
         std::chrono::duration<double, std::milli> queryTime = std::chrono::steady_clock::now() - start;
 
+        start = std::chrono::steady_clock::now();
         std::string hugeValue = json_parser::parsejson(hugeJson, queryparser::getparsedquery());
         std::chrono::duration<double, std::milli> time = std::chrono::steady_clock::now() - start;
 
         total += time.count();
         totalQueryTime += queryTime.count();
-        std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
-        outputFile << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
+        if(option == 1) {
+            std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
+            outputFile << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
+        } else if(option == 2) {
+            std::cout << "Ran FILTER query: " << hugeValue << "  " << time.count() << " ms\n" <<  " Results have been verified, but are not published here for the sake of readbility.\n";
+            outputFile << "Ran FILTER query: " << hugeValue << "  " << time.count() << " ms\n" <<  " Results have been verified, but are not published here for the sake of readbility.\n";
+        }
     }
 
     std::cout << "\naverage of " << repeat << " runs\n"
@@ -209,7 +220,7 @@ int hugeFile() {
 
 int main() {
 
-    std::cout << "Which test?\n1 : Single Query\n2 : Many Queries\n3 : Big File\n4 : Huge File\n:: " << std::flush;
+    std::cout << "Which test?\n1 : Single Query\n2 : Many Queries\n3 : Big File\n4 : Huge File (FIND)\n5 : Huge File (FILTER)\n:: " << std::flush;
     int queryType;
     std::cin >> queryType;
     if(!std::cin || queryType < 1) {
@@ -228,7 +239,10 @@ int main() {
             bigFile();
             break;
         case 4:
-            hugeFile();
+            hugeFile(1);
+            break;
+        case 5:
+            hugeFile(2);
             break;
         default:
             return 1;
