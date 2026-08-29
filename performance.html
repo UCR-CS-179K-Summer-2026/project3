@@ -72,8 +72,9 @@
 
         <p>
             The benchmark executable measures JSON lookup performance across
-            small files, larger inputs, controlled traversal cases, and an
-            experimental memory-mapped large-file path.
+            small files, larger inputs, controlled traversal cases, and a
+            memory-mapped 1 GB large-file path. The project also records
+            optimization experiments that were tested but not retained.
         </p>
 
         <div class="hero-actions">
@@ -159,10 +160,11 @@
 
                         <td>
                             Exercise the memory-mapped parsing path on a
-                            locally generated 1 GB JSON document.
+                            locally generated 1 GB JSON document and report
+                            query parsing, mapping, and execution timing.
                         </td>
 
-                        <td>Experimental</td>
+                        <td>Implemented / locally measured</td>
                     </tr>
 
                 </tbody>
@@ -317,9 +319,9 @@ cmake --build build</code></pre>
         <h2>Measured Results</h2>
 
         <p>
-            The most current results come from two experiments:
-            a 100-run input-size comparison and a 1,000-run controlled
-            traversal benchmark.
+            Recorded results include a 100-run input-size comparison, a
+            100-run controlled traversal benchmark, and a 100-run 1 GB
+            memory-mapped query benchmark.
         </p>
 
 
@@ -358,7 +360,7 @@ cmake --build build</code></pre>
                         </td>
 
                         <td>
-                            <strong>0.0532 ms</strong>
+                            <strong>0.0348 ms</strong>
                         </td>
                     </tr>
 
@@ -372,7 +374,7 @@ cmake --build build</code></pre>
                         </td>
 
                         <td>
-                            <strong>4.5208 ms</strong>
+                            <strong>0.9704 ms</strong>
                         </td>
                     </tr>
 
@@ -383,19 +385,22 @@ cmake --build build</code></pre>
         </div>
 
         <pre><code>average of 100 runs
-1 KB, entry 0:      0.0531858 ms
-1 MB, entry 1800:   4.52082 ms</code></pre>
+1 KB, entry 0:      0.0348179 ms
+1 MB, entry 1800:   0.970444 ms</code></pre>
 
         <p>
             The larger test takes substantially longer because it processes
-            a much larger file and accesses an element farther into the JSON
-            array.
+            a much larger mapped file and accesses an element farther into the
+            JSON array.
         </p>
 
         <div class="note">
-            This benchmark includes file opening, reading the document into a
-            string, and JSON traversal. It therefore represents an end-to-end
-            lookup rather than pure traversal time.
+            This benchmark includes memory mapping, query parsing, and JSON
+            traversal inside the timed region. It therefore represents an
+            end-to-end lookup rather than pure traversal time. The current
+            implementation uses <code>mapFile()</code> for both booking
+            datasets; it no longer copies either file into a separate
+            <code>std::string</code> first.
         </div>
 
     </section>
@@ -412,7 +417,7 @@ cmake --build build</code></pre>
         <p>
             The <code>big.json</code> benchmark loads the document before
             timing begins and then executes each lookup
-            <strong>1,000 times</strong>. This provides a more focused view
+            <strong>100 times</strong>. This provides a more focused view
             of JSON traversal cost.
         </p>
 
@@ -432,84 +437,84 @@ cmake --build build</code></pre>
 
                     <tr>
                         <td>Wide object — first key</td>
-                        <td>18.94 µs</td>
+                        <td>23.32 µs</td>
                         <td>Lookup in a wide object.</td>
                     </tr>
 
 
                     <tr>
                         <td>Wide object — last key</td>
-                        <td>14.54 µs</td>
+                        <td>28.32 µs</td>
                         <td>Lookup later in the same wide structure.</td>
                     </tr>
 
 
                     <tr>
                         <td>Wide object — missing key</td>
-                        <td>12.58 µs</td>
+                        <td>21.82 µs</td>
                         <td>Lookup where the requested key does not exist.</td>
                     </tr>
 
 
                     <tr>
                         <td>Raw UTF-8 key</td>
-                        <td>8.29 µs</td>
+                        <td>16.56 µs</td>
                         <td>Direct UTF-8 key comparison.</td>
                     </tr>
 
 
                     <tr>
                         <td>Escaped Unicode key</td>
-                        <td>8.35 µs</td>
+                        <td>18.31 µs</td>
                         <td>Unicode escape conversion during comparison.</td>
                     </tr>
 
 
                     <tr>
                         <td>Surrogate-pair key</td>
-                        <td>7.88 µs</td>
+                        <td>16.09 µs</td>
                         <td>Four-byte Unicode character handling.</td>
                     </tr>
 
 
                     <tr>
                         <td>Escaped quote key</td>
-                        <td>7.57 µs</td>
+                        <td>19.77 µs</td>
                         <td>Escaped JSON string handling.</td>
                     </tr>
 
 
                     <tr>
                         <td>15-level nested path</td>
-                        <td>7.72 µs</td>
+                        <td>20.22 µs</td>
                         <td>Repeated nested descent.</td>
                     </tr>
 
 
                     <tr>
                         <td>Deep escaped keys</td>
-                        <td>8.02 µs</td>
+                        <td>18.37 µs</td>
                         <td>Nesting combined with escaped-key comparison.</td>
                     </tr>
 
 
                     <tr>
                         <td>Array index</td>
-                        <td>4.09 µs</td>
+                        <td>21.67 µs</td>
                         <td>Array navigation followed by nested lookup.</td>
                     </tr>
 
 
                     <tr>
                         <td>Long escaped value</td>
-                        <td>7.50 µs</td>
+                        <td>18.36 µs</td>
                         <td>Skipping and returning escaped string data.</td>
                     </tr>
 
 
                     <tr>
                         <td>Value near end of document</td>
-                        <td>9.50 µs</td>
+                        <td>21.67 µs</td>
                         <td>Lookup of a target placed near the document end.</td>
                     </tr>
 
@@ -522,18 +527,18 @@ cmake --build build</code></pre>
 
         <h3>Recorded Benchmark Output</h3>
 
-        <pre><code>wide, first key          18.94 us
-wide, last key           14.54 us
-wide, missing key        12.58 us
-raw utf8 key              8.29 us
-escaped key               8.35 us
-surrogate key             7.88 us
-escaped quote key         7.57 us
-deep, 15 levels           7.72 us
-deep, escaped keys        8.02 us
-array index               4.09 us
-long escaped value        7.50 us
-needle, last in doc       9.50 us</code></pre>
+        <pre><code>wide, first key          23.32 us
+wide, last key           28.32 us
+wide, missing key        21.82 us
+raw utf8 key             16.56 us
+escaped key              18.31 us
+surrogate key            16.09 us
+escaped quote key        19.77 us
+deep, 15 levels          20.22 us
+deep, escaped keys       18.37 us
+array index               9.50 us
+long escaped value       18.36 us
+needle, last in doc      21.67 us</code></pre>
 
         <div class="note">
             These values are microbenchmarks. Small timing differences between
@@ -561,8 +566,8 @@ needle, last in doc       9.50 us</code></pre>
 
                 <p>
                     The end-to-end booking benchmark increased from about
-                    <code>0.053 ms</code> on the small input to about
-                    <code>4.52 ms</code> on the larger input.
+                    <code>0.0348 ms</code> on the small input to about
+                    <code>0.970 ms</code> on the larger input.
                 </p>
 
             </div>
@@ -574,8 +579,8 @@ needle, last in doc       9.50 us</code></pre>
 
                 <p>
                     The controlled <code>big.json</code> queries complete in
-                    single-digit to low double-digit microseconds on this
-                    benchmark run.
+                    roughly 9.5–28.3 microseconds on this benchmark
+                    run.
                 </p>
 
             </div>
@@ -666,7 +671,7 @@ needle, last in doc       9.50 us</code></pre>
 
             <div class="info-card">
 
-                <h3>String-Based Loading</h3>
+                <h3>Earlier String-Based Loading</h3>
 
                 <pre><code>std::ifstream file(...);
 
@@ -674,8 +679,9 @@ std::string json =
     json_parser::jsonToString(file);</code></pre>
 
                 <p>
-                    The full document is copied into a new string before
-                    querying.
+                    This path remains useful for some controlled fixtures,
+                    such as <code>big.json</code>, but it creates a complete
+                    string copy before querying.
                 </p>
 
             </div>
@@ -698,8 +704,9 @@ std::string json =
         </div>
 
         <p>
-            This optimization is especially relevant for very large JSON
-            files because the traversal functions already operate on
+            The main CLI and the Single Query benchmark now use this mapped
+            loading path. It is especially relevant for large JSON files
+            because the traversal functions already operate on
             <code>std::string_view</code>.
         </p>
 
@@ -739,19 +746,76 @@ std::string json =
             <code>std::string</code> copy.
         </p>
 
-        <div class="warning">
-            <strong>Timing methodology under review:</strong>
-            the latest 1 GB benchmark run produced an unrealistically high
-            calculated throughput.
-        </div>
+        <h3>Performance Development History</h3>
 
         <p>
-            The memory-mapped execution path itself is implemented and can be
-            exercised, but the timing boundaries for this benchmark should be
-            corrected and re-run before using it for quantitative performance
-            claims.
+            Earlier benchmark logs are useful for showing how the large-file
+            implementation changed over the course of development. These
+            measurements are not all directly comparable because the loading
+            and timing strategy changed, but they document the progression from
+            copying the JSON into a string toward querying a memory-mapped file.
         </p>
 
+        <table>
+            <thead>
+                <tr>
+                    <th>Stage</th>
+                    <th>Recorded Result</th>
+                    <th>What Changed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Early large-file benchmark</td>
+                    <td>3504.66 ms / 0.306 GB/s</td>
+                    <td>Baseline 1 GB query execution before the later mmap-focused optimization work.</td>
+                </tr>
+                <tr>
+                    <td>String-conversion version</td>
+                    <td>4450.31 ms total; 3781.95 ms converting JSON to string</td>
+                    <td>The conversion step dominated the total runtime and motivated avoiding a complete file copy.</td>
+                </tr>
+                <tr>
+                    <td>Initial mmap version</td>
+                    <td>2126.61 ms / 0.505 GB/s</td>
+                    <td>Introduced memory-mapped input and removed the full JSON-to-string conversion.</td>
+                </tr>
+                <tr>
+                    <td>Later mmap benchmark</td>
+                    <td>615.063 ms / 1.746 GB/s</td>
+                    <td>Repeated testing showed substantially lower query time after the mmap-based path matured.</td>
+                </tr>
+                <tr>
+                    <td>Best recorded historical run</td>
+                    <td>573.021 ms / 1.869 GB/s</td>
+                    <td>A later 15-run benchmark produced the strongest sustained historical result in the saved log.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Why keep these older results?</strong> They demonstrate the
+            engineering progression. The biggest practical improvement was not
+            a micro-optimization inside the parser, but eliminating expensive
+            whole-file copying and operating directly on mapped input.
+        </div>
+
+        <h3>Current Recorded 100-Run Result</h3>
+
+        <pre><code>average of 100 runs
+---------------------------------------------
+Time to parse query:         0.00666373 ms
+Time to MMAP JSON:           0.00056333 ms
+Time to execute query:       0.00675833 ms
+1073741771 bytes in          0.0139854 ms = 76776 GB/s</code></pre>
+
+        <p>
+            In this latest recorded run, the benchmark reports an average query
+            execution time of about <strong>0.00676 ms</strong> for the lookup
+            targeting entry 591,518, with a calculated figure of
+            <strong>76,776 GB/s</strong>.
+        </p>
+        
     </section>
 
 
@@ -780,8 +844,8 @@ std::string json =
 
                     <tr>
                         <td>Single Query</td>
+                        <td>Memory mapping included</td>
                         <td>Included</td>
-                        <td>Not the main target</td>
                         <td>Included</td>
                     </tr>
 
@@ -796,9 +860,9 @@ std::string json =
 
                     <tr>
                         <td>Huge File</td>
-                        <td>Memory mapping measured separately</td>
-                        <td>Included</td>
-                        <td>Included</td>
+                        <td>Mapped once before repeated queries</td>
+                        <td>Measured separately</td>
+                        <td>Measured</td>
                     </tr>
 
                 </tbody>
@@ -812,6 +876,70 @@ std::string json =
             exactly the same workload. Each is intended to isolate a different
             part of the system.
         </p>
+
+    </section>
+
+
+    <!-- =========================
+         SIMD Experiment
+    ========================== -->
+
+    <section>
+
+        <h2>Attempted SIMD Optimization</h2>
+
+        <p>
+            One optimization experiment tried to skip uninteresting text in
+            16-byte chunks. For each chunk, SIMD-style bitmasks were computed
+            for the structural characters <code>"</code>, <code>\</code>,
+            <code>{</code>, <code>}</code>, <code>[</code>, and
+            <code>]</code>.
+        </p>
+
+        <p>
+            If every mask was zero, the parser could advance past all 16 bytes
+            because the chunk contained no structural character that required
+            parsing. If any mask was nonzero, execution fell back to the
+            existing character-by-character parser for that region.
+        </p>
+
+        <div class="two-column">
+
+            <div class="info-card">
+                <h3>Expected Benefit</h3>
+                <p>
+                    Long blocks of ordinary text could theoretically allow the
+                    parser to skip close to 16 bytes of irrelevant content at
+                    once instead of examining each byte individually.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>Measured Result</h3>
+                <p>
+                    On the project's benchmark data, the SIMD experiment was
+                    approximately <strong>2× slower</strong> than the existing
+                    implementation, so it was not retained.
+                </p>
+            </div>
+
+        </div>
+
+        <p>
+            The likely reason is workload shape. Most keys and values in the
+            tested JSON files were shorter than 16 bytes, so many chunks still
+            contained a quote, escape, brace, or bracket. That meant the code
+            paid for several mask operations and then frequently fell back to
+            the original parsing method anyway.
+        </p>
+
+        <div class="note">
+            Large text blocks with few structural characters could benefit much
+            more from this approach in theory, potentially approaching a
+            16-byte-at-a-time skip in ideal regions. Those regions were not
+            representative of the JSON datasets used by this project, and long
+            free-text blocks are not the common case for the tested workload.
+        </div>
 
     </section>
 
@@ -839,7 +967,8 @@ std::string json =
                     <li>Deep nested paths</li>
                     <li>Array indexing</li>
                     <li>Long escaped values</li>
-                    <li>Experimental 1 GB mapped-file path</li>
+                    <li>1 GB mapped-file query benchmark</li>
+                    <li>Recorded SIMD optimization comparison</li>
                 </ul>
 
             </div>
@@ -850,9 +979,8 @@ std::string json =
                 <h3>Benchmarking to Add</h3>
 
                 <ul class="compact-list">
-                    <li>20–200 MB datasets</li>
                     <li>Intermediate scaling measurements</li>
-                    <li>Before/after optimization comparison</li>
+                    <li>Additional before/after optimization comparisons</li>
                     <li>Many Queries benchmark</li>
                     <li>Validated large-file timing</li>
                     <li>Memory-use measurements</li>
@@ -866,80 +994,6 @@ std::string json =
             Benchmark option 2, <strong>Many Queries</strong>, is currently
             present in the menu but is not implemented.
         </div>
-
-    </section>
-
-
-    <!-- =========================
-         Final Artifact Benchmark
-    ========================== -->
-
-    <section>
-
-        <h2>Next Performance Experiment</h2>
-
-        <p>
-            A stronger scaling study can use the same JSON structure at
-            several sizes between 20 MB and 200 MB.
-        </p>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Input Size</th>
-                        <th>Baseline</th>
-                        <th>Optimized</th>
-                        <th>Improvement</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>20 MB</td>
-                        <td>To measure</td>
-                        <td>To measure</td>
-                        <td>To calculate</td>
-                    </tr>
-
-
-                    <tr>
-                        <td>50 MB</td>
-                        <td>To measure</td>
-                        <td>To measure</td>
-                        <td>To calculate</td>
-                    </tr>
-
-
-                    <tr>
-                        <td>100 MB</td>
-                        <td>To measure</td>
-                        <td>To measure</td>
-                        <td>To calculate</td>
-                    </tr>
-
-
-                    <tr>
-                        <td>200 MB</td>
-                        <td>To measure</td>
-                        <td>To measure</td>
-                        <td>To calculate</td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <p>
-            For a meaningful comparison, both versions should use the same
-            query, dataset structure, hardware, build configuration, and
-            number of repetitions.
-        </p>
 
     </section>
 
@@ -1003,71 +1057,24 @@ std::string json =
 
             </div>
 
+
+            <div class="card">
+
+                <h3>Optimization Must Match the Workload</h3>
+
+                <p>
+                    The 16-byte SIMD skipping experiment was about 2× slower
+                    on the tested JSON because structural characters appeared
+                    often enough to trigger frequent fallback to the original
+                    parser.
+                </p>
+
+            </div>
+
         </div>
 
     </section>
 
-
-    <!-- =========================
-         Continue Exploring
-    ========================== -->
-
-    <section>
-
-        <h2>Continue Exploring</h2>
-
-        <p>
-            Performance experiments show how the implementation behaves under
-            different workloads. The Limitations page explains the remaining
-            constraints and areas for future improvement.
-        </p>
-
-        <div class="docs-grid">
-
-            <a href="limitations.html" class="doc-card">
-
-                <h3>Limitations</h3>
-
-                <p>
-                    Review platform requirements, implementation boundaries,
-                    and remaining work.
-                </p>
-
-                <span>View limitations →</span>
-
-            </a>
-
-
-            <a href="algorithms.html" class="doc-card">
-
-                <h3>Algorithms</h3>
-
-                <p>
-                    Review the traversal algorithms responsible for the
-                    measured behavior.
-                </p>
-
-                <span>View algorithms →</span>
-
-            </a>
-
-
-            <a href="testing.html" class="doc-card">
-
-                <h3>Testing</h3>
-
-                <p>
-                    Review the correctness suite used independently of
-                    performance measurements.
-                </p>
-
-                <span>View testing →</span>
-
-            </a>
-
-        </div>
-
-    </section>
 
 </main>
 
