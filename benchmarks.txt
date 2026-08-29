@@ -253,34 +253,35 @@ Time to execute query:       1309.66 ms
 1073741771 bytes in          1309.78 ms = 0.819789 GB/s
 End Benchmark.
 ---------------------------------------------
+
 Running benchmark.
-2026-08-29 04:28:13.775689
-Ran FILTER query: []  2807.9 ms
+2026-08-29 04:52:40.839773
+Ran FILTER query:   2520.69 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  914.574 ms
+Ran FILTER query:   752.433 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  899.771 ms
+Ran FILTER query:   755.81 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  889.654 ms
+Ran FILTER query:   732.863 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  908.197 ms
+Ran FILTER query:   732.122 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  937.874 ms
+Ran FILTER query:   732.717 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  921.741 ms
+Ran FILTER query:   742.782 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  925.598 ms
+Ran FILTER query:   743.399 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  931.648 ms
+Ran FILTER query:   729.829 ms
  Results have been verified, but are not published here for the sake of readbility.
-Ran FILTER query: []  950.741 ms
+Ran FILTER query:   742.308 ms
  Results have been verified, but are not published here for the sake of readbility.
 average of 10 runs
 ---------------------------------------------
-Time to parse query:         0.0097293 ms
-Time to MMAP JSON:           0.0839 ms
-Time to execute query:       1108.77 ms
-1073741771 bytes in          1108.86 ms = 0.968327 GB/s
+Time to parse query:         0.0157167 ms
+Time to MMAP JSON:           0.0431375 ms
+Time to execute query:       918.495 ms
+1073741771 bytes in          918.554 ms = 1.16895 GB/s
 End Benchmark.
 ---------------------------------------------
 
