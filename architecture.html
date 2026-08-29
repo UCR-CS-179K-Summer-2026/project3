@@ -76,10 +76,10 @@
 
         <p>
             The JSON Query Engine is organized into separate layers for
-            command-line interaction, query parsing, command execution,
-            and direct JSON traversal. The query parser describes what the
-            user wants, while the JSON parser locates and processes that
-            data in the loaded document.
+            command-line interaction, memory-mapped file access, query parsing,
+            command execution, and direct JSON or JSONL traversal. The query
+            parser describes what the user wants, while the JSON subsystem
+            executes that structured request against the mapped input.
         </p>
 
         <div class="hero-actions">
@@ -106,9 +106,10 @@
         <h2>High-Level Architecture</h2>
 
         <p>
-            The program follows a pipeline in which the JSON document and
-            the user's query are prepared separately and then passed together
-            to the execution layer.
+            The program follows a pipeline in which the input file is mapped
+            once, the user's query is parsed independently, and the application
+            chooses either normal JSON execution or record-by-record JSONL
+            execution based on the selected file type.
         </p>
 
         <img
@@ -119,9 +120,10 @@
 
         <p>
             The <strong>query parser</strong> converts textual query syntax
-            into a recursive data structure. The <strong>JSON parser</strong>
-            receives that parsed structure together with the JSON document
-            and executes the selected operation.
+            into a recursive <code>ParsedQuery</code>. For a normal JSON file,
+            that structure is passed directly to <code>parsejson()</code>. For
+            a JSONL file, <code>repeatSearch()</code> selects or iterates records
+            and then reuses the same JSON execution path on each record.
         </p>
 
         <div class="note">
@@ -153,9 +155,9 @@
                 <h3><code>main.cpp</code></h3>
 
                 <p>
-                    Provides the command-line interface, accepts a JSON
-                    filename, loads the document, accepts repeated queries,
-                    and coordinates parsing and execution.
+                    Provides the command-line interface, accepts JSON or JSONL
+                    input, configures CLI/file output, maps the input once,
+                    accepts repeated queries, and coordinates execution.
                 </p>
 
                 <span>Application Controller</span>
@@ -185,9 +187,9 @@
 
                 <p>
                     <code>jsonparser.h</code> and
-                    <code>jsonparser.cpp</code> load JSON data, dispatch
-                    commands, traverse objects and arrays, and format
-                    returned values.
+                    <code>jsonparser.cpp</code> expose memory-mapped input,
+                    JSON execution, JSONL record iteration, object/array
+                    traversal, filtering, and result formatting.
                 </p>
 
                 <span>Execution &amp; Traversal</span>
@@ -219,12 +221,13 @@
             <li>Display the command-line interface.</li>
 
             <li>
-                Read the user's selected JSON filename.
+                Read the user's selected <code>.json</code> or
+                <code>.jsonl</code> filename.
             </li>
 
             <li>
-                Construct the path
-                <code>jsonFiles/&lt;filename&gt;.json</code>.
+                Construct the path beneath <code>jsonFiles/</code> using the
+                filename exactly as entered.
             </li>
 
             <li>
@@ -247,12 +250,14 @@
             </li>
 
             <li>
-                Send both the JSON document and parsed query to
-                <code>json_parser::parsejson()</code>.
+                Detect whether the selected file ends in <code>.jsonl</code>
+                and dispatch either to <code>json_parser::parsejson()</code>
+                or <code>json_parser::repeatSearch()</code>.
             </li>
 
             <li>
-                Display returned values or error messages.
+                Print returned values to the CLI and, when enabled, append
+                query results to the selected output file.
             </li>
 
             <li>
@@ -288,6 +293,13 @@
             the process address space using a read-only private
             <code>mmap</code> mapping. The JSON processing code then accesses
             the mapped bytes through a <code>std::string_view</code>.
+        </p>
+
+        <p>
+            The mapping step is shared by both JSON and JSONL input. JSONL is
+            not loaded into a separate object model; <code>repeatSearch()</code>
+            creates <code>std::string_view</code> slices for individual records
+            directly from the same mapped byte range.
         </p>
 
         <div class="card-grid">
@@ -630,6 +642,73 @@ city</code></pre>
 
 
     <!-- =========================
+         JSONL Execution Path
+    ========================== -->
+
+    <section>
+
+        <h2>JSONL Execution Path</h2>
+
+        <p>
+            JSONL input is handled by a separate orchestration function rather
+            than a separate JSON parser:
+        </p>
+
+        <pre><code>std::vector&lt;std::string&gt; json_parser::repeatSearch(
+    std::string_view json,
+    const ParsedQuery&amp; query
+);</code></pre>
+
+        <p>
+            Each nonblank line is treated as one independent JSON record. The
+            function validates the record, creates a non-owning view over that
+            line, and calls the normal <code>parsejson()</code> execution path.
+            This keeps FIND, DISPLAY, and FILTER behavior shared between JSON
+            and JSONL instead of duplicating the traversal algorithms.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+                <h3>Whole-File Query</h3>
+                <p>
+                    Without a leading record index, records are processed one
+                    at a time. DISPLAY and FILTER can collect results from
+                    multiple records.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Indexed Record</h3>
+                <p>
+                    A numeric first query component selects one zero-based
+                    JSONL record before normal nested traversal continues.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>FIND Short-Circuit</h3>
+                <p>
+                    FIND returns <code>true</code> as soon as one record matches;
+                    if no record matches, it returns <code>false</code>.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Record Validation</h3>
+                <p>
+                    Blank lines are skipped, while malformed nonblank records
+                    produce an error that identifies the affected line or
+                    selected record index.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
          JSON Processing Subsystem
     ========================== -->
 
@@ -735,8 +814,9 @@ city</code></pre>
         <h2>Result Representation</h2>
 
         <p>
-            Query execution ultimately returns a
-            <code>std::string</code> to the application layer.
+            Normal JSON execution returns a <code>std::string</code>.
+            JSONL execution returns a <code>std::vector&lt;std::string&gt;</code>
+            because one query can produce results from multiple records.
         </p>
 
         <div class="card-grid">
@@ -792,6 +872,19 @@ city</code></pre>
                 <p>
                     Matching array elements are returned as their complete
                     JSON representations.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>JSONL Results</h3>
+
+                <p>
+                    Per-record results are returned as separate strings so the
+                    CLI can print or write each result independently. Empty
+                    FILTER results are skipped.
                 </p>
 
             </div>
@@ -870,6 +963,18 @@ city</code></pre>
 
                         <td>
                             Executes a parsed FIND, DISPLAY, or FILTER command.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
+                            <code>repeatSearch(json, ParsedQuery)</code>
+                        </td>
+
+                        <td>
+                            Executes a query across JSONL records or against one
+                            zero-based selected record.
                         </td>
                     </tr>
 
@@ -1000,6 +1105,22 @@ city</code></pre>
 
                     <tr>
                         <td>
+                            <code>main.cpp → repeatSearch()</code>
+                        </td>
+
+                        <td>
+                            JSONL view + parsed query
+                        </td>
+
+                        <td>
+                            Iterate or select JSONL records, then reuse normal
+                            JSON execution for each record.
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>
                             <code>parsejson() → main.cpp</code>
                         </td>
 
@@ -1008,7 +1129,8 @@ city</code></pre>
                         </td>
 
                         <td>
-                            Return the final query result for display.
+                            Return the final query result for CLI display or
+                            optional file output.
                         </td>
                     </tr>
 
@@ -1091,8 +1213,8 @@ city</code></pre>
                         </td>
 
                         <td>
-                            Declares JSON loading, path lookup, and parsed-query
-                            execution interfaces.
+                            Declares JSON loading, path lookup, parsed-query
+                            execution, and JSONL record-processing interfaces.
                         </td>
                     </tr>
 
@@ -1104,8 +1226,9 @@ city</code></pre>
 
                         <td>
                             Implements memory-mapped file access, JSON scanning,
-                            object and array traversal, FIND, DISPLAY, FILTER,
-                            result collection, and Unicode handling.
+                            JSONL record iteration/validation, object and array
+                            traversal, FIND, DISPLAY, FILTER, result collection,
+                            and Unicode handling.
                         </td>
                     </tr>
 
@@ -1128,8 +1251,9 @@ city</code></pre>
                         </td>
 
                         <td>
-                            Tests JSON lookup, traversal, values, edge cases,
-                            and supported query operations.
+                            Tests JSON lookup, traversal, FILTER execution,
+                            JSONL behavior, Unicode, edge cases, and supported
+                            query operations.
                         </td>
                     </tr>
 
@@ -1240,8 +1364,8 @@ city</code></pre>
                 <h3>Reusable Loaded Document</h3>
 
                 <p>
-                    A JSON file is loaded once and can be queried repeatedly
-                    during the same command-line session.
+                    A JSON or JSONL file is mapped once and can be queried
+                    repeatedly during the same command-line session.
                 </p>
 
             </div>
