@@ -1,4 +1,4 @@
-# 4-Sprint Plan:
+# 5-Sprint Plan:
 
 ## Sprint 1 Plan:
 
@@ -84,9 +84,14 @@
 - Helped prepare the parser for the new FIND and DISPLAY execution flow.
 
 ## Sprint 4:
-### Laura — Testing, and Documentation
+### Laura — Documentation Redesign and JSONL Implementation
 
-- 
+- Redesigned and polished the GitHub Pages documentation site.
+- Standardized the layout, navigation, typography, and styling across all pages.
+- Expanded the Getting Started, Features, Architecture, Algorithms, Testing, Performance, and Limitations documentation.
+- Improved examples, diagrams, pseudocode, and explanations of the query and JSON traversal systems.
+- Reorganized the `gh-pages` branch and fixed the GitHub Pages deployment setup.
+- Began implementing JSONL support.
 
 ### James — FIND/DISPLAY JSONL Integration, MMAP optimization
 
@@ -103,9 +108,13 @@
 - Added error handling for FILTER numeric bounds query.
 
 ## Sprint 5:
-### Laura — FILTER working on JSONL files
+### Laura — Full JSONL Support, Fixtures, and Testing
 
-- put items here
+- Completed JSONL support across the project.
+- Added JSONL files and fixtures for testing different record structures and query behavior.
+- Added tests that verify JSONL functionality, including record traversal, zero-based indexing, nested queries, FIND, DISPLAY, and FILTER behavior.
+- Added JSONL edge-case tests for empty lines, whitespace-only lines, Windows line endings, missing trailing newlines, invalid indexes, and malformed records.
+- Updated the documentation to reflect the completed JSONL functionality and testing coverage.
 
 ### James — SIMD optimization, support bug fixin gon FILTER
 
