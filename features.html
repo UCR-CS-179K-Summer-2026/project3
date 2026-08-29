@@ -78,7 +78,8 @@
             The JSON Query Engine supports three primary commands:
             FIND, DISPLAY, and FILTER. Together, these commands allow
             users to verify JSON paths, retrieve values, access nested
-            arrays and objects, and filter records using supported conditions.
+            arrays and objects, filter records using supported conditions,
+            and run the same query model across JSON and JSONL input.
         </p>
 
         <div class="hero-actions">
@@ -665,7 +666,8 @@
         <p>
             <code>FILTER</code> searches objects within a selected JSON
             array. The engine examines a requested field and returns
-            the complete object when the value satisfies the filter.
+            matching objects when the value satisfies the filter. FILTER
+            can also follow nested structures inside array elements.
         </p>
 
 
@@ -833,7 +835,9 @@
 
         <div class="note">
             Regex FILTER returns the full matching JSON object rather than only
-            the field used for comparison.
+            the field used for comparison. FILTER traversal can also descend
+            through nested structures inside array elements before evaluating
+            the target field.
         </div>
 
     </section>
@@ -986,6 +990,301 @@
 
 
     <!-- =========================
+         JSONL Support
+    ========================== -->
+
+    <section id="jsonl">
+
+        <h2>JSONL Support</h2>
+
+        <p>
+            Files ending in <code>.jsonl</code> are processed as a sequence of
+            independent JSON records. The engine applies FIND, DISPLAY, and
+            FILTER across those records without requiring the file to be
+            converted into one large JSON array.
+        </p>
+
+        <div class="card-grid">
+
+            <div class="card">
+                <h3>Per-Record Queries</h3>
+                <p>
+                    DISPLAY and FILTER can return results from each matching
+                    JSONL record while blank lines are skipped.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Zero-Based Record Indexing</h3>
+                <p>
+                    A numeric component immediately after the command selects
+                    one JSONL record by zero-based index before the remaining
+                    query is evaluated.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>File-Wide FIND</h3>
+                <p>
+                    FIND returns <code>true</code> when at least one JSONL record
+                    satisfies the requested structure, and <code>false</code>
+                    when none do.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Record Validation</h3>
+                <p>
+                    Nonblank JSONL lines are checked as complete JSON records.
+                    Malformed records produce an error that identifies the line
+                    or selected record index.
+                </p>
+            </div>
+
+        </div>
+
+        <h3>JSONL Query Examples</h3>
+
+        <p>
+            The examples below use the project&apos;s <code>testing.jsonl</code>
+            fixture. Each nonblank line is treated as a separate JSON record,
+            so a query can either sweep the whole file or begin with a
+            zero-based record index to target one record.
+        </p>
+
+        <!-- FIND Example 1 -->
+
+        <h3>Example 1: FIND Across the JSONL File</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>Relevant JSONL Excerpt</h3>
+                <pre><code>{"employees":[{"name":"Laura","salary":90000,"department":"Engineering"}]}
+{"employees":[{"name":"James","salary":95000,"department":"Engineering"}]}
+{"employees":[{"name":"Liam","salary":92000,"department":"Engineering"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>FIND "employees"</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>true</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            FIND checks the JSONL records and returns <code>true</code> as soon
+            as at least one record contains the requested key.
+        </p>
+
+        <!-- FIND Example 2 -->
+
+        <h3>Example 2: FIND in One JSONL Record</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>Selected Record</h3>
+                <pre><code>{"employees":[{"name":"James","salary":95000,"department":"Engineering"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>FIND 1 "employees" {"0" {"department"}}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>true</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            The leading <code>1</code> limits the search to the second nonblank
+            JSONL record before the normal nested FIND query is evaluated.
+        </p>
+
+        <!-- DISPLAY Example 1 -->
+
+        <h3>Example 3: DISPLAY a Value From Every Record</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>Relevant JSONL Excerpt</h3>
+                <pre><code>{"employees":[{"name":"Laura"}]}
+{"employees":[{"name":"James"}]}
+{"employees":[{"name":"Liam"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>DISPLAY "employees" {"0" {"name"}}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>"Laura"
+"James"
+"Liam"</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            Without a record index, DISPLAY applies the same query to every
+            nonblank JSONL record and returns each matching result.
+        </p>
+
+        <!-- DISPLAY Example 2 -->
+
+        <h3>Example 4: DISPLAY Multiple Fields From One Record</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>Selected Record</h3>
+                <pre><code>{"employees":[{"name":"Liam","salary":92000,"department":"Engineering"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>DISPLAY 2 "employees" {"0" {"name" "department"}}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>["Liam", "Engineering"]</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            Record indexes are zero based, so <code>2</code> selects the third
+            nonblank record. Normal nested traversal and sibling selection
+            continue to work after the record is selected.
+        </p>
+
+        <!-- FILTER Example 1 -->
+
+        <h3>Example 5: FILTER a Numeric Range Across JSONL Records</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>Relevant JSONL Excerpt</h3>
+                <pre><code>{"employees":[{"name":"Laura","salary":90000,"department":"Engineering"}]}
+{"employees":[{"name":"James","salary":95000,"department":"Engineering"}]}
+{"employees":[{"name":"Liam","salary":92000,"department":"Engineering"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>FILTER { employees { salary }} 90000 95000</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>{"name":"Laura","salary":90000,"department":"Engineering"}
+{"name":"James","salary":95000,"department":"Engineering"}
+{"name":"Liam","salary":92000,"department":"Engineering"}</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            Numeric FILTER evaluates matching objects across the JSONL file and
+            returns the complete objects whose values fall inside the requested
+            range.
+        </p>
+
+        <!-- FILTER Example 2 -->
+
+        <h3>Example 6: FILTER With a Regular Expression</h3>
+
+        <div class="example-grid">
+
+            <div class="example-card">
+                <h3>Relevant JSONL Excerpt</h3>
+                <pre><code>{"employees":[{"name":"Laura","salary":90000,"department":"Engineering"}]}
+{"employees":[{"name":"James","salary":95000,"department":"Engineering"}]}
+{"employees":[{"name":"Liam","salary":92000,"department":"Engineering"}]}</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Query</h3>
+                <pre><code>FILTER { employees { name }} ^L</code></pre>
+            </div>
+
+            <div class="example-card">
+                <h3>Result</h3>
+                <pre><code>{"name":"Laura","salary":90000,"department":"Engineering"}
+{"name":"Liam","salary":92000,"department":"Engineering"}</code></pre>
+            </div>
+
+        </div>
+
+        <p>
+            Regex FILTER also sweeps separate JSONL records. Records with no
+            matches do not add empty arrays to the output.
+        </p>
+
+        <div class="note">
+            A JSONL query can also consist of only a DISPLAY record index, such
+            as <code>DISPLAY 0</code>, to return that complete JSON record.
+            Indexes count nonblank records starting from zero.
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         Runtime Features
+    ========================== -->
+
+    <section>
+
+        <h2>Runtime and File-Handling Features</h2>
+
+        <div class="card-grid">
+
+            <div class="card">
+                <h3>Memory-Mapped Input</h3>
+                <p>
+                    Input files are opened through a memory-mapped path and
+                    exposed to the parser as <code>std::string_view</code>,
+                    reducing unnecessary full-file string copying.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Repeated Queries</h3>
+                <p>
+                    After opening a file, the command-line application can run
+                    additional queries against the same mapped input.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Output Destination</h3>
+                <p>
+                    The settings menu lets users print query results to the CLI
+                    or append them to a selected output file.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
          Command Comparison
     ========================== -->
 
@@ -1093,7 +1392,8 @@
 
         <p>
             The current user-facing query language focuses on FIND,
-            DISPLAY, and FILTER.
+            DISPLAY, and FILTER, with execution support for both standard
+            JSON documents and line-delimited JSONL files.
         </p>
 
         <div class="status-grid">
@@ -1114,6 +1414,13 @@
                     <li>Boolean, numeric, and string results</li>
                     <li>Numeric range FILTER</li>
                     <li>Regular-expression FILTER</li>
+                    <li>FILTER traversal through nested array structures</li>
+                    <li>JSONL per-record querying</li>
+                    <li>Zero-based JSONL record selection</li>
+                    <li>JSONL FIND, DISPLAY, and FILTER execution</li>
+                    <li>Memory-mapped file loading</li>
+                    <li>Repeated queries on an opened file</li>
+                    <li>CLI or file-based result output</li>
 
                 </ul>
 
@@ -1135,7 +1442,11 @@
                     </li>
 
                     <li>
-                        Additional end-to-end command testing
+                        Additional malformed-input diagnostics
+                    </li>
+
+                    <li>
+                        Broader JSONL and FILTER edge-case handling
                     </li>
 
                 </ul>

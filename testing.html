@@ -99,24 +99,24 @@
 
         <p>
             The latest automated test run executed
-            <strong>96 tests across 12 test suites</strong>.
+            <strong>117 tests across 14 test suites</strong>.
             All tests passed.
         </p>
 
         <div class="status-grid">
 
             <div class="status-card implemented">
-                <h3>96 Tests</h3>
+                <h3>117 Tests</h3>
                 <p>Total automated correctness tests executed.</p>
             </div>
 
             <div class="status-card implemented">
-                <h3>12 Suites</h3>
+                <h3>14 Suites</h3>
                 <p>Grouped by parser, traversal, commands, Unicode, and edge cases.</p>
             </div>
 
             <div class="status-card implemented">
-                <h3>96 Passed</h3>
+                <h3>117 Passed</h3>
                 <p>Every test completed successfully.</p>
             </div>
 
@@ -127,8 +127,8 @@
 
         </div>
 
-        <pre><code>[==========] 96 tests from 12 test suites ran.
-[  PASSED  ] 96 tests.</code></pre>
+        <pre><code>[==========] 117 tests from 14 test suites ran.
+[  PASSED  ] 117 tests.</code></pre>
 
     </section>
 
@@ -203,6 +203,29 @@
                         </td>
                         <td>
                             Confirms selected JSON values are returned correctly.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>FILTER</td>
+                        <td>
+                            Regex and numeric filters, full and partial result
+                            sets, selected fields, and no-match behavior.
+                        </td>
+                        <td>
+                            Verifies FILTER execution as well as parser classification.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>JSONL</td>
+                        <td>
+                            Per-record queries, zero-based record indexing, nested
+                            lookups, FIND aggregation, and missing/out-of-range cases.
+                        </td>
+                        <td>
+                            Confirms newline-delimited JSON is handled independently
+                            record by record.
                         </td>
                     </tr>
 
@@ -323,10 +346,10 @@ ctest --output-on-failure</code></pre>
 
                     <tr>
                         <td><code>JsonParser</code></td>
-                        <td>16</td>
+                        <td>18</td>
                         <td>
-                            File behavior, literals, missing keys,
-                            null handling, and parser helpers.
+                            File behavior, literals, missing keys, null handling,
+                            parser helpers, and JSONL record sweeping/index isolation.
                         </td>
                     </tr>
 
@@ -371,6 +394,15 @@ ctest --output-on-failure</code></pre>
                     </tr>
 
                     <tr>
+                        <td><code>JsonFilterTest</code></td>
+                        <td>8</td>
+                        <td>
+                            End-to-end FILTER execution for employee, product,
+                            regex, numeric, and no-match cases.
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td><code>JsonOddKeyTest</code></td>
                         <td>3</td>
                         <td>
@@ -391,6 +423,15 @@ ctest --output-on-failure</code></pre>
                         <td>2</td>
                         <td>
                             Empty array and object lookup behavior.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>JsonlQueryTest</code></td>
+                        <td>11</td>
+                        <td>
+                            Per-record JSONL DISPLAY and FIND behavior, record
+                            indexing, nesting, and out-of-range/missing-key cases.
                         </td>
                     </tr>
 
@@ -758,7 +799,9 @@ ctest --output-on-failure</code></pre>
         <h2>FILTER Tests</h2>
 
         <p>
-            The current automated parser tests verify both FILTER formats.
+            FILTER is covered at both the query-parser and execution levels.
+            The latest suite includes eight end-to-end FILTER cases in addition
+            to parser tests that distinguish regex and numeric-range syntax.
         </p>
 
         <div class="two-column">
@@ -770,7 +813,8 @@ ctest --output-on-failure</code></pre>
                 <pre><code>FILTER {"employees" {"name"}} "^L"</code></pre>
 
                 <p>
-                    The parser marks this as a regex FILTER.
+                    Parser classification is tested, and execution tests verify
+                    regex-based filtering against fixture data.
                 </p>
 
             </div>
@@ -783,19 +827,19 @@ ctest --output-on-failure</code></pre>
                 <pre><code>FILTER {"employees" {"salary"}} 80000 100000</code></pre>
 
                 <p>
-                    The parser marks this as a numeric range FILTER.
+                    Parser classification is tested, and execution tests verify
+                    numeric-range filtering and selected-field output.
                 </p>
 
             </div>
 
         </div>
 
-        <div class="warning">
-            <strong>Current automated testing gap:</strong>
-            FILTER parsing is covered, but end-to-end FILTER execution does
-            not yet have the same automated coverage as FIND and DISPLAY.
-            Regex and numeric FILTER execution tests are the main correctness
-            tests still worth adding.
+        <div class="note">
+            <strong>Current coverage:</strong>
+            FILTER execution now includes employee and product fixtures, full
+            and partial result sets, regex matching, numeric filtering, selected
+            fields, and no-match behavior.
         </div>
 
     </section>
@@ -923,6 +967,12 @@ ctest --output-on-failure</code></pre>
             </li>
 
             <li>
+                <code>jsonFiles/jsonl/</code> —
+                newline-delimited JSON fixtures used for per-record queries,
+                indexing, nested lookups, and FIND behavior.
+            </li>
+
+            <li>
                 <code>Bookings_1-level_1-KB_formatted.json</code> and
                 <code>Bookings_1-level_1-MB_formatted.json</code> —
                 benchmark inputs.
@@ -1015,13 +1065,13 @@ ctest --output-on-failure</code></pre>
                 <h3>Strong Existing Coverage</h3>
 
                 <ul class="compact-list">
-                    <li>Query parsing</li>
-                    <li>Malformed queries</li>
-                    <li>Basic traversal</li>
+                    <li>Query parsing and malformed-query handling</li>
+                    <li>Basic and nested traversal</li>
                     <li>FIND execution</li>
                     <li>DISPLAY execution</li>
-                    <li>Unicode</li>
-                    <li>Edge-case values</li>
+                    <li>FILTER parsing and execution</li>
+                    <li>JSONL record traversal and indexing</li>
+                    <li>Unicode and edge-case values</li>
                     <li>File handling</li>
                 </ul>
 
@@ -1033,12 +1083,11 @@ ctest --output-on-failure</code></pre>
                 <h3>Coverage to Add</h3>
 
                 <ul class="compact-list">
-                    <li>End-to-end regex FILTER tests</li>
-                    <li>End-to-end numeric FILTER tests</li>
-                    <li>Multiple FILTER matches</li>
-                    <li>FILTER with no matches</li>
-                    <li>Malformed FILTER arguments</li>
+                    <li>Malformed FILTER argument coverage</li>
+                    <li>Additional FILTER edge cases and mixed data types</li>
+                    <li>Larger JSONL stress and malformed-record cases</li>
                     <li>CLI-level integration tests</li>
+                    <li>Benchmark regression tests or performance thresholds</li>
                 </ul>
 
             </div>
