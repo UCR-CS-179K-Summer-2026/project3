@@ -194,8 +194,8 @@ int hugeFile(int option) {
             std::cout << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
             outputFile << "1 GB, entry 591,518:    " << hugeValue << "  " << time.count() << " ms\n";
         } else if(option == 2) {
-            std::cout << "Ran FILTER query: " << hugeValue << "  " << time.count() << " ms\n" <<  " Results have been verified, but are not published here for the sake of readbility.\n";
-            outputFile << "Ran FILTER query: " << hugeValue << "  " << time.count() << " ms\n" <<  " Results have been verified, but are not published here for the sake of readbility.\n";
+            std::cout << "Ran FILTER query: "<< "  " << time.count() << " ms\n" <<  " Results have been verified, but are not published here for the sake of readbility.\n";
+            outputFile << "Ran FILTER query: " << "  " << time.count() << " ms\n" <<  " Results have been verified, but are not published here for the sake of readbility.\n";
         }
     }
 
