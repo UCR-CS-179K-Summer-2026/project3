@@ -430,7 +430,6 @@ namespace json_parser {
                 if (seekValue(q, end, path)) {
                     const char* start = q;
                     if (!skipValue(q, end)) return found;
-                    std::regex pattern("^L");
                     std::string value = convertUnicode(std::string_view(start, static_cast<size_t>(q - start)));
 
                     // This helps prevent a weird stod bug if you were to try for example the name key in employee.json
