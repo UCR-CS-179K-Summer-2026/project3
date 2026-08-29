@@ -282,7 +282,6 @@
             they can later be compared with the way the key is represented in
             the JSON document.
         </div>
-<div class="note">The parser is documented here with rules and pseudocode; the visual diagrams below are reserved for the execution algorithms that operate on JSON data.</div>
 </section>
 <!-- =========================
          JSON Component Lookup
@@ -382,11 +381,6 @@
             It moves a pointer from the beginning of a JSON value to the first
             character after that value.
         </p>
-<div class="note">
-            This diagram is included because <code>skipValue()</code> is one of the key
-            low-level techniques that lets the engine scan directly through JSON text
-            without building a full in-memory object tree.
-        </div>
 <img alt="Flowchart showing how skipValue moves over JSON strings, containers, and literals" class="diagram-image algorithm-diagram" src="images/valueskip.png"/>
 <h3>Why It Is Needed</h3>
 <p>
@@ -464,12 +458,6 @@
             <strong>parsed query group</strong>. It does not iterate over the
             JSON document as if each query element were a JSON item.
         </p>
-<div class="note">
-            FIND uses the same recursive group-traversal pattern as DISPLAY, but it
-            only checks whether every requested component exists. To avoid duplicating
-            nearly the same flowchart, the DISPLAY diagram below is used as the visual
-            example of recursive group traversal.
-        </div>
 <h3>Key Idea</h3>
 <p>
             Every sibling string in a group is searched from the same JSON
